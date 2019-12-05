@@ -1,66 +1,119 @@
-#Single Sign On elements for testing user flows
+# [Documentation - Setup] This section lists all dependencies
+# that are imported for variable file to work
+from selenium.webdriver.common.by import By
 
+# [Documentation - Summary] This file creates the variables for
+# NYL Single Sign On page objects for testing user flows
 
-#elements on Registration page
+# [Documentation - Variables] Objects on Registration page
 class regV
-    fname = (By.name, "firstName")
-    mname = (By.name, "middleName")
-    lname = (By.name, "lastName")
-    suffix_dropdown = (By.name, "suffix")
-    housenum = (By.name, "streetNumber")
-    street = (By.name, "street")
-    add2 = (By.name, "addressLine2")
-    city = (By.name, "city")
-    state_dropdown = (By.name, "state")
-    zip = (By.name, "zip")
-    phone = (By.name, "phone")
-    ssn4 = (By.name, "ssn4")
-    ss_check = (By.name, "noSsn4")
-    dob = (By.name, "birthdate")
-    dob_check = (By.name, "isOver18")
-    email = (By.id, "sso-email")
-    password = (By.name, "password")
-    passwordc = (By.name, "confirmPassword")
-    tos_check = (By.name, "acceptedTermsAndConditions")
-    cnw_check = (By.name, "collectnwin")
-    nylnews_check = (By.name, "newsletter")
-    submit_button = (By.className, "nyl-btn")
+    fname = [By.NAME, "firstName"]
+    mname = [By.NAME, "middleName"]
+    lname = [By.NAME, "lastName"]
+    suffix_dropdown = [By.NAME, "suffix"]
+    housenum = [By.NAME, "streetNumber"]
+    street = [By.NAME, "street"]
+    add2 = [By.NAME, "addressLine2"]
+    city = [By.NAME, "city"]
+    state_dropdown = [By.NAME, "state"]
+    zip = [By.NAME, "zip"]
+    phone = [By.NAME, "phone"]
+    ssn4 = [By.NAME, "ssn4"]
+    ss_check = [By.NAME, "noSsn4"]
+    dob = [By.NAME, "birthdate"]
+    dob_check = [By.NAME, "isOver18"]
+    email = [By.ID, "sso-email"]
+    password = [By.NAME, "password"]
+    passwordc = [By.NAME, "confirmPassword"]
+    tos_check = [By.NAME, "acceptedTermsAndConditions"]
+    cnw_check = [By.NAME, "collectnwin"]
+    nylnews_check = [By.NAME, "newsletter"]
+    submit_button = [By.CLASS_NAME, "nyl-btn"]
 
-#elements on OTP pages
+# [Documentation - Variables] Objects on OTP pages
 class otpV
-#otp method selection page
-    text_button = (By.className, "nyl-btn-single button-1")
-    call_button = (By.className, "nyl-btn-single button-2")
-#otp code entry page
-    otp_input = (By.name, "otp")
-    otp_continue_button = (By.cssSelector, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(4) > button > span")
-    retry_call_button = (By.cssSelector, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5) > p > button:nth-child(1)")
-    retry_text_button = (By.cssSelector, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5) > p > button:nth-child(2)")
+# otp method selection page
+    text_button = [By.CLASS_NAME, "nyl-btn-single button-1"]
+    call_button = [By.CLASS_NAME, "nyl-btn-single button-2"]
+# otp code entry page
+    otp_input = [By.NAME, "otp"]
+    otp_continue_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(4] > button > span"]
+    retry_call_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(1]"]
+    retry_text_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(2]"]
 
-#elements on Gov ID pages
+# [Documentation - Variables] Objects on Gov ID pages
 class govIdV
-#gov id and upload method selection page
-    gov_id_dropdown = (By.name, "govIdType")
-    mobile_button = (By.className, "ny;l-btn")
-    browser_link = (By.className, "continue-with-browser-link")
-#Drivers license and browser method
-    start_button = (By.id, "dcui-start-button")
-#start capture screen
+# gov id and upload method selection page
+    gov_id_dropdown = [By.NAME, "govIdType"]
+    mobile_button = [By.CLASS_NAME, "nyl-btn"]
+    browser_link = [By.CLASS_NAME, "continue-with-browser-link"]
 
+# Drivers license and browser capture method
+# Document capture page
+    start_button = [By.ID, "dcui-start-button"]
+# Driver's license front capture page
+    front_capture_button = [By.ID, "start-capture"]
+# Driver's license front quality check page
+    front_discard_button = [By.ID, "discard-capture"]
+    front_save_button = [By.ID, "save-capture"]
+# Driver's license back capture page
+    back_capture_button = [By.ID, "start-capture"]
+# Driver's license back quality check page
+    back_discard_button = [By.ID, "discard-capture"]
+    back_save_button = [By.ID, "save-capture"]
+# Facial snapshot capture page
+    facial_capture_button = [By.ID, "start-capture"]
+# Facial snapshot quality check page
+    facial_discard_button = [By.ID, "discard-capture"]
+    facial_save_button = [By.ID, "save-capture"]
+# Document submission page
+    submit_button = [By.ID, "verify-all"]
 
-#elements on Update Profile page
-class upProfV
-    fname = (By.name, "firstName")
-    mname = (By.name, "middleName")
-    lname = (By.name, "lastName")
-    suffix = (By.name, "suffix")
-    housenum = (By.name, "streetNumber")
-    street = (By.name, "street")
-    add2 = (By.name, "addressLine2")
-    city = (By.name, "city")
-    state = (By.name, "state")
-    zip = (By.name, "zip")
-    phone = (By.name, "phone")
-    dob = (By.name, "birthdate")
-    email = (By.id, "sso-email")
-    updateSubmitBtn = (By.className, "nyl-btn")
+# Passport and browser capture method
+# Document capture page
+    start_button = [By.ID, "dcui-start-button"]
+# Passport front capture page
+    passport_capture_button = [By.ID, "start-capture"]
+# Passport front quality check page
+    passport_discard_button = [By.ID, "discard-capture"]
+    passport_save_button = [By.ID, "save-capture"]
+# Facial snapshot capture page
+    facial_capture_button = [By.ID, "start-capture"]
+# Facial snapshot quality check page
+    facial_discard_button = [By.ID, "discard-capture"]
+    facial_save_button = [By.ID, "save-capture"]
+# Document submission page
+    submit_button = [By.ID, "verify-all"]
+
+# May be completed at a future date with Appium inspection session
+# Drivers license and mobile capture method
+# Passport and mobile capture method
+
+# [Documentation - Variables] Objects on Login page
+class loginV
+    email = [By.ID, "sso-email"]
+    password = [By.NAME, "password"]
+    login_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span"]
+    forgot_password_link = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p > a"]
+
+# [Documentation - Variables] Objects on Reset Password page
+class resetPswV
+    email = [By.NAME, "email"]
+    reset_submit_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span"]
+
+# [Documentation - Variables] Objects on Update Profile page
+class updateProfV
+    fname = [By.NAME, "firstName"]
+    mname = [By.NAME, "middleName"]
+    lname = [By.NAME, "lastName"]
+    suffix = [By.NAME, "suffix"]
+    housenum = [By.NAME, "streetNumber"]
+    street = [By.NAME, "street"]
+    add2 = [By.NAME, "addressLine2"]
+    city = [By.NAME, "city"]
+    state = [By.NAME, "state"]
+    zip = [By.NAME, "zip"]
+    phone = [By.NAME, "phone"]
+    dob = [By.NAME, "birthdate"]
+    email = [By.ID, "sso-email"]
+    update_submit_button = [By.CLASS_NAME, "nyl-btn"]
