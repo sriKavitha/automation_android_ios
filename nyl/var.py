@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 # NYL Single Sign On page objects for testing user flows
 
 # [Documentation - Variables] Objects on Registration page
-class regV
+class regV:
     fname = [By.NAME, "firstName"]
     mname = [By.NAME, "middleName"]
     lname = [By.NAME, "lastName"]
@@ -31,7 +31,7 @@ class regV
     submit_button = [By.CLASS_NAME, "nyl-btn"]
 
 # [Documentation - Variables] Objects on OTP pages
-class otpV
+class otpV:
 # otp method selection page
     text_button = [By.CLASS_NAME, "nyl-btn-single button-1"]
     call_button = [By.CLASS_NAME, "nyl-btn-single button-2"]
@@ -42,7 +42,7 @@ class otpV
     retry_text_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(2]"]
 
 # [Documentation - Variables] Objects on Gov ID pages
-class govIdV
+class govIdV:
 # gov id and upload method selection page
     gov_id_dropdown = [By.NAME, "govIdType"]
     mobile_button = [By.CLASS_NAME, "nyl-btn"]
@@ -50,59 +50,59 @@ class govIdV
 
 # Drivers license and browser capture method
 # Document capture page
-    start_button = [By.ID, "dcui-start-button"]
+    dl_start_button = [By.ID, "dcui-start-button"]
 # Driver's license front capture page
-    front_capture_button = [By.ID, "start-capture"]
+    dl_front_capture_button = [By.ID, "start-capture"]
 # Driver's license front quality check page
-    front_discard_button = [By.ID, "discard-capture"]
-    front_save_button = [By.ID, "save-capture"]
+    dl_front_discard_button = [By.ID, "discard-capture"]
+    dl_front_save_button = [By.ID, "save-capture"]
 # Driver's license back capture page
-    back_capture_button = [By.ID, "start-capture"]
+    dl_back_capture_button = [By.ID, "start-capture"]
 # Driver's license back quality check page
-    back_discard_button = [By.ID, "discard-capture"]
-    back_save_button = [By.ID, "save-capture"]
+    dl_back_discard_button = [By.ID, "discard-capture"]
+    dl_back_save_button = [By.ID, "save-capture"]
 # Facial snapshot capture page
-    facial_capture_button = [By.ID, "start-capture"]
+    dl_facial_capture_button = [By.ID, "start-capture"]
 # Facial snapshot quality check page
-    facial_discard_button = [By.ID, "discard-capture"]
-    facial_save_button = [By.ID, "save-capture"]
+    dl_facial_discard_button = [By.ID, "discard-capture"]
+    dl_facial_save_button = [By.ID, "save-capture"]
 # Document submission page
-    submit_button = [By.ID, "verify-all"]
+    dl_submit_button = [By.ID, "verify-all"]
 
 # Passport and browser capture method
 # Document capture page
-    start_button = [By.ID, "dcui-start-button"]
+    passport_start_button = [By.ID, "dcui-start-button"]
 # Passport front capture page
     passport_capture_button = [By.ID, "start-capture"]
 # Passport front quality check page
     passport_discard_button = [By.ID, "discard-capture"]
     passport_save_button = [By.ID, "save-capture"]
 # Facial snapshot capture page
-    facial_capture_button = [By.ID, "start-capture"]
+    passport_facial_capture_button = [By.ID, "start-capture"]
 # Facial snapshot quality check page
-    facial_discard_button = [By.ID, "discard-capture"]
-    facial_save_button = [By.ID, "save-capture"]
+    passport_facial_discard_button = [By.ID, "discard-capture"]
+    passport_facial_save_button = [By.ID, "save-capture"]
 # Document submission page
-    submit_button = [By.ID, "verify-all"]
+    passport_submit_button = [By.ID, "verify-all"]
 
 # May be completed at a future date with Appium inspection session
 # Drivers license and mobile capture method
 # Passport and mobile capture method
 
 # [Documentation - Variables] Objects on Login page
-class loginV
+class loginV:
     email = [By.ID, "sso-email"]
     password = [By.NAME, "password"]
     login_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span"]
     forgot_password_link = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p > a"]
 
 # [Documentation - Variables] Objects on Reset Password page
-class resetPswV
+class resetPswV:
     email = [By.NAME, "email"]
     reset_submit_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span"]
 
 # [Documentation - Variables] Objects on Update Profile page
-class updateProfV
+class updateProfV:
     fname = [By.NAME, "firstName"]
     mname = [By.NAME, "middleName"]
     lname = [By.NAME, "lastName"]
