@@ -27,3 +27,10 @@ def waitAndClick(elem):
     driver = webdriver.Chrome()
     waitUntil(elem)
     driver.find_element(elem[0], elem[1]).click()
+
+# [Documentation - Function] Webdriver waits for a specified page element
+# to appear and then proceeds to send keys to it
+def waitAndSend(elem, keys):
+    driver = webdriver.Chrome()
+    waitUntil(elem)
+    driver.find_element(elem[0], elem[1]).send_keys(keys)
