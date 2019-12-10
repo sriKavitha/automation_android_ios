@@ -146,7 +146,7 @@ class NYlotto(unittest.TestCase):
             driver.save_screenshot('test_screenshot_2.png')
             print("E---Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
         print("Test complete!")
-\
+
     def tearDown(self):
        # self.driver.quit()
         self.assertEqual([], self.verificationErrors)

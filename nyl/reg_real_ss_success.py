@@ -4,6 +4,7 @@ from selenium import webdriver
 import warnings
 import unittest, time, re
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 import var
 import funct
 
@@ -48,13 +49,15 @@ class NYlotto(unittest.TestCase):
 
 #Instructions for webdriver to read and input user data via the info on the .txt doc
         # funct.waitAndSend(var.regV.fname, entry_info[0])
-        funct.waitUntil(var.regV.fname).send_keys(entry_info[0])
-        funct.waitUntil(var.regV.lname).send_keys(entry_info[1])
-        funct.waitUntil(var.regV.housenum).send_keys(entry_info[2])
-        funct.waitUntil(var.regV.city).send_keys(entry_info[4])
+        time.sleep(3)
+        print(var.regV.fname)
+        funct.waitAndSend(driver, var.regV.fname, entry_info[0])
+        funct.waitAndSend(driver, var.regV.lname, entry_info[1])
+        funct.waitAndSend(driver, var.regV.housenum, entry_info[2])
+        funct.waitAndSend(driver, var.regV.city, entry_info[4])
 
 #Find and select the state according to the info in the .txt doc
-        funct.waitAndClick(var.regV.state_dropdown)
+        funct.waitAndClick(driver, var.regV.state_dropdown)
         driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > select > option:nth-child(38)").click()
 
         zip.send_keys(entry_info[5])

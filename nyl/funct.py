@@ -4,33 +4,33 @@ from selenium import webdriver
 import unittest, time, re
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import var
 
 # [Documentation - Summary] This file creates the functions for
 # use in the automation test suite of NYL SSO
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear prior to the next interaction on the page
-def waitUntil(elem):
-    driver = webdriver.Chrome()
+
+
+
+def waitUntil(browser, elem):
+
     try:
-        driver.find_element(elem[0], elem[1])
+        browser.find_element(elem[0], elem[1])
     except:
         try:
-            driver.find_element(elem)
+            browser.find_element(By.elem)
         except:
             print("E--" + elem[1] + " elem not found")
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to click on it
-def waitAndClick(elem):
-    driver = webdriver.Chrome()
-    waitUntil(elem)
-    driver.find_element(elem[0], elem[1]).click()
+def waitAndClick(browser, elem):
+    waitUntil(browser, elem)
+    browser.find_element(elem[0], elem[1]).click()
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to send keys to it
-def waitAndSend(elem, keys):
-    driver = webdriver.Chrome()
-    waitUntil(elem)
-    driver.find_element(elem[0], elem[1]).send_keys(keys)
+def waitAndSend(browser, elem, keys):
+    waitUntil(browser, elem)
+    browser.find_element(elem[0], elem[1]).send_keys(keys)
