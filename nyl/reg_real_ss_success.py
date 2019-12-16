@@ -14,8 +14,8 @@ import funct                                        #Custom class for NYL
 # For use with Entry Info file version: nyl12122019.txt
 
 # [Documentation - Variables] Test file specific variables
-url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
 #url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
+url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
 #url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
 testemail = "marie.liao+ssotest@rosedigital.co"
 
@@ -40,8 +40,6 @@ class NYlotto(unittest.TestCase):
         #        }
         #   })
         self.driver = webdriver.Chrome()
-
-        # self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(12)
         self.verificationErrors = []
         self.accept_next_alert = True
