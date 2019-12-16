@@ -11,6 +11,7 @@ import funct                                        #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of successful
 # registration with valid SSN4 and OTP pass
+# For use with Entry Info file version: nyl12122019.txt
 
 # [Documentation - Variables] Test file specific variables
 url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
@@ -50,9 +51,9 @@ class NYlotto(unittest.TestCase):
     def test_reg(self):
         driver = self.driver
 # opens local file with user data
-        notepadfile = open('/Users/nylUser.txt', 'r')
+        notepadfile = open('/Users/nyl12122019.txt', 'r')
 # variable for each line in the file
-        entry_info = notepadfile.readlines()
+        entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
 # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
 # before returning control to your test or script.
@@ -60,6 +61,7 @@ class NYlotto(unittest.TestCase):
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
+
         funct.waitAndSend(driver, var.regV.fname, entry_info[0])
         funct.waitAndSend(driver, var.regV.lname, entry_info[1])
         funct.waitAndSend(driver, var.regV.housenum, entry_info[2])
@@ -68,16 +70,13 @@ class NYlotto(unittest.TestCase):
 
 # Find and select the state according to the info in the .txt doc
         select_box = driver.find_element_by_name("state")
+        funct.waitAndClick(driver, var.regV.state_dropdown)
         options = [x for x in select_box.find_elements_by_tag_name("option")]
         for element in options:
-            if element.text == (entry_info[5]):
+            if element.text in entry_info[5]:
                 element.click()
             else:
-                print(element.text + " does not match " + entry_info[5])
-
-# # Declares the drop-down element as an instance of the Select class.
-#         Select drpState = new Select(driver.find_element_by_name("state"))
-#         drpState.selectByValue(entry_info[5])
+                print("'" + element.text + "'" + " does not match " + "'" + entry_info[5] + "'")
 
         funct.waitAndSend(driver, var.regV.zip, entry_info[6])
         funct.waitAndSend(driver, var.regV.phone, entry_info[7])
@@ -90,13 +89,11 @@ class NYlotto(unittest.TestCase):
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
 # 2nd screen. OTP selection screen
-        self.assertIn("Confirm Account", driver.page_source)
         funct.waitAndClick(driver, var.otpV.text_button)
 # 3rd screen. OTP code entry screen
-        self.assertIn("Enter your code", driver.page_source)
         funct.waitAndSend(driver, var.otpV.otp_input, "111111")
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(10)
+        time.sleep(5)
 # 4th screen. Successful registration should redirect to Google.com.
 # Checking that the search field on google.com is present on page.
         if driver.find_elements_by_name("q") != []:
