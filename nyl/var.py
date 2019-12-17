@@ -33,11 +33,11 @@ class regV:
 # [Documentation - Variables] Objects on OTP pages
 class otpV:
 # otp method selection page
-    text_button = [By.CLASS_NAME, "nyl-btn-single button-1"]
-    call_button = [By.CLASS_NAME, "nyl-btn-single button-2"]
+    text_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > div > button.nyl-btn-single.button-1 > span"]
+    call_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > div > button.nyl-btn-single.button-2 > span"]
 # otp code entry page
     otp_input = [By.NAME, "otp"]
-    otp_continue_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(4] > button > span"]
+    otp_continue_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(4) > button > span"]
     retry_call_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(1]"]
     retry_text_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(2]"]
 
