@@ -41,69 +41,47 @@ class NYlotto(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
 
+# This is the test case method. The test case method should always start with the characters test.
+# The first line inside this method creates a local reference to the driver object created in setUp method.
     def test_reg(self):
         driver = self.driver
-        # notepadfile = open('/Users/nyl.txt', 'r')     #soft fail with SSN4 check, sends to GovID verification
-        notepadfile = open('/Users/nylUser.txt', 'r')  #successful registration with SSN4
-        entry_info = notepadfile.readlines()
+        # opens local file with user data
+        notepadfile = open('/Users/nyl12122019.txt', 'r')
+        # variable for each line in the file
+        entry_info = notepadfile.read().splitlines()
+        # The driver.get method will navigate to a page given by the URL.
+        # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
+        # before returning control to your test or script.
         driver.get(url)
+        # Assertion that the title has Single Sign On in the title.
+        self.assertIn("Single Sign On", driver.title)
+        # Instructions for webdriver to read and input user data via the info on the .txt doc.
+        funct.waitAndSend(driver, var.regV.fname, entry_info[0])
+        funct.waitAndSend(driver, var.regV.lname, entry_info[1])
+        funct.waitAndSend(driver, var.regV.housenum, entry_info[2])
+        funct.waitAndSend(driver, var.regV.street, entry_info[3])
+        funct.waitAndSend(driver, var.regV.city, entry_info[4])
+        # Find and select the state according to the info in the .txt doc
+        # Uses a for loop to iterate through the list of states until element
+        # matches the entry info in the text file. Then clicks the element found.
+        select_box = driver.find_element_by_name("state")
+        funct.waitAndClick(driver, var.regV.state_dropdown)
+        options = [x for x in select_box.find_elements_by_tag_name("option")]
+        for element in options:
+            if element.text in entry_info[5]:
+                element.click()
+                break
+        funct.waitAndSend(driver, var.regV.zip, entry_info[6])
+        funct.waitAndSend(driver, var.regV.phone, entry_info[7])
+        funct.waitAndSend(driver, var.regV.ssn4, entry_info[8])
+        funct.waitAndSend(driver, var.regV.dob, (entry_info[9] + entry_info[10] + entry_info[11]))
+        funct.waitAndClick(driver, var.regV.dob_check)
+        funct.waitAndSend(driver, var.regV.email, testemail)
+        funct.waitAndSend(driver, var.regV.password, entry_info[12])
+        funct.waitAndSend(driver, var.regV.passwordc, entry_info[12])
+        funct.waitAndClick(driver, var.regV.tos_check)
+        funct.waitAndClick(driver, var.regV.submit_button)
 
-#naming the elements right off the bat, for ease
-        fname = driver.find_element_by_name("firstName")
-        lname = driver.find_element_by_name("lastName")
-        housenum = driver.find_element_by_name("streetNumber")
-        street = driver.find_element_by_name("street")
-        #add2 = driver.find_element_by_name("addressLine2")
-        city = driver.find_element_by_name("city")
-        state_dropdown = driver.find_element_by_name("state")
-        #state_ny = driver.find_element_by_css_selector("#address_state > option:nth-child(34)")
-        zip = driver.find_element_by_name("zip")
-        phone = driver.find_element_by_name("phone")
-        ssn4 = driver.find_element_by_name("ssn4")
-        ss_check = driver.find_element_by_name("noSsn4")
-        dob_month = driver.find_element_by_name("birthdate")
-        dob_check = driver.find_element_by_name("isOver18")
-        email = driver.find_element_by_id("sso-email")
-        password = driver.find_element_by_name("password")
-        passwordc = driver.find_element_by_name("confirmPassword")
-        tos_check = driver.find_element_by_name("acceptedTermsAndConditions")
-        #promo_check = driver.find_element_by_id("entitlements_promo_emails")
-        submit_button = driver.find_element_by_class_name("nyl-btn")
-
-
-#telling them what to do via the info on the .txt doc
-        fname.send_keys(entry_info[0])
-        lname.send_keys(entry_info[1])
-        housenum.send_keys(entry_info[2])
-        street.send_keys(entry_info[3])
-        city.send_keys(entry_info[4])
-        state_dropdown.click()
-#This is a fun one, I'm basically telling the dropdown to keep scrolling down until it sees the choice (NY) that we want
-        #by using driver.find_elements_by_css_selector (PLURAL) on the css selector of the NY option, it returns either
-        #an empty list "[]" if it can't find any instances of that selector, OR it returns a list of the instances it can find
-        # so, the script is saying "While you are returning an empty list, press down. once the list is NOT empty, click NY"
-        counter = 0
-        while counter != 1:
-            check = driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > select > option:nth-child(38)")
-            if check == []:
-                state_dropdown.send_keys(Keys.DOWN)
-            else:
-                print("yay")
-                counter = 1
-        driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > select > option:nth-child(38)").click()
-        zip.send_keys(entry_info[5])
-        phone.send_keys(entry_info[6])
-        #ssn4.send_keys(entry_info[7])  #not filled for Gov ID verification flow
-        ss_check.click()
-        dob_month.send_keys(entry_info[8] + entry_info[9] + entry_info[10])
-        #dob_day.send_keys(entry_info[9])
-        #dob_year.send_keys(entry_info[10])
-        dob_check.click()
-        email.send_keys(testemail)
-        password.send_keys(entry_info[11])
-        passwordc.send_keys(entry_info[11])
-        tos_check.click()
-        submit_button.click()
 #implicit wait for #2nd screen to load elements
         # driver.implicitly_wait(10)
         # otp_header = driver.find_element_by_css_selector('#app-container > div > div.container__content > div > div > h3.confirm-otp-header')
