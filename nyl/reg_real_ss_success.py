@@ -59,23 +59,21 @@ class NYlotto(unittest.TestCase):
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
-
         funct.waitAndSend(driver, var.regV.fname, entry_info[0])
         funct.waitAndSend(driver, var.regV.lname, entry_info[1])
         funct.waitAndSend(driver, var.regV.housenum, entry_info[2])
         funct.waitAndSend(driver, var.regV.street, entry_info[3])
         funct.waitAndSend(driver, var.regV.city, entry_info[4])
-
 # Find and select the state according to the info in the .txt doc
+# Uses a for loop to iterate through the list of states until element
+# matches the entry info in the text file. Then clicks the element found.
         select_box = driver.find_element_by_name("state")
         funct.waitAndClick(driver, var.regV.state_dropdown)
         options = [x for x in select_box.find_elements_by_tag_name("option")]
         for element in options:
             if element.text in entry_info[5]:
                 element.click()
-            else:
-                print("'" + element.text + "'" + " does not match " + "'" + entry_info[5] + "'")
-
+                break
         funct.waitAndSend(driver, var.regV.zip, entry_info[6])
         funct.waitAndSend(driver, var.regV.phone, entry_info[7])
         funct.waitAndSend(driver, var.regV.ssn4, entry_info[8])
@@ -104,7 +102,6 @@ class NYlotto(unittest.TestCase):
     def tearDown(self):
        # self.driver.quit()
         self.assertEqual([], self.verificationErrors)
-
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
     unittest.main()
