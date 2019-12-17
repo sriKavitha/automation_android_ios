@@ -10,6 +10,7 @@ import funct                                        #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with OTP pass and fake Government ID on Browser method
+# For use with Entry Info file version: nyl12122019.txt
 # For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
 # USpassport.jpg, USface.jpg, Intlpassport.jpg, Intlpassportface.jpg
 
