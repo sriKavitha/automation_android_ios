@@ -73,7 +73,8 @@ class NYlotto(unittest.TestCase):
                 break
         funct.waitAndSend(driver, var.regV.zip, entry_info[6])
         funct.waitAndSend(driver, var.regV.phone, entry_info[7])
-        funct.waitAndSend(driver, var.regV.ssn4, entry_info[8])
+        # Clicks the checkbox for not supplying SSN4 info. Will send user thru ID Verification flow.
+        funct.waitAndClick(driver, var.regV.ss_check)
         funct.waitAndSend(driver, var.regV.dob, (entry_info[9] + entry_info[10] + entry_info[11]))
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
