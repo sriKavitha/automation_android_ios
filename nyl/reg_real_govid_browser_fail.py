@@ -82,16 +82,12 @@ class NYlotto(unittest.TestCase):
         funct.waitAndSend(driver, var.regV.passwordc, entry_info[12])
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-
-#implicit wait for #2nd screen to load elements
-        # driver.implicitly_wait(10)
-        # otp_header = driver.find_element_by_css_selector('#app-container > div > div.container__content > div > div > h3.confirm-otp-header')
-        time.sleep(10)
-#2nd step. OTP selection screen
-        driver.find_element_by_css_selector('#app-container > div > div.container__content > div > div > div > button.nyl-btn-single.button-1').click()
-        driver.find_element_by_xpath("/html/body/div/div/div[2]/div/div/form/div/div[1]/div/input").send_keys("111111")
-        driver.find_element_by_css_selector('#app-container > div > div.container__content > div > div > form > div > div:nth-child(4) > button > span').click()
-        time.sleep(10)
+# 2nd screen. OTP selection screen
+        funct.waitAndClick(driver, var.otpV.text_button)
+# 3rd screen. OTP code entry screen
+        funct.waitAndSend(driver, var.otpV.otp_input, "111111")
+        funct.waitAndClick(driver, var.otpV.otp_continue_button)
+        time.sleep(5)
 #3rd step. Gov ID selection screen
         # counter = 0
         # while counter != 1:
