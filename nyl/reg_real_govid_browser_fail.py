@@ -1,12 +1,22 @@
-from selenium import webdriver
+# [Documentation - Setup] This section lists all dependencies
+# that are imported for this test file to work
+from selenium import webdriver  #webdriver module provides all WebDriver implementations
 import warnings
-import unittest, time, re
-from selenium.webdriver.common.keys import Keys
+import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
+from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
+from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
+import var                                          #Custom class for NYL
+import funct                                        #Custom class for NYL
 
-#Fail registration with fake Gov ID Verification
-url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
-#url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+# [Documentation - Summary] Tests user workflow of failed
+# registration with OTP pass and fake Government ID on Browser method
+# For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
+# USpassport.jpg, USface.jpg, Intlpassport.jpg, Intlpassportface.jpg
+
+# [Documentation - Variables] Test file specific var
 #url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
+url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+#url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
 testemail = "marie.liao+ssotest@rosedigital.co"
 
 class NYlotto(unittest.TestCase):
@@ -26,8 +36,6 @@ class NYlotto(unittest.TestCase):
         #        }
         #   })
         self.driver = webdriver.Chrome()
-
-        # self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(12)
         self.verificationErrors = []
         self.accept_next_alert = True
