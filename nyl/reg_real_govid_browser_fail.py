@@ -88,21 +88,12 @@ class NYlotto(unittest.TestCase):
         funct.waitAndSend(driver, var.otpV.otp_input, "111111")
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
         time.sleep(5)
-#3rd step. Gov ID selection screen
-        # counter = 0
-        # while counter != 1:
-        #     check = driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(2)")
-        #     if check == []:
-        #         govid_dropdown = driver.find_element_by_name("govIdType")
-        #         govid_dropdown.send_keys(Keys.DOWN)
-        #     else:
-        #         print("selected id type")
-        #         counter = 1
-        govid_dropdown = driver.find_element_by_name("govIdType")
-        govid_dropdown.send_keys(Keys.DOWN)
-        govid_dropdown.send_keys(Keys.ENTER)
-        driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(2)").click()
-        driver.find_element_by_class_name("continue-with-browser-link").click()
+# 4th screen. Gov ID document capture selection screen
+# Choosing US Drivers License and Continue on Browser
+        funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
+        funct.waitAndClick(driver, var.govIdV.id_drivers_license)
+        funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
+        funct.waitAndClick(driver, var.govIdV.browser_link)
         time.sleep(5)
 #uploading the different images for the gov id verification
         driver.find_element_by_id("dcui-start-button").click()
