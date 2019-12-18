@@ -95,11 +95,13 @@ class NYlotto(unittest.TestCase):
         funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
         funct.waitAndClick(driver, var.govIdV.browser_link)
         time.sleep(5)
-#uploading the different images for the gov id verification
-        driver.find_element_by_id("dcui-start-button").click()
-        chooseFile1 = driver.find_element_by_id("capture-input")
-        chooseFile1.send_keys("/Users/foley/Downloads/dlfront.jpg")
-        driver.find_element_by_id("save-capture").click()
+# 5th screen. Initiate document capture process
+# uploading the different images for the gov id verification
+#        DLback.jpg, DLface.jpg, DLfront.jpg
+        funct.waitAndClick(driver, var.govIdV.dl_start_button)
+# 6th screen. Upload Front of Drivers's License & Save
+        funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/marieliao/Desktop/DLfront.jpg")
+        funct.waitAndClick(driver, var.govIdV.dl_front_save_button)
         chooseFile2 = driver.find_element_by_id("capture-input")
         chooseFile2.send_keys("/Users/foley/Downloads/dlback.jpg")
         driver.find_element_by_id("save-capture").click()
