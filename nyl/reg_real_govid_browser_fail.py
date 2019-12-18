@@ -111,11 +111,9 @@ class NYlotto(unittest.TestCase):
         funct.waitAndSend(driver, var.govIdV.dl_facial_capture_button, "/Users/marieliao/Desktop/DLface.jpg")
 # 11th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.dl_facial_save_button)
+# 12th screen. Submit all docs for id verification
+        funct.waitAndClick(driver, var.govIdV.dl_submit_button)
 
-        # waitAndClick("by.ID", "verify-all")
-        time.sleep(10)
-        driver.find_element_by_id("verify-all").click()
-        time.sleep(5)
 #last screen. Screens should show error message for identity verification. Successful registration would redirect to Google.com. Checking that the search field on google.com is present on page.
         if "Sorry, we were unable to verify your information." in driver.page_source:
              print("Error message received!")
