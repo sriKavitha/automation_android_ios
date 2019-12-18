@@ -64,7 +64,7 @@ class govIdV:
     dl_back_discard_button = [By.ID, "discard-capture"]
     dl_back_save_button = [By.ID, "save-capture"]
 # Facial snapshot capture page
-    dl_facial_capture_button = [By.ID, "start-capture"]
+    dl_facial_capture_button = [By.ID, "capture-input"]
 # Facial snapshot quality check page
     dl_facial_discard_button = [By.ID, "discard-capture"]
     dl_facial_save_button = [By.ID, "save-capture"]
