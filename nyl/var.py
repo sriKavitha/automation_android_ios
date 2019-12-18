@@ -66,8 +66,8 @@ class govIdV:
 # Facial snapshot capture page
     dl_facial_capture_button = [By.ID, "capture-input"]
 # Facial snapshot quality check page
-    dl_facial_discard_button = [By.ID, "discard-capture"]
-    dl_facial_save_button = [By.ID, "save-capture"]
+    dl_facial_discard_button = [By.CSS_SELECTOR, "#discard-capture"]
+    dl_facial_save_button = [By.CSS_SELECTOR, "#save-capture"]
 # Document submission page
     dl_submit_button = [By.ID, "verify-all"]
 
