@@ -54,7 +54,7 @@ class govIdV:
 # Document capture page
     dl_start_button = [By.ID, "dcui-start-button"]
 # Driver's license front capture page
-    dl_front_capture_button = [By.ID, "start-capture"]
+    dl_front_capture_button = [By.ID, "capture-input"]
 # Driver's license front quality check page
     dl_front_discard_button = [By.ID, "discard-capture"]
     dl_front_save_button = [By.ID, "save-capture"]
