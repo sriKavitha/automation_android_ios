@@ -45,6 +45,8 @@ class otpV:
 class govIdV:
 # gov id and upload method selection page
     gov_id_dropdown = [By.NAME, "govIdType"]
+    id_drivers_license = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(2)"]
+    id_passport = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(3)"]
     mobile_button = [By.CLASS_NAME, "nyl-btn"]
     browser_link = [By.CLASS_NAME, "continue-with-browser-link"]
 
