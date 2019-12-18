@@ -101,11 +101,13 @@ class NYlotto(unittest.TestCase):
         funct.waitAndClick(driver, var.govIdV.dl_start_button)
 # 6th screen. Upload Front of Drivers's License & Save
         funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/marieliao/Desktop/DLfront.jpg")
+# 7th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.dl_front_save_button)
-        chooseFile2 = driver.find_element_by_id("capture-input")
-        chooseFile2.send_keys("/Users/foley/Downloads/dlback.jpg")
-        driver.find_element_by_id("save-capture").click()
-        # waitAndClick("by.ID", "save-capture").click()
+# 8th screen. Upload Back of Driver's License
+        funct.waitAndSend(driver, var.govIdV.dl_back_capture_button, "/Users/marieliao/Desktop/DLback.jpg")
+# 9th screen. Quality check & Save
+        funct.waitAndClick(driver, var.govIdV.dl_back_save_button)
+
         chooseFile3 = driver.find_element_by_id("capture-input")
         chooseFile3.send_keys("/Users/foley/Downloads/dlface.jpg")
         driver.find_element_by_css_selector("#save-capture").click()
