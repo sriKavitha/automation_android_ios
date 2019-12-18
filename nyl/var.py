@@ -59,7 +59,7 @@ class govIdV:
     dl_front_discard_button = [By.ID, "discard-capture"]
     dl_front_save_button = [By.ID, "save-capture"]
 # Driver's license back capture page
-    dl_back_capture_button = [By.ID, "start-capture"]
+    dl_back_capture_button = [By.ID, "capture-input"]
 # Driver's license back quality check page
     dl_back_discard_button = [By.ID, "discard-capture"]
     dl_back_save_button = [By.ID, "save-capture"]
