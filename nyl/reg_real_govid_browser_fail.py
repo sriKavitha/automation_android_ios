@@ -13,6 +13,7 @@ import funct                                        #Custom class for NYL
 # For use with Entry Info file version: nyl12122019.txt
 # For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
 # USpassport.jpg, USface.jpg, Intlpassport.jpg, Intlpassportface.jpg
+# Change paths starting on Line 104 for reading images prior to running test
 
 # [Documentation - Variables] Test file specific var
 #url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
