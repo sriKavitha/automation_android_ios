@@ -113,21 +113,21 @@ class NYlotto(unittest.TestCase):
         funct.waitAndClick(driver, var.govIdV.dl_facial_save_button)
 # 12th screen. Submit all docs for id verification
         funct.waitAndClick(driver, var.govIdV.dl_submit_button)
-
-#last screen. Screens should show error message for identity verification. Successful registration would redirect to Google.com. Checking that the search field on google.com is present on page.
+# Last screen. Screen should show error message for identity verification.
+# Successful registration would redirect to Google.com. Checking that the search field on google.com is present on page.
         if "Sorry, we were unable to verify your information." in driver.page_source:
-             print("Error message received!")
+             print("ID Verification Failed message is expected and received!")
         elif driver.find_elements_by_name("q") != []:
-            print("E----Reached valid screen and redirected to callback uri")
+            print("E----Reached valid registration screen and redirected to callback uri.")
             driver.save_screenshot('test_screenshot_1.png')
         else:
             driver.save_screenshot('test_screenshot_2.png')
             print("E---Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
         print("Test complete!")
-
+# The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
-       # self.driver.quit()
+        self.driver.quit()
         self.assertEqual([], self.verificationErrors)
-
+# Boiler plate code to run the test suite
 if __name__ == "__main__":
     unittest.main()
