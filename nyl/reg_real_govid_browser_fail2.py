@@ -90,7 +90,7 @@ class NYlotto(unittest.TestCase):
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
         time.sleep(5)
 # 4th screen. Gov ID document capture selection screen
-# Choosing US Drivers License and Continue on Browser
+# Choosing Passport and Continue on Browser
         funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
         funct.waitAndClick(driver, var.govIdV.id_passport)
         funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
@@ -98,10 +98,10 @@ class NYlotto(unittest.TestCase):
         time.sleep(5)
 # 5th screen. Initiate document capture process
 # uploading the different images for the gov id verification
-#        DLback.jpg, DLface.jpg, DLfront.jpg
+#        USpassport.jpg, USface.jpg
         funct.waitAndClick(driver, var.govIdV.dl_start_button)
-# 6th screen. Upload Front of Drivers's License & Save
-        funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/marieliao/Desktop/DLfront.jpg")
+# 6th screen. Upload Front of Passport
+        funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/marieliao/Desktop/USpassport.jpg")
 # 7th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.dl_front_save_button)
 # 8th screen. Upload Back of Driver's License
