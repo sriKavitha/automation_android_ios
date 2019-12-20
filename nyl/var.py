@@ -45,6 +45,8 @@ class otpV:
 class govIdV:
 # gov id and upload method selection page
     gov_id_dropdown = [By.NAME, "govIdType"]
+    id_drivers_license = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(2)"]
+    id_passport = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(3)"]
     mobile_button = [By.CLASS_NAME, "nyl-btn"]
     browser_link = [By.CLASS_NAME, "continue-with-browser-link"]
 
@@ -52,20 +54,20 @@ class govIdV:
 # Document capture page
     dl_start_button = [By.ID, "dcui-start-button"]
 # Driver's license front capture page
-    dl_front_capture_button = [By.ID, "start-capture"]
+    dl_front_capture_button = [By.ID, "capture-input"]
 # Driver's license front quality check page
     dl_front_discard_button = [By.ID, "discard-capture"]
     dl_front_save_button = [By.ID, "save-capture"]
 # Driver's license back capture page
-    dl_back_capture_button = [By.ID, "start-capture"]
+    dl_back_capture_button = [By.ID, "capture-input"]
 # Driver's license back quality check page
     dl_back_discard_button = [By.ID, "discard-capture"]
     dl_back_save_button = [By.ID, "save-capture"]
 # Facial snapshot capture page
-    dl_facial_capture_button = [By.ID, "start-capture"]
+    dl_facial_capture_button = [By.ID, "capture-input"]
 # Facial snapshot quality check page
-    dl_facial_discard_button = [By.ID, "discard-capture"]
-    dl_facial_save_button = [By.ID, "save-capture"]
+    dl_facial_discard_button = [By.CSS_SELECTOR, "#discard-capture"]
+    dl_facial_save_button = [By.CSS_SELECTOR, "#save-capture"]
 # Document submission page
     dl_submit_button = [By.ID, "verify-all"]
 
