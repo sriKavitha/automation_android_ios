@@ -99,17 +99,17 @@ class NYlotto(unittest.TestCase):
 # 5th screen. Initiate document capture process
 # uploading the different images for the gov id verification
 #        USpassport.jpg, USface.jpg
-        funct.waitAndClick(driver, var.govIdV.dl_start_button)
+        funct.waitAndClick(driver, var.govIdV.passport_start_button)
 # 6th screen. Upload Front of Passport
-        funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/marieliao/Desktop/USpassport.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/marieliao/Desktop/USpassport.jpg")
 # 7th screen. Quality check & Save
-        funct.waitAndClick(driver, var.govIdV.dl_front_save_button)
+        funct.waitAndClick(driver, var.govIdV.passport_save_button)
 # 8th screen. Upload Facial Snapshot
-        funct.waitAndSend(driver, var.govIdV.dl_facial_capture_button, "/Users/marieliao/Desktop/USface.jpg")
-# 11th screen. Quality check & Save
-        funct.waitAndClick(driver, var.govIdV.dl_facial_save_button)
-# 12th screen. Submit all docs for id verification
-        funct.waitAndClick(driver, var.govIdV.dl_submit_button)
+        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/marieliao/Desktop/USface.jpg")
+# 9th screen. Quality check & Save
+        funct.waitAndClick(driver, var.govIdV.passport_facial_save_button)
+# 10th screen. Submit all docs for id verification
+        funct.waitAndClick(driver, var.govIdV.passport_submit_button)
 # Last screen. Screen should show error message for identity verification.
 # Successful registration would redirect to Google.com. Checking that the search field on google.com is present on page.
         if "Sorry, we were unable to verify your information." in driver.page_source:
