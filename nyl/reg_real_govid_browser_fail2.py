@@ -104,12 +104,8 @@ class NYlotto(unittest.TestCase):
         funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/marieliao/Desktop/USpassport.jpg")
 # 7th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.dl_front_save_button)
-# 8th screen. Upload Back of Driver's License
-        funct.waitAndSend(driver, var.govIdV.dl_back_capture_button, "/Users/marieliao/Desktop/DLback.jpg")
-# 9th screen. Quality check & Save
-        funct.waitAndClick(driver, var.govIdV.dl_back_save_button)
-# 10th screen. Upload Facial Snapshot
-        funct.waitAndSend(driver, var.govIdV.dl_facial_capture_button, "/Users/marieliao/Desktop/DLface.jpg")
+# 8th screen. Upload Facial Snapshot
+        funct.waitAndSend(driver, var.govIdV.dl_facial_capture_button, "/Users/marieliao/Desktop/USface.jpg")
 # 11th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.dl_facial_save_button)
 # 12th screen. Submit all docs for id verification
