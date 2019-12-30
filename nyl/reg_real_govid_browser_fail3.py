@@ -98,14 +98,14 @@ class NYlotto(unittest.TestCase):
         time.sleep(5)
 # 5th screen. Initiate document capture process
 # uploading the different images for the gov id verification
-#        USpassport.jpg, USface.jpg
+# Intlpassport.jpg, Intlpassportface.jpg
         funct.waitAndClick(driver, var.govIdV.passport_start_button)
 # 6th screen. Upload Front of Passport
-        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/marieliao/Desktop/USpassport.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/marieliao/Desktop/Intlpassport.jpg")
 # 7th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.passport_save_button)
 # 8th screen. Upload Facial Snapshot
-        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/marieliao/Desktop/USface.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/marieliao/Desktop/Intlpassportface.jpg")
 # 9th screen. Quality check & Save
         time.sleep(2)
         funct.waitAndClick(driver, var.govIdV.passport_facial_save_button)
