@@ -107,6 +107,7 @@ class NYlotto(unittest.TestCase):
 # 8th screen. Upload Facial Snapshot
         funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/marieliao/Desktop/USface.jpg")
 # 9th screen. Quality check & Save
+        time.sleep(2)
         funct.waitAndClick(driver, var.govIdV.passport_facial_save_button)
 # 10th screen. Submit all docs for id verification
         funct.waitAndClick(driver, var.govIdV.passport_submit_button)
