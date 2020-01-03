@@ -75,15 +75,15 @@ class govIdV:
 # Document capture page
     passport_start_button = [By.ID, "dcui-start-button"]
 # Passport front capture page
-    passport_capture_button = [By.ID, "start-capture"]
+    passport_capture_button = [By.ID, "capture-input"]
 # Passport front quality check page
     passport_discard_button = [By.ID, "discard-capture"]
     passport_save_button = [By.ID, "save-capture"]
 # Facial snapshot capture page
-    passport_facial_capture_button = [By.ID, "start-capture"]
+    passport_facial_capture_button = [By.ID, "capture-input"]
 # Facial snapshot quality check page
-    passport_facial_discard_button = [By.ID, "discard-capture"]
-    passport_facial_save_button = [By.ID, "save-capture"]
+    passport_facial_discard_button = [By.CSS_SELECTOR, "#discard-capture"]
+    passport_facial_save_button = [By.CSS_SELECTOR, "#save-capture"]
 # Document submission page
     passport_submit_button = [By.ID, "verify-all"]
 
