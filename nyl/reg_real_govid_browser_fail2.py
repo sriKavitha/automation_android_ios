@@ -10,7 +10,7 @@ import funct                                        #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with OTP pass and fake US passport on Browser method
-# For use with Entry Info file version: nyl12122019.txt
+# For use with Entry Info file version: nyl01072020.txt
 # For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
 # USpassport.jpg, USface.jpg, Intlpassport.jpg, Intlpassportface.jpg
 # Change paths starting on Line 104 for reading images prior to running test
@@ -47,7 +47,7 @@ class NYlotto(unittest.TestCase):
     def test_reg(self):
         driver = self.driver
         # opens local file with user data
-        notepadfile = open('/Users/nyl12122019.txt', 'r')
+        notepadfile = open('/Users/nyl01072020.txt', 'r')
         # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
         # The driver.get method will navigate to a page given by the URL.
