@@ -11,7 +11,7 @@ import funct                                        #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of successful
 # registration with valid SSN4 and OTP pass
-# For use with Entry Info file version: nyl12122019.txt
+# For use with Entry Info file version: nyl01072020.txt
 
 # [Documentation - Variables] Test file specific variables
 #url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
@@ -49,7 +49,7 @@ class NYlotto(unittest.TestCase):
     def test_reg(self):
         driver = self.driver
 # opens local file with user data
-        notepadfile = open('/Users/nyl12122019.txt', 'r')
+        notepadfile = open('/Users/nyl01072020.txt', 'r')
 # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
