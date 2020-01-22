@@ -6,8 +6,7 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var                                          #Custom class for NYL
-import funct                                        #Custom class for NYL
+import var, funct, util                             #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of successful
 # registration with valid SSN4 and OTP pass
@@ -41,6 +40,7 @@ class NYlotto(unittest.TestCase):
         #   })
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(12)
+        self.driver.maximize_window()
         self.verificationErrors = []
         self.accept_next_alert = True
 
@@ -95,7 +95,7 @@ class NYlotto(unittest.TestCase):
         if driver.find_elements_by_name("q") != []:
              print("registration successful and redirected to callback uri")
         else:
-            driver.save_screenshot('test_screenshot_1.png')
+            funct.fullshot(self)
             print("E---Redirect screen not reached")
         print("Test complete!")
 # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
