@@ -100,6 +100,10 @@ class NYlotto(unittest.TestCase):
         print("Test complete!")
 # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
+        # checking for exceptions or assertion errors, if there are take screenshot
+        for method, error in self._outcome.errors:
+            if error:
+                funct.fullshot(self)
        # self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 # Boiler plate code to run the test suite
