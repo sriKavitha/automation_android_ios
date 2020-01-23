@@ -33,6 +33,7 @@ def waitAndSend(browser, elem, keys):
     waitUntil(browser, elem)
     browser.find_element(elem[0], elem[1]).send_keys(keys)
 
+# [Documentation - Function] Function that grabs UTC time and converts to human readable format
 def timeStamp():
     ts = time.gmtime()
     times = time.strftime("%Y-%m-%d_%H-%M-%S", ts)
