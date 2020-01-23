@@ -1,15 +1,22 @@
+# [Documentation - Setup] This section lists all dependencies
+# that are imported for function file to work
 import os
 import time
-
 from PIL import Image
 
+# [Documentation - Summary] - Screenshot capture tool that stitches page section together
+# into a full page screenshot. Takes rectangles that are double the width of the window
+# and the half the height of window and combines them into one image file.
 def fullpage_screenshot(driver, file):
         print("Starting full page screenshot workaround ...")
-        total_width = driver.execute_script("return document.body.offsetWidth")
-        total_height = driver.execute_script("return document.body.parentNode.scrollHeight")
-        viewport_width = driver.execute_script("return window.innerWidth")
+
+        driver.execute_script("window.scrollTo(0, 0);")
+
+        total_width = 2*(driver.execute_script("return document.body.offsetWidth"))
+        total_height = (driver.execute_script("return document.body.parentNode.scrollHeight"))
+        viewport_width = 2*(driver.execute_script("return document.body.clientWidth"))
         viewport_height = driver.execute_script("return window.innerHeight")
-        print("Total: ({0}, {1}), Viewport: ({2}, {3})".format(total_width, total_height, viewport_width, viewport_height))
+        print("Total: ({0}, {1}), Viewport: ({2},{3})".format(total_width, total_height, viewport_width, viewport_height))
         rectangles = []
 
         i = 0
@@ -27,20 +34,20 @@ def fullpage_screenshot(driver, file):
                     top_width = total_width
 
                 print("Appending rectangle ({0},{1},{2},{3})".format(ii, i, top_width, top_height))
-                rectangles.append((ii, i, top_width, top_height))
+                rectangles.append((ii, i, top_width,top_height))
 
                 ii = ii + viewport_width
 
             i = i + viewport_height
 
-        stitched_image = Image.new('RGB', (total_width, total_height))
+        stitched_image = Image.new('RGB', (total_width, round(2.25*total_height)))
         previous = None
         part = 0
 
         for rectangle in rectangles:
             if not previous is None:
                 driver.execute_script("window.scrollTo({0}, {1})".format(rectangle[0], rectangle[1]))
-                print("Scrolled To ({0}, {1})".format(rectangle[0], rectangle[1]))
+                print("Scrolled To ({0},{1})".format(rectangle[0], rectangle[1]))
                 time.sleep(0.2)
 
             file_name = "part_{0}.png".format(part)
@@ -49,10 +56,13 @@ def fullpage_screenshot(driver, file):
             driver.get_screenshot_as_file(file_name)
             screenshot = Image.open(file_name)
 
-            if rectangle[1] + viewport_height > total_height:
+            if rectangle[1] + viewport_height > 2*total_height:
                 offset = (rectangle[0], total_height - viewport_height)
             else:
-                offset = (rectangle[0], rectangle[1])
+                if rectangle[1] == 0:
+                    offset = (rectangle[0], rectangle[1])
+                else:
+                    offset = (rectangle[0], round(2*(rectangle[1])))
 
             print("Adding to stitched image with offset ({0}, {1})".format(offset[0], offset[1]))
             stitched_image.paste(screenshot, offset)
