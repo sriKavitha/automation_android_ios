@@ -5,8 +5,7 @@ import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-import var                                          #Custom class for NYL
-import funct                                        #Custom class for NYL
+import var, funct, util                             #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with OTP pass and fake Government ID on Browser method
@@ -120,13 +119,19 @@ class NYlotto(unittest.TestCase):
              print("ID Verification Failed message is expected and received!")
         elif driver.find_elements_by_name("q") != []:
             print("E----Reached valid registration screen and redirected to callback uri.")
-            driver.save_screenshot('test_screenshot_1.png')
+            funct.fullshot(self)
         else:
-            driver.save_screenshot('test_screenshot_2.png')
+            funct.fullshot(self)
             print("E---Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
         print("Test complete!")
 # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
+        # NOTE: this code for checking for exceptions does NOT work for Safari
+        # Python 3.8+ may have this built in. Need to revisit at future date.
+        # checking for exceptions or assertion errors, if there are take screenshot
+        for method, error in self._outcome.errors:
+            if error:
+                funct.fullshot(self)
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 # Boiler plate code to run the test suite
