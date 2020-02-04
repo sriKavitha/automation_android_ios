@@ -94,7 +94,7 @@ class NYlotto(unittest.TestCase):
         if driver.find_elements_by_name("q") != []:
              print("Initial registration successful.")
         else:
-            driver.save_screenshot('test_screenshot_1.png')
+            funct.fullshot(self)
             print("E---Redirect screen not reached on initial registration.")
 
     def test_reg2(self):
