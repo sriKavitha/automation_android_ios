@@ -55,7 +55,7 @@ class NYlotto(unittest.TestCase):
 # The driver.get method will navigate to a page given by the URL.
 # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
 # before returning control to your test or script.
-        driver.get(url)
+
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
@@ -100,6 +100,8 @@ class NYlotto(unittest.TestCase):
         print("Test complete!")
 # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
+        # NOTE: this code for checking for exceptions does NOT work for Safari
+        # Python 3.8+ may have this built in. Need to revisit at future date.
         # checking for exceptions or assertion errors, if there are take screenshot
         for method, error in self._outcome.errors:
             if error:
