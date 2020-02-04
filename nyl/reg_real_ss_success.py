@@ -106,7 +106,7 @@ class NYlotto(unittest.TestCase):
         for method, error in self._outcome.errors:
             if error:
                 funct.fullshot(self)
-       # self.driver.quit()
+        self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
