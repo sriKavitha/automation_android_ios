@@ -6,8 +6,7 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var                                          #Custom class for NYL
-import funct                                        #Custom class for NYL
+import var, funct, util                             #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with duplicate email in database
@@ -140,13 +139,19 @@ class NYlotto(unittest.TestCase):
         if driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p") != []:
              print("Error message received with duplicate email registration and failed as expected.")
         else:
-            driver.save_screenshot('test_screenshot_1.png')
+            funct.fullshot(self)
             print("E---Error message did not appear or other unexpected behavior. Test Failed.")
         print("Test complete!")
 
 # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
-       # self.driver.quit()
+        # NOTE: this code for checking for exceptions does NOT work for Safari
+        # Python 3.8+ may have this built in. Need to revisit at future date.
+        # checking for exceptions or assertion errors, if there are take screenshot
+        for method, error in self._outcome.errors:
+            if error:
+                funct.fullshot(self)
+        self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
