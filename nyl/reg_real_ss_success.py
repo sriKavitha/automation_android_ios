@@ -55,7 +55,7 @@ class NYlotto(unittest.TestCase):
 # The driver.get method will navigate to a page given by the URL.
 # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
 # before returning control to your test or script.
-
+        driver.get(url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
