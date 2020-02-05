@@ -110,6 +110,7 @@ class NYlotto(unittest.TestCase):
 # 10th screen. Upload Facial Snapshot
         funct.waitAndSend(driver, var.govIdV.dl_facial_capture_button, "/Users/marieliao/Desktop/DLface.jpg")
 # 11th screen. Quality check & Save
+        time.sleep(2)
         funct.waitAndClick(driver, var.govIdV.dl_facial_save_button)
 # 12th screen. Submit all docs for id verification
         funct.waitAndClick(driver, var.govIdV.dl_submit_button)
