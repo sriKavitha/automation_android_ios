@@ -2,6 +2,7 @@
 # that are imported for this test file to work
 from selenium import webdriver  #webdriver module provides all WebDriver implementations
 import warnings
+from browsermobproxy import Server
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
@@ -38,7 +39,12 @@ class NYlotto(unittest.TestCase):
         #            'args': ['--disable-infobars']
         #        }
         #   })
-        self.driver = webdriver.Chrome()
+        self.server = Server("/Users/foley/Downloads/browsermob-proxy-2.1.4/bin/browsermob-proxy", options={'port': 8090})
+        self.server.start()
+        chromedriver = "/usr/local/bin/chromedriver"
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--proxy-server={0}".format(url))
+        self.driver = webdriver.Chrome(chromedriver, options=chrome_options)
         self.driver.implicitly_wait(12)
         self.driver.maximize_window()
         self.verificationErrors = []
@@ -47,6 +53,7 @@ class NYlotto(unittest.TestCase):
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
     def test_reg(self):
+        server = self.server
         driver = self.driver
 # opens local file with user data
         notepadfile = open('/Users/nyl01072020.txt', 'r')
@@ -58,6 +65,7 @@ class NYlotto(unittest.TestCase):
         driver.get(url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
+        #funct.generateHAR(server, driver)
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
         funct.waitAndSend(driver, var.regV.fname, entry_info[0])
         funct.waitAndSend(driver, var.regV.lname, entry_info[1])
@@ -106,6 +114,7 @@ class NYlotto(unittest.TestCase):
         for method, error in self._outcome.errors:
             if error:
                 funct.fullshot(self)
+                funct.generateHAR(self.server, self.driver)
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 # Boiler plate code to run the test suite
