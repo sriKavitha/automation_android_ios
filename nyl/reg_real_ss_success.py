@@ -37,7 +37,7 @@ class NYlotto(confTest.NYlottoBASE):
         driver.get(url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
-        #funct.generateHAR(server, driver)
+
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
         funct.waitAndSend(driver, var.regV.fname, entry_info[0])
         funct.waitAndSend(driver, var.regV.lname, entry_info[1])
