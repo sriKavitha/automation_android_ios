@@ -7,7 +7,8 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, util                             #Custom class for NYL
+import var, funct, util     
+import helper                        #Custom class for NYL
 
 #url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
 url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
@@ -33,12 +34,11 @@ class NYlottoBASE(unittest.TestCase):
         #            'args': ['--disable-infobars']
         #        }
         #   })
-        self.server = Server("/Users/foley/Downloads/browsermob-proxy-2.1.4/bin/browsermob-proxy", options={'port': 8090})
+        self.server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy", options={'port': 8090})
         self.server.start()
-        chromedriver = "/usr/local/bin/chromedriver"
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--proxy-server={0}".format(url))
-        self.driver = webdriver.Chrome(chromedriver, options=chrome_options)
+        self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(12)
         self.driver.maximize_window()
         self.verificationErrors = []

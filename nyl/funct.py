@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 
 def generateHAR(server, driver):
     hurl = str(driver.current_url)
-    server = Server("/Users/foley/Downloads/browsermob-proxy-2.1.4/bin/browsermob-proxy",  options={'port': 8090})
+    server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy",  options={'port': 8090})
     server.start()
     proxy = server.create_proxy()
     chromedriver = "/usr/local/bin/chromedriver"
