@@ -15,12 +15,12 @@ from selenium.webdriver import ActionChains
 def waitUntil(browser, elem):
     a = ActionChains(browser)
     try:
-        browser.find_element(elem[0], elem[1])
+        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
         assert(browser.find_element(elem[0], elem[1]))
     except:
         time.sleep(2)
         try:
-            a.move_to_element(browser.find_element(elem[0], elem[1]))
+            a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
             assert(browser.find_element(elem[0], elem[1]))
         except:
             print("E--" + elem[1] + " elem not found")

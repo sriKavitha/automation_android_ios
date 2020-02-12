@@ -12,12 +12,15 @@ import util
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear prior to the next interaction on the page
 def waitUntil(browser, elem):
-
+    a = ActionChains(browser)
     try:
-        browser.find_element(elem[0], elem[1])
+        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+        assert(browser.find_element(elem[0], elem[1]))
     except:
+        time.sleep(2)
         try:
-            browser.find_element(By.elem)
+            a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+            assert(browser.find_element(elem[0], elem[1]))
         except:
             print("E--" + elem[1] + " elem not found")
 
