@@ -4,34 +4,13 @@ import unittest, time, re
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver import ActionChains
 import sys
-
+import confTest
 
 url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
 #url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
 #url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
 
-class NYlotto(unittest.TestCase):
-
-    def setUp(self):
-        warnings.simplefilter("ignore", ResourceWarning)
-        # self.driver = webdriver.Remote(
-        #     command_executor='http://192.168.86.26:4444/wd/hub',
-        #     desired_capabilities={
-        #         "browserName": "chrome",
-        #         "version": "",
-        #         "platform": "ANY",
-        #         "javascriptEnabled": True,
-        #         'chromeOptions': {
-        #             'useAutomationExtension': False,
-        #             'args': ['--disable-infobars']
-        #         }
-        #     })
-        self.driver = webdriver.Chrome()
-        self.driver.implicitly_wait(12)
-        self.verificationErrors = []
-        self.accept_next_alert = True
-
-
+class NYlotto(confTest.NYlottoBASE):
 
     def test_reg(self):
         driver = self.driver
@@ -181,9 +160,6 @@ class NYlotto(unittest.TestCase):
             driver.save_screenshot('test_screenshot_2.png')
             print("E---Neither Identity verification failed nor valid screen reached (or text is incorrect/needs to be updated)")
         print("Test complete!")
-    def tearDown(self):
-        #self.driver.quit()
-        self.assertEqual([], self.verificationErrors)
 
 if __name__ == "__main__":
     unittest.main()
