@@ -10,7 +10,7 @@ from selenium.webdriver import ActionChains
 # [Documentation - Summary] This file creates the functions for
 # use in the automation test suite of NYL SSO
 
-# [Documentation - Function] Webdriver waits for a specified page element
+# [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
 # to appear prior to the next interaction on the page
 def waitUntil(browser, elem):
     a = ActionChains(browser)
@@ -49,6 +49,7 @@ def timeStamp():
     times = time.strftime("%Y-%m-%d_%H-%M-%S", ts)
     return times
 
+# [Documentation - Function] Function that checks the text of a given element against a given stub
 def checkText(browser, elem, stub):
     waitUntil(browser, elem)
     el = browser.find_element(elem[0], elem[1])

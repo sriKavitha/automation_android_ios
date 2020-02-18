@@ -3,7 +3,7 @@
 from selenium.webdriver.common.by import By
 
 # [Documentation - Summary] This file creates the variables for
-# NYL Single Sign On page objects for testing user flows
+# NYL App objects for testing user flows
 
 # [Documentation - Variables] Objects on Registration page
 class NYLdashboard:
@@ -13,7 +13,7 @@ class NYLdashboard:
     register_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginRegister"]']
     guestCopy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/guestCopy"]']
     loginCopy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginCopy"]']
-    ForgotPwCopy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginForgotPass"]']
+    forgotPwCopy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginForgotPass"]']
     username_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginEmail"]']
     password_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginPassword"]']
     back_b = [By.XPATH, '//*[@content-desc="Navigate up"]']
@@ -25,10 +25,9 @@ class NYLregistration:
     #main-fields
     email_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerEmail"]']
     password_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerPassword"]']
-    password_copy = [By.XPATH, 'air.com.eprize.nylottery.app.NYLotteryApp:id/registerPasswordError']
+    password_copy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerPasswordError"]']
     confirmPW_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerConfirmPass"]']
     firstName_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerFirstName"]']
-    lastName_f = [By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.EditText[5]']
     phoneDropDown = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerPhoneType"]']
     phoneDropDown_HOME = [By.XPATH, '//*[@text="HOME"]']
     phoneDropDown_MOBILE = [By.XPATH, '//*[@text="MOBILE"]']
@@ -45,7 +44,7 @@ class NYLregistration:
     password_e = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerPasswordError"]']
     confirmPW_e = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerConfirmPassError"]']
     firstName_e = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerFirstNameError"]']
-    lastName_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerLastNameError"]']
+    lastName_e = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerLastNameError"]']
     phone_e = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerPhoneError"]']
     age_e = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerAgeError"]']
     zip_e = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerZipError"]']
