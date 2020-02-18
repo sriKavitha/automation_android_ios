@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys     #Keys class provide keys in 
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util                             #Custom class for NYL
+import confTest
 
 # [Documentation - Summary] Tests user workflow of successful
 # registration with valid SSN4 and OTP pass
@@ -20,29 +21,7 @@ testemail = "marie.liao+ssotest@rosedigital.co"
 
 # The test case class is inherited from unittest.TestCase.
 # Inheriting from TestCase class is the way to tell unittest module that this is a test case.
-class NYlotto(unittest.TestCase):
-
-# The setUp is part of initialization, this method will get called before every test function which you
-# are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
-    def setUp(self):
-        warnings.simplefilter("ignore", ResourceWarning)
-        # self.driver = webdriver.Remote(
-        #    command_executor='http://192.168.86.26:4444/wd/hub',
-        #    desired_capabilities= {
-        #        "browserName": "chrome",
-        #        "version": "",
-        #        "platform": "ANY",
-        #        "javascriptEnabled": True,
-        #        'chromeOptions': {
-        #            'useAutomationExtension': False,
-        #            'args': ['--disable-infobars']
-        #        }
-        #   })
-        self.driver = webdriver.Chrome()
-        self.driver.implicitly_wait(12)
-        self.driver.maximize_window()
-        self.verificationErrors = []
-        self.accept_next_alert = True
+class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
@@ -58,6 +37,7 @@ class NYlotto(unittest.TestCase):
         driver.get(url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
+
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
         funct.waitAndSend(driver, var.regV.fname, entry_info[0])
         funct.waitAndSend(driver, var.regV.lname, entry_info[1])
@@ -98,16 +78,7 @@ class NYlotto(unittest.TestCase):
             funct.fullshot(self)
             print("E---Redirect screen not reached")
         print("Test complete!")
-# The tearDown method will get called after every test method. This is a place to do all cleanup actions.
-    def tearDown(self):
-        # NOTE: this code for checking for exceptions does NOT work for Safari
-        # Python 3.8+ may have this built in. Need to revisit at future date.
-        # checking for exceptions or assertion errors, if there are take screenshot
-        for method, error in self._outcome.errors:
-            if error:
-                funct.fullshot(self)
-        self.driver.quit()
-        self.assertEqual([], self.verificationErrors)
+
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
     unittest.main()
