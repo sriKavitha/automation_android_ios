@@ -4,14 +4,73 @@ from selenium import webdriver
 import unittest, time, re
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import util
 from selenium.webdriver import ActionChains
 
 # [Documentation - Summary] This file creates the functions for
 # use in the automation test suite of NYL SSO
 
-# [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
-# to appear prior to the next interaction on the page
+# [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
+# target should be given plainly, without colons
+
+def getCredential(list, target):
+    targ = str(target + ': ')
+    credential = [item for item in list if item.startswith(targ)][0]
+    cred = credential.replace(targ, '')
+    return cred
+
+# [Documentation - Function] Mobile Webdriver uses actionchains to swipe upwards once (at 1/4 of the screen's length) from the element given
+
+def swipeUp(browser, elem1, amount=-.25):
+    size=browser.get_window_size()
+    height = int(size['height'])
+    a = ActionChains(browser)
+    el1 = browser.find_element(elem1[0], elem1[1])
+    a.drag_and_drop_by_offset(el1, 0, amount*height).perform()
+    time.sleep(1)
+
+# [Documentation - Function] Mobile Webdriver uses actionchains to swipe upwards from the first element given, until the second element is found
+
+
+def swipeUpUntil(browser, elem1, elem2, amount=-.15):
+    browser.implicitly_wait(3)
+    size=browser.get_window_size()
+    height = int(size['height'])
+    whilebool = False
+    while whilebool == False:
+        a = ActionChains(browser)
+        el1 = browser.find_element(elem1[0], elem1[1])
+        a.drag_and_drop_by_offset(el1, 0, amount*height).perform()
+        try:
+            browser.find_element(elem2[0], elem2[1])
+            whilebool = True
+        except:
+            pass
+    time.sleep(1)
+    browser.implicitly_wait(12)
+
+# [Documentation - Function] Mobile Webdriver uses actionchains to swipe leftwards from the first element given, until the second element is found
+
+def swipeLeftUntil(browser, elem1, elem2):
+    browser.implicitly_wait(3)
+    size=browser.get_window_size()
+    print(size)
+    width = int(size['width'])
+    whilebool = False
+    while whilebool == False:
+        a = ActionChains(browser)
+        el1 = browser.find_element(elem1[0], elem1[1])
+        a.drag_and_drop_by_offset(el1, -1*width, 0).perform()
+        try:
+            browser.find_element(elem2[0], elem2[1])
+            whilebool = True
+        except:
+            pass
+    time.sleep(1)
+    browser.implicitly_wait(12)
+
+ # [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
+# to appear prior to the next interaction on the page   
+
 def waitUntil(browser, elem):
     a = ActionChains(browser)
     try:

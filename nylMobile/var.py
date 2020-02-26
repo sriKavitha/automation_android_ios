@@ -1,11 +1,20 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for variable file to work
 from selenium.webdriver.common.by import By
-
+import funct, confTest
 # [Documentation - Summary] This file creates the variables for
 # NYL App objects for testing user flows
 
 # [Documentation - Variables] Objects on Registration page
+
+class CREDSmobile:
+    # opens local file with user data
+    notepadfile = open('/Users/nyl02192020.txt', 'r')
+    # turns variable into a list of every line in above notepadfile
+    entry_info = notepadfile.read().splitlines()
+    url = funct.getCredential(entry_info, 'all-games-target')
+    xkey = funct.getCredential(entry_info, 'all-games-api-key')
+    fname = funct.getCredential(entry_info, 'first-name')
 class NYLdashboard:
 
     guest_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/guestButton"]']
@@ -51,3 +60,36 @@ class NYLregistration:
     #success screen variables
     pip1 = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/intro_indicator_0"]']    
     pip6 = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/intro_indicator_5"]']    
+    getStarted_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/getStarted"]']
+
+class NYLgamesDB:
+    mainScreen = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/action_bar_root"]']
+    allGames_b = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/tabTitle"])[2]']
+    MM_result1 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][1])']
+    MM_result2 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][2])']
+    MM_result3 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][3])']
+    MM_result4 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][4])']
+    MM_result5 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][5])']
+    MM_result6 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][6])']
+    MM_result7 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][7])']
+    MM_result8 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][1])[2])']
+    MM_result9 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][2])[2])']
+    MM_result10 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][3])[2])']
+    MM_result11 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][4])[2])']
+    MM_result12 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][5])[2])']
+    MM_result13 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][6])[2])']
+    MM_result14 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][7])[2])']
+    MM_result15 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][1])[3])']
+    MM_result16 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][2])[3])']
+    MM_result17 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][3])[3])']
+    MM_result18 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][4])[3])']
+    MM_result19 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][5])[3])']
+    MM_result20 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][6])[3])']
+
+
+
+
+    MM_Sresult1 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][1])[2])']
+    MM_Sresult2 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][2])[2])']
+    MM_Sresult3 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][3])[2])']
+    MM_Sresult4 = [By.XPATH, '((//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/gameBall"][4])[2])']
