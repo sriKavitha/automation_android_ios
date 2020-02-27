@@ -7,28 +7,55 @@ from selenium.webdriver.common.by import By
 
 # [Documentation - Variables] Objects on Registration page
 class regV:
-    fname = [By.NAME, "firstName"]
-    mname = [By.NAME, "middleName"]
-    lname = [By.NAME, "lastName"]
-    suffix_dropdown = [By.NAME, "suffix"]
-    housenum = [By.NAME, "streetNumber"]
-    street = [By.NAME, "street"]
-    add2 = [By.NAME, "addressLine2"]
-    city = [By.NAME, "city"]
-    state_dropdown = [By.NAME, "state"]
-    zip = [By.NAME, "zip"]
-    phone = [By.NAME, "phone"]
-    ssn4 = [By.NAME, "ssn4"]
-    ss_check = [By.NAME, "noSsn4"]
-    dob = [By.NAME, "birthdate"]
-    dob_check = [By.NAME, "isOver18"]
-    email = [By.ID, "sso-email"]
-    password = [By.NAME, "password"]
-    passwordc = [By.NAME, "confirmPassword"]
-    tos_check = [By.NAME, "acceptedTermsAndConditions"]
-    cnw_check = [By.NAME, "collectnwin"]
-    nylnews_check = [By.NAME, "newsletter"]
-    submit_button = [By.CLASS_NAME, "nyl-btn"]
+    fname = [By.NAME, "firstName", "fname"]
+    mname = [By.NAME, "middleName", "mname"]
+    lname = [By.NAME, "lastName", "lname"]
+    suffix_dropdown = [By.NAME, "suffix", "suffix_dropdown"]
+    housenum = [By.NAME, "streetNumber", "housenum"]
+    street = [By.NAME, "street", "street"]
+    add2 = [By.NAME, "addressLine2", "add2"]
+    city = [By.NAME, "city", "city"]
+    state_dropdown = [By.NAME, "state", "state_dropdown"]
+    zip = [By.NAME, "zip", "zip"]
+    phone = [By.NAME, "phone", "phone"]
+    ssn4 = [By.NAME, "ssn4", "ssn4"]
+    ss_check = [By.NAME, "noSsn4", "ss_check"]
+    dob = [By.NAME, "birthdate", "dob"]
+    dob_check = [By.NAME, "isOver18", "dob_check"]
+    email = [By.ID, "sso-email", "email"]
+    password = [By.NAME, "password", "password"]
+    confirmPsw = [By.NAME, "confirmPassword", "confirmPsw"]
+    tos_check = [By.NAME, "acceptedTermsAndConditions", "tos_check"]
+    cnw_check = [By.NAME, "collectnwin", "cnw_check"]
+    nylnews_check = [By.NAME, "newsletter", "nylnews_check"]
+    submit_button = [By.CLASS_NAME, "nyl-btn", "submit_button"]
+
+# error variables
+    fname_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(2) > div.is-error.invalid-feedback", "fname_error"]
+    lname_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(4) > div.is-error.invalid-feedback", "lname_error"]
+    housenum_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(6) > div.is-error.invalid-feedback", "housenum_error"]
+    street_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(7) > div.is-error.invalid-feedback", "street_error"]
+    city_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(9) > div.is-error.invalid-feedback", "city_error"]
+    state_dropdown_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > div", "state_dropdown_error"]
+    zip_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(11) > div.is-error.invalid-feedback", "zip_error"]
+    phone_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.has-prepend > div.is-error.invalid-feedback", "phone_error"]
+    dob_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(15) > div.is-error.invalid-feedback", "dob_error"]
+    dob_check_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(16) > div > label", "dob_check_error"]
+    email_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.form-group.has-prepend > div.is-error.invalid-feedback", "email_error"]
+    password_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(3) > div.is-error.invalid-feedback", "password_error"]
+    confirmPsw_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback", "confirmPsw_error"]
+    tos_check_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(5) > div > label", "tos_check_error"]
+    submit_button_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p", "submit_button_error"]
+# error copy
+    requiredErrorStub = 'Required'
+    submitErrorStub = 'Please see required fields above to complete registration.'
+    zipErrorStub = 'Invalid zipcode'
+    phoneErrorStub = 'Invalid phone number'
+    dobErrorStub = 'Please enter a valid birth date'
+    dobErrorUnderageStub = 'You must be 18 years or older to register'
+    emailErrorStub = 'Invalid email address'
+    passwordErrorStub = 'Your password must follow the password guidelines.'
+    confirmPswErrorStub = 'Passwords must match'
 
 # [Documentation - Variables] Objects on OTP pages
 class otpV:
