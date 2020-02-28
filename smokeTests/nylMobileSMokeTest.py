@@ -20,8 +20,8 @@ class NYLmobileSmoke(unittest.TestCase):
             "deviceName": "Galaxy S7",
             "udid": "emulator-5554",
             "platformName": "Android",
-            "version" : "7.0",
-            "app": "/Users/app-qa.apk",
+            "version" : "9.0",
+            "app": "/Users/Shared/testing/app-qa2.apk",
             "realDevice": False
         }
         caps = {}
@@ -90,6 +90,8 @@ class NYLmobileSmoke(unittest.TestCase):
         funct.waitAndClick(driver, var.NYLregistration.age_copy)
         funct.checkText(driver, var.NYLregistration.age_copy, var.NYLregistration.age_stub)
         funct.waitAndClick(driver, var.NYLregistration.reg_b)
+        funct.swipeUp(driver, var.NYLregistration.base, .15)
+        funct.swipeUp(driver, var.NYLregistration.base, .3)
         # [Documentation - detail] checks error messages upon registration page
         e_messages = [var.NYLregistration.email_e, var.NYLregistration.password_e, var.NYLregistration.confirmPW_e, var.NYLregistration.firstName_e, var.NYLregistration.lastName_e, var.NYLregistration.phone_e, var.NYLregistration.age_e, var.NYLregistration.zip_e]
         e_stubs = [var.NYLregistration.email_e_stub, var.NYLregistration.password_e_stub, var.NYLregistration.confirmPW_e_stub, var.NYLregistration.firstName_e_stub, var.NYLregistration.lastName_e_stub, var.NYLregistration.phone_e_stub, var.NYLregistration.age_e_stub, var.NYLregistration.zip_e_stub]
@@ -105,5 +107,5 @@ class NYLmobileSmoke(unittest.TestCase):
 
 if __name__ == "__main__":
     #First runner will enable html logs on your current directory, second runner will keep local console logs
-    #unittest.main()
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
+    unittest.main()
+    #unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))

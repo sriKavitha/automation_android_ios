@@ -20,7 +20,7 @@ class CREDSmobile:
     sauceUN = funct.getCredential(entry_info, 'sauce-un')
     saucePW = funct.getCredential(entry_info, 'sauce-pw')
 class NYLdashboard:
-
+    
     guest_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/guestButton"]']
     login_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginButton"]']
     register_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginRegister"]']
@@ -36,6 +36,7 @@ class NYLdashboard:
     loginStub = 'Log in for the full Lottery experience, including access to Players Club and Second Chance Sweepstakes'
 class NYLregistration:
     #main-fields
+    base = [By.XPATH, '//*[@class="android.widget.FrameLayout"]']
     email_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerEmail"]']
     password_f = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerPassword"]']
     password_copy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/registerPasswordError"]']

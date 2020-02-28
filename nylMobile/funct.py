@@ -1,7 +1,7 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for function file to work
 from selenium import webdriver
-import unittest, time, re
+import unittest, time, re, var
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
@@ -53,7 +53,7 @@ def swipeUpUntil(browser, elem1, elem2, amount=-.15):
 def swipeLeftUntil(browser, elem1, elem2):
     browser.implicitly_wait(3)
     size=browser.get_window_size()
-    print(size)
+    #print(size)
     width = int(size['width'])
     whilebool = False
     while whilebool == False:
@@ -77,12 +77,18 @@ def waitUntil(browser, elem):
         a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
         assert(browser.find_element(elem[0], elem[1]))
     except:
-        time.sleep(2)
+        time.sleep(1)
         try:
-            a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+            swipeUp(browser, var.NYLregistration.base) 
             assert(browser.find_element(elem[0], elem[1]))
         except:
-            print("E--" + elem[1] + " elem not found")
+            swipeUp(browser, var.NYLregistration.base) 
+            try:
+                a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+                assert(browser.find_element(elem[0], elem[1]))
+            except:    
+                print("E--" + elem[1] + " elem not found")
+                assert(browser.find_element(elem[0], elem[1]))
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to click on it
@@ -101,6 +107,10 @@ def actionSend(browser, keys):
     a.send_keys(keys)
     a.perform()
 
+def getList(browser, elem):
+    waitUntil(browser, elem)
+    ret = browser.find_elements(elem[0], elem[1])
+    return(ret)
 
 # [Documentation - Function] Function that grabs UTC time and converts to human readable format
 def timeStamp():

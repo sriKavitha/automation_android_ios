@@ -1,7 +1,7 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for function file to work
 from selenium import webdriver
-import unittest, time, re
+import unittest, time, re, var
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
@@ -77,13 +77,18 @@ def waitUntil(browser, elem):
         a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
         assert(browser.find_element(elem[0], elem[1]))
     except:
-        time.sleep(2)
+        time.sleep(1)
         try:
-            a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+            swipeUp(browser, var.NYLregistration.base) 
             assert(browser.find_element(elem[0], elem[1]))
         except:
-            print("E--" + elem[1] + " elem not found")
-            assert(browser.find_element(elem[0], elem[1]))
+            swipeUp(browser, var.NYLregistration.base) 
+            try:
+                a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+                assert(browser.find_element(elem[0], elem[1]))
+            except:    
+                print("E--" + elem[1] + " elem not found")
+                assert(browser.find_element(elem[0], elem[1]))
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to click on it
