@@ -1,165 +1,367 @@
-from selenium import webdriver
+# [Documentation - Setup] This section lists all dependencies
+# that are imported for this test file to work
+from selenium import webdriver  #webdriver module provides all WebDriver implementations
 import warnings
-import unittest, time, re
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver import ActionChains
-import sys
-import confTest
+import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
+from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
+from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
+from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
+import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
-#url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
 #url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
+url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+#url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
 
 class NYlotto(confTest.NYlottoBASE):
 
-    def test_reg(self):
+# Checks main error appears when empty form is submitted
+    def test01_regSubmitError(self):
         driver = self.driver
         driver.get(url)
-#check red text errors
-        driver.find_element_by_class_name("nyl-btn").click()
-        if driver.find_element_by_class_name("submit-error").text != "Please see required fields above to complete registration.":
-            print("Main error is incorrect or missing")
-#these are the CSS selectors for the 12 red text error elements
+        # triggering error
+        funct.waitAndClick(driver, var.regV.submit_button)
+        if funct.checkError(driver, var.regV.submit_button_error) == True:
+            print("PASS - " + var.regV.submit_button_error[2] + " is present.")
+        elif funct.checkError(driver, var.regV.submit_button_error) == False:
+            print("FAIL - " + var.regV.submit_button_error[2] + " is missing")
+            funct.fullshot(driver)
+            raise Exception('Error warning element not found.')
+
+# Checks main error copy
+    def test02_regSubmitErrorCopy(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndClick(driver, var.regV.submit_button)
+        warning = driver.find_element(var.regV.submit_button_error[0], var.regV.submit_button_error[1])
+        if funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.submitErrorStub) == True:
+            print("PASS - Warning copy text is correct.")
+        elif funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.submitErrorStub) == False:
+            print("FAIL - Warning should say " + var.regV.submitErrorStub + " , but says " + warning.get_attribute("innerText") + "!")
+            funct.fullshot(driver)
+            raise Exception('Error copy is incorrect.')
+
+# Checks mandatory field errors are found
+    def test03_regRequiredErrors(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndClick(driver, var.regV.submit_button)
+        warningList = []
+        # These are the CSS selectors for the 12 red text error elements
         warningsExpected = [
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(2) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(4) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(6) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(7) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(9) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > div",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(11) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.has-prepend > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(15) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.form-group.has-prepend > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(3) > div.is-error.invalid-feedback",
-            "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback"]
-#This grabs every element that has the class name "is-error" (should be the same 12 elements from the list above)
-        warningsActual = driver.find_elements_by_class_name("is-error")
-#These are the labels for the 12 red text error elements (null is put first, because counting in python starts at zero)
-        warningLabels = ["null", "First Name", "Last Name", "House #", "Street Name", "City/town", "State", "Zipcode", "Phone#", "date of Birth", "Email", "Original Password", "Confirm Password"]
-#This is a counter, you will see it in work shortly
-        counter = 0
-#checks if the length of the list generated automatically (warningsActual) is the same length as the hardcoded list we have (warningsExpected)
-        if len(warningsExpected) == len(warningsActual):
-            print ("All warning texts found!")
-#If these are NOT the same length, it will send an error and go down the list, checking which one is missing and report it
-        else:
-            print("E---Expected " + str(len(warningsExpected)) + " warnings but found " + str(len(warningsActual)) + " warnings!")
+             var.regV.fname_error, var.regV.lname_error, var.regV.housenum_error,
+             var.regV.street_error, var.regV.city_error, var.regV.state_dropdown_error,
+             var.regV.zip_error, var.regV.phone_error, var.regV.dob_error,
+             var.regV.email_error, var.regV.password_error, var.regV.confirmPsw_error]
         for warning in warningsExpected:
-    #counter counts up, allowing us to pick the right label
-            counter = counter+1
-            try:
-                driver.find_element_by_css_selector(warning)
-            except:
-                print(warningLabels)
-                print("E---" + warningLabels[counter] + " warning Not Found!")
-                print(warning)
-#resetting counter
-        counter = 0
-        for warning in warningsActual:
-            counter = counter + 1
-#checking the text of the warning
-            if warning.text != "Required":
-                print("E---" + warningLabels[counter] + " warning should say 'required', but says " + warning.text + "!")
-#grabbing every text field and writing the word "test" into it... where allowed
+            if funct.checkError(driver, warning) == False:
+                warningList.append(warning[2])
+        if len(warningList) <= 0:
+            print("PASS - Error warnings found and present.")
+        elif len(warningList) > 0:
+            print("FAIL - ")
+            print(warningList)
+            print("Error warning(s) missing")
+            funct.fullshot(driver)
+            raise Exception("Error warning element not found.")
+
+# Checks mandatory field error copy
+    def test04_regRequiredErrorsCopy(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndClick(driver, var.regV.submit_button)
+        warningList = []
+        # These are the CSS selectors for the 12 red text error elements
+        warningsExpected = [
+             var.regV.fname_error, var.regV.lname_error, var.regV.housenum_error,
+             var.regV.street_error, var.regV.city_error, var.regV.state_dropdown_error,
+             var.regV.zip_error, var.regV.phone_error, var.regV.dob_error,
+             var.regV.email_error, var.regV.password_error, var.regV.confirmPsw_error]
+        for warning in warningsExpected:
+            if funct.checkErrorText(driver, warning, var.regV.requiredErrorStub) == False:
+                warningList.append(warning[2])
+        if len(warningList) <= 0:
+            print("PASS - Error warnings found and copy is correct.")
+        elif len(warningList) > 0:
+            print("FAIL - ")
+            print(warningList)
+            print("Error warning(s) copy is incorrect.")
+            funct.fullshot(driver)
+            raise Exception("Error warning(s) copy is incorrect.")
+
+# Checks that certain fields do not take letters
+    def test05_regUnacceptedLetterErrors(self):
+        driver = self.driver
+        driver.get(url)
+        # grabbing every text field and inputting letters into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
+        valueInputted = "asd"
+        valueExpected = ""
         for field in textFields:
-            field.send_keys("test")
-        if driver.find_element_by_name("zip").get_attribute("value") != "":
-            print("E---alphabet letters allowed in zipcode field!")
+            field.send_keys(valueInputted)
+        warningList = []
+        # These are the fields that do not take letters and will have error elements
+        warningsExpected = [
+            var.regV.zip, var.regV.phone, var.regV.ssn4, var.regV.dob]
+        for warning in warningsExpected:
+            if funct.checkValue(driver, warning, valueExpected) == False:
+                warningList.append(warning[2])
+        if len(warningList) <= 0:
+            print("PASS - invalid values '" + valueInputted + "' not accepted in appropriate fields")
+        elif len(warningList) > 0:
+            print("FAIL - invalid values '" + valueInputted + "' are allowed in")
+            print(warningList)
+            print(" fields.")
+            funct.fullshot(driver)
+            raise Exception("Invalid values allowed in fields.")
 
-    #checking which of the forms still have warnings in them
-        warningsActual2 = driver.find_elements_by_class_name("is-error")
-        if len(warningsActual2) != 6:
-            print("E---Expected 6 warning texts, instead found " + str(len(warningsActual2)))
-#check remaining text by individual css selectors
-        if driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > div").text != "Required":
-            print("E--- State warning message is incorrect, should be 'required', but instead says " + driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > div").text)
+# Checks that certain fields do not take symbols
+    def test06_regUnacceptedSymbolsErrors(self):
+        driver = self.driver
+        driver.get(url)
+        # grabbing every text field and inputting symbols into it, triggering error
+        textFields = driver.find_elements_by_class_name("form-control")
+        valueInputted = "!@#"
+        valueExpected = ""
+        for field in textFields:
+            field.send_keys(Keys.SHIFT + "1" + "2" + "3")
+        warningList = []
+        # These are the fields that do not take letters and will have error elements
+        warningsExpected = [
+            var.regV.fname, var.regV.mname, var.regV.lname,
+            var.regV.zip, var.regV.phone, var.regV.ssn4, var.regV.dob]
+        for warning in warningsExpected:
+            if funct.checkValue(driver, warning, valueExpected) == False:
+                warningList.append(warning[2])
+        if len(warningList) <= 0:
+            print("PASS - invalid values '" + valueInputted + "' not accepted in appropriate fields")
+        elif len(warningList) > 0:
+            print("FAIL - invalid values '" + valueInputted + "' are allowed in")
+            print(warningList)
+            print(" fields.")
+            funct.fullshot(driver)
+            raise Exception("Invalid values allowed in fields.")
 
+# Checks that certain fields do not take numbers
+    def test07_regUnacceptedNumbersErrors(self):
+        driver = self.driver
+        driver.get(url)
+        # grabbing every text field and inputting numbers into it, triggering error
+        textFields = driver.find_elements_by_class_name("form-control")
+        valueInputted = "123"
+        valueExpected = ""
+        for field in textFields:
+            field.send_keys("123")
+        warningList = []
+        # These are the fields that do not take letters and will have error elements
+        warningsExpected = [
+            var.regV.fname, var.regV.mname, var.regV.lname]
+        for warning in warningsExpected:
+            if funct.checkValue(driver, warning, valueExpected) == False:
+                warningList.append(warning[2])
+        if len(warningList) <= 0:
+            print("PASS - invalid values '" + valueInputted + "' not accepted in appropriate fields")
+        elif len(warningList) > 0:
+            print("FAIL - invalid values '" + valueInputted + "' are allowed in")
+            print(warningList)
+            print(" fields.")
+            funct.fullshot(driver)
+            raise Exception("Invalid values allowed in fields.")
 
-        if driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(11) > div.is-error.invalid-feedback").text != "Required":
-            print("E--- Zip Code warning message is incorrect, should be 'required', but instead says " + driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(11) > div.is-error.invalid-feedback").text)
+# Checks for appearance of error messages when inputting invalid data in zip code field
+    def test08_regInvalidFormatZipcode(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.zip, "123")
+        funct.waitAndSend(driver, var.regV.zip, Keys.TAB)
+        if funct.checkErrorText(driver, var.regV.zip_error, var.regV.zipErrorStub) == True:
+            print("PASS - " + var.regV.zip_error[2] + " is present and copy correctly reads as '" + var.regV.zipErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.zip_error, var.regV.zipErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.zipErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
 
-        if driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.form-group.has-prepend > div.is-error.invalid-feedback").text != "Invalid email address":
-            print("E--- Original Email warning message is incorrect, should be 'Invalid email address', but instead says " + driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.form-group.has-prepend > div.is-error.invalid-feedback").text)
+# Checks for appearance of error messages when inputting invalid data in phone field
+    def test09_regInvalidFormatPhone(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.phone, "123")
+        funct.waitAndSend(driver, var.regV.phone, Keys.TAB)
+        if funct.checkErrorText(driver, var.regV.phone_error, var.regV.phoneErrorStub) == True:
+            print("PASS - " + var.regV.phone_error[2] + " is present and copy correctly reads as '" + var.regV.phoneErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.phone, var.regV.phoneErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.phoneErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
 
-        if driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.has-prepend > div.is-error.invalid-feedback").text != "Required":
-            print("E--- Phone# warning message is incorrect, should be 'required', but instead says " + driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.has-prepend > div.is-error.invalid-feedback").text)
+# Checks for appearance of error messages when inputting invalid data in DOB field
+    def test10_regInvalidFormatDOB(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.dob, "123")
+        funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
+        if funct.checkErrorText(driver, var.regV.dob_error, var.regV.dobErrorStub) == True:
+            print("PASS - " + var.regV.dob_error[2] + " is present and copy correctly reads as '" + var.regV.dobErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.dob_error, var.regV.dobErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.dobErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
 
-        if driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(15) > div.is-error.invalid-feedback").text != "Required":
-            print("E--- DoB warning message is incorrect, should be 'required', but instead says " + driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(15) > div.is-error.invalid-feedback").text)
+# Checks for appearance of error messages when inputting invalid data in email field
+    def test11_regInvalidFormatEmail(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.email, "123")
+        funct.waitAndSend(driver, var.regV.email, Keys.TAB)
+        if funct.checkErrorText(driver, var.regV.email_error, var.regV.emailErrorStub) == True:
+            print("PASS - " + var.regV.email_error[2] + " is present and copy correctly reads as '" + var.regV.emailErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.email_error, var.regV.emailErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.emailErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
 
-        if driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(3) > div.is-error.invalid-feedback").text != "Your password must follow the password guidelines.":
-            print("E--- DoB warning message is incorrect, should be 'Your password must follow the password guidelines.', but instead says " + driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(3) > div.is-error.invalid-feedback").text)
+# Checks for appearance of error messages when inputting only numbers in password field
+    def test12_regInvalidFormatPswNumbers(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.password, "123456789")
+        funct.waitAndSend(driver, var.regV.password, Keys.TAB)
+        if funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == True:
+            print("PASS - " + var.regV.password_error[2] + " is present and copy correctly reads as '" + var.regV.passwordErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.passwordErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
 
-#trigger mismatching passwords and check updated error message text
-        driver.find_element_by_name("confirmPassword").send_keys("testtest")
-        if driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback").text != "Passwords must match":
-            print("E--- DoB warning message is incorrect, should be 'Passwords must match', but instead says " + driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback").text)
+# Checks for appearance of error messages when inputting only letters in password field
+    def test_13regInvalidFormatPswLetters(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.password, "asdftest")
+        funct.waitAndSend(driver, var.regV.password, Keys.TAB)
+        if funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == True:
+            print("PASS - " + var.regV.password_error[2] + " is present and copy correctly reads as '" + var.regV.passwordErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.passwordErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
 
-#Check checkbox forms
+# Checks for appearance of error messages when inputting special characters in password field
+    def test_14regInvalidFormatPswSymbols(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.password, "test")
+        funct.waitAndSend(driver, var.regV.password, Keys.SHIFT + "1")
+        funct.waitAndSend(driver, var.regV.password, "test")
+        funct.waitAndSend(driver, var.regV.password, Keys.TAB)
+        print(driver.find_element(var.regV.password[0],var.regV.password[1]).get_attribute("value"))
+        if funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == True:
+            print("PASS - " + var.regV.password_error[2] + " is present and copy correctly reads as '" + var.regV.passwordErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.passwordErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
+
+# Checks for appearance of error messages when inputting mismatched passwords
+    def test_15regMismatchedPsw(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.password, "test")
+        funct.waitAndSend(driver, var.regV.confirmPsw, Keys.SHIFT + "1")
+        funct.waitAndSend(driver, var.regV.confirmPsw, Keys.TAB)
+        # checking updated error message text
+        if funct.checkErrorText(driver, var.regV.confirmPsw_error, var.regV.confirmPswErrorStub) == True:
+            print("PASS - " + var.regV.confirmPsw_error[2] + " is present and copy correctly reads as '" + var.regV.confirmPswErrorStub + "'")
+        elif funct.checkErrorText(driver, var.regV.confirmPsw_error, var.regV.confirmPswErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.confirmPswErrorStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
+
+# Checks for appearance of error messages when underage Date of Birth is inputted
+    def test_16regUnderage(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndSend(driver, var.regV.dob, "01/01/2018")
+        funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
+        # checking updated error message text
+        if funct.checkErrorText(driver, var.regV.dob_error, var.regV.dobErrorUnderageStub) == True:
+            print("PASS - " + var.regV.dob_error[2] + " is present and copy correctly reads as '" + var.regV.dobErrorUnderageStub + "'")
+        elif funct.checkErrorText(driver, var.regV.dob_error, var.regV.dobErrorStub) == False:
+            print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.dobErrorUnderageStub + "'")
+            funct.fullshot(driver)
+            raise Exception('Error warning copy is incorrect.')
+
+# Checks for appearance of error messages when mandatory checkboxes are not checked
+    def test_17regChkbxErrors(self):
+        driver = self.driver
+        driver.get(url)
+        # triggering error
+        funct.waitAndClick(driver, var.regV.submit_button)
+        # checking for error messages
         formChecks = driver.find_elements_by_class_name("form-check-label")
-        #print(len(formChecks))
+        # print(len(formChecks))
         checkCounter = 0
         checkCounterExpected = 2
         for elem in formChecks:
-            if "error" in elem.get_attribute("class"):
+            if "form-check-label error" in elem.get_attribute("class"):
                 checkCounter = checkCounter+1
         if checkCounter == checkCounterExpected:
-            print ("All text color change errors are correct!")
+            print("PASS - All checkbox text color change errors are present.")
         else:
-            print ("E---expected " + str(checkCounterExpected) + " red text changes, but found " + str(checkCounter) + "!")
-        checkBoxes = driver.find_elements_by_class_name("form-check-input")
-        for checkBox in checkBoxes:
-                checkBox.click()
-        driver.find_element_by_class_name("nyl-btn").click()
-# input numbers into number fields, check secondary error results
-        driver.find_element_by_name("zip").send_keys("1")
-        driver.find_element_by_name("phone").send_keys("1")
-        driver.find_element_by_name("birthdate").send_keys("1")
-        if "Invalid zipcode" not in driver.page_source:
-            print("E---'Invalid Zipcode' warning not found!")
-        if "Invalid phone number" not in driver.page_source:
-            print("E---'Invalid phone number' warning not found!")
-        if "Please enter a valid birth date" not in driver.page_source:
-            print("E---'Please enter a valid birth date' warning not found!")
-        driver.find_element_by_name("birthdate").send_keys("0102010")
-        if "You must be 18 years or older to register" not in driver.page_source:
-            print("E---'You must be 18 years or older to register' warning not found!")
-#putting in acceptable but invalid data
-        driver.find_element_by_name("state").click()
-        driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(10) > div > select > option:nth-child(2)").click()
-        driver.find_element_by_name("zip").send_keys("1001")
-        driver.find_element_by_name("phone").clear()
-        driver.find_element_by_name("phone").send_keys("5558675309")
-        driver.find_element_by_name("birthdate").clear()
-        driver.find_element_by_name("birthdate").send_keys("10311910")
-        driver.find_element_by_id("sso-email").send_keys("qa@qa.co")
-        driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("Test1234")
-        driver.find_element_by_name("confirmPassword").clear()
-        driver.find_element_by_name("confirmPassword").send_keys("Test1234")
-        if driver.find_element_by_class_name("submit-error").text != "Please see required fields above to complete registration.":
-            print("Main error is incorrect or missing")
-        time.sleep(1)
-        driver.find_element_by_class_name("nyl-btn").click()
-        time.sleep(5)
+            print("FAIL - expected " + str(checkCounterExpected) + " red text changes, but found " + str(checkCounter) + ".")
+            funct.fullshot(driver)
+            raise Exception('Error warning(s) missing.')
 
-#checking that we get to the "can not verify" screen
+# Checks for red text color change in Checkbox errors
+    def test_17regChkbxErrors(self):
+        driver = self.driver
+        driver.get(url)
+        # putting in acceptable but invalid data
+        funct.waitAndSend(driver, var.regV.fname, "Fake")
+        funct.waitAndSend(driver, var.regV.lname, "Test")
+        funct.waitAndSend(driver, var.regV.housenum, "12345")
+        funct.waitAndSend(driver, var.regV.street, "First Street")
+        funct.waitAndSend(driver, var.regV.city, "Anytown")
+        funct.waitAndClick(driver, var.regV.state_dropdown)
+        driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(10) > div > select > option:nth-child(2)").click()
+        funct.waitAndSend(driver, var.regV.zip, "11223")
+        funct.waitAndSend(driver, var.regV.phone, "5559876543")
+        funct.waitAndSend(driver, var.regV.ssn4, "1234")
+        funct.waitAndSend(driver, var.regV.dob, "01/01/1990")
+        funct.waitAndClick(driver, var.regV.dob_check)
+        funct.waitAndSend(driver, var.regV.email, "qa@testemail.co")
+        funct.waitAndSend(driver, var.regV.password, "Test1234")
+        funct.waitAndSend(driver, var.regV.confirmPsw, "Test1234")
+        funct.waitAndClick(driver, var.regV.tos_check)
+        funct.waitAndClick(driver, var.regV.submit_button)
+
+        # checking that we get to the "can not verify your identity" screen
         try:
             driver.find_elements_by_class_name("migration-failed-body")
         except:
-            print("Can not find Identity verification failed screen")
-
+            print("Can not find 'Identity verification failed' screen")
         if "Sorry, we cannot verify your identity." in driver.page_source:
-             print("Identity verification failed screen reached!")
+             print("PASS - Identity verification failed screen reached.")
         elif driver.find_elements_by_name("q") != []:
-            print("E----Reached valid screen and redirected to callback uri")
-            driver.save_screenshot('test_screenshot_1.png')
+            print("FAIL - Reached successful registration and redirected to callback uri (Google.com)")
+            funct.fullshot(driver)
+            raise Exception('Registration succeeded where it was supposed to fail.')
         else:
-            driver.save_screenshot('test_screenshot_2.png')
-            print("E---Neither Identity verification failed nor valid screen reached (or text is incorrect/needs to be updated)")
-        print("Test complete!")
+            print("FAIL - Neither Identity verification failed screen nor Registration successful screen reached.")
+            funct.fullshot(driver)
+            raise Exception('Registration redirected incorrectly.')
 
+# Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))

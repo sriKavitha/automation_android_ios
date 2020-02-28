@@ -50,7 +50,7 @@ class NYlottoBASE(unittest.TestCase):
         # checking for exceptions or assertion errors, if there are take screenshot
         for method, error in self._outcome.errors:
             if error:
-                funct.fullshot(self)
+                funct.fullshot(self.driver)
                 funct.generateHAR(self.server, self.driver)
-        self.driver.quit()
+        # self.driver.quit()
         self.assertEqual([], self.verificationErrors)

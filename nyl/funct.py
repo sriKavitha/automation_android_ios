@@ -76,8 +76,33 @@ def checkText(browser, elem, stub):
         assert el.text == stub
 
 # [Documentation - Function] Function that calls the script to grab full page UTC timestamped screenshot
-def fullshot(self):
-    self.driver.set_window_position(0, 0)
-    self.driver.maximize_window()
+def fullshot(browser):
+    browser.set_window_position(0, 0)
+    browser.maximize_window()
     timestamp = timeStamp() + '.png'
-    util.fullpage_screenshot(self.driver, timestamp)
+    util.fullpage_screenshot(browser, timestamp)
+
+# [Documentation - Function] Checks that an error exists
+def checkError(browser, elemWarning):
+    try:
+        browser.find_element(elemWarning[0], elemWarning[1])
+        return True
+    except:
+        return False
+
+# [Documentation - Function] Checks the actual warning text against the reported warning copy
+def checkErrorText(browser, elemWarning, elemWarningStub):
+    warning = browser.find_element(elemWarning[0], elemWarning[1])
+    if warning.get_attribute("innerText") == elemWarningStub:
+        return True
+    else:
+        return False
+
+
+# [Documentation - Function] Checks the actual value in the field against the expected value
+def checkValue(browser, elem, valueExpected):
+    warning = browser.find_element(elem[0], elem[1])
+    if warning.get_attribute("value") == valueExpected:
+        return True
+    else:
+        return False
