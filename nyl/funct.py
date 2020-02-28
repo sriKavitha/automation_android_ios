@@ -9,9 +9,11 @@ from selenium.webdriver import ActionChains
 import os, json, util
 from urllib.parse import urlparse
 
+
 # [Documentation - Summary] This file creates the functions for
 # use in the automation test suite of NYL SSO
 
+# [Documentation - Function] starts a browsermob proxy and generates a har file of current page
 def generateHAR(server, driver):
     hurl = str(driver.current_url)
     server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy",  options={'port': 8090})
@@ -31,9 +33,9 @@ def generateHAR(server, driver):
         json.dump(proxy.har, har_file)
     proxy.close()
 
-# [Documentation - Function] Webdriver waits for a specified page element
-# to appear prior to the next interaction on the page
+# [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
 def waitUntil(browser, elem):
+    a = ActionChains(browser)
     try:
         a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
         assert(browser.find_element(elem[0], elem[1]))
@@ -62,6 +64,16 @@ def timeStamp():
     ts = time.gmtime()
     times = time.strftime("%Y-%m-%d_%H-%M-%S", ts)
     return times
+
+# [Documentation - Function] Function that checks the text of a given element against a given stub
+def checkText(browser, elem, stub):
+    waitUntil(browser, elem)
+    el = browser.find_element(elem[0], elem[1])
+    if el.text == stub:
+        assert el.text == stub
+    else:
+        print('E---Text Incorrect!\n\nExpected text: "' + stub + '"\n\n but text was: "' + el.text + '"')
+        assert el.text == stub
 
 # [Documentation - Function] Function that calls the script to grab full page UTC timestamped screenshot
 def fullshot(browser):
