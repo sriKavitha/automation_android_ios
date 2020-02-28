@@ -5,6 +5,7 @@ from selenium import webdriver
 import unittest, time, re
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 import os, json, util
 from urllib.parse import urlparse
 
@@ -34,10 +35,13 @@ def generateHAR(server, driver):
 # to appear prior to the next interaction on the page
 def waitUntil(browser, elem):
     try:
-        browser.find_element(elem[0], elem[1])
+        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+        assert(browser.find_element(elem[0], elem[1]))
     except:
+        time.sleep(2)
         try:
-            browser.find_element(By.elem)
+            a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+            assert(browser.find_element(elem[0], elem[1]))
         except:
             print("E--" + elem[1] + " elem not found")
 
