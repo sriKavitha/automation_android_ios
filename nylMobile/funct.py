@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
 
 # [Documentation - Summary] This file creates the functions for
-# use in the automation test suite of NYL SSO
+# use in the automation test suite of NYL APP
 
 # [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
 # target should be given plainly, without colons

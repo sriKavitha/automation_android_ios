@@ -107,5 +107,6 @@ class NYLmobileSmoke(unittest.TestCase):
 
 if __name__ == "__main__":
     #First runner will enable html logs on your current directory, second runner will keep local console logs
-    unittest.main()
-    #unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
+    #unittest.main()
+    
