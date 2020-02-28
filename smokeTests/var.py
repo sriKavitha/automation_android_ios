@@ -21,7 +21,7 @@ class CREDSmobile:
     saucePW = funct.getCredential(entry_info, 'sauce-pw')
 class NYLdashboard:
 
-    [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/guestButton"]']
+    guest_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/guestButton"]']
     login_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginButton"]']
     register_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginRegister"]']
     guestCopy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/guestCopy"]']
