@@ -94,9 +94,9 @@ class NYlotto(confTest.NYlottoBASE):
              print("ID Verification Failed message is expected and received!")
         elif driver.find_elements_by_name("q") != []:
             print("E----Reached valid registration screen and redirected to callback uri.")
-            funct.fullshot(self)
+            funct.fullshot(driver)
         else:
-            funct.fullshot(self)
+            funct.fullshot(driver)
             print("E---Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
         print("Test complete!")
 

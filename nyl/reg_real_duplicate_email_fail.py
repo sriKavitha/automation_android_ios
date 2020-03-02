@@ -73,7 +73,7 @@ class NYlotto(confTest.NYlottoBASE):
         if driver.find_elements_by_name("q") != []:
              print("Initial registration successful.")
         else:
-            funct.fullshot(self)
+            funct.fullshot(driver)
             print("E---Redirect screen not reached on initial registration.")
 
     def test02_regDupeEmail(self):
@@ -119,7 +119,7 @@ class NYlotto(confTest.NYlottoBASE):
         if driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p") != []:
              print("Error message received with duplicate email registration and failed as expected.")
         else:
-            funct.fullshot(self)
+            funct.fullshot(driver)
             print("E---Error message did not appear or other unexpected behavior. Test Failed.")
         print("Test complete!")
 

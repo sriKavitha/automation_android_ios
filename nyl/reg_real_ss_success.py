@@ -75,7 +75,7 @@ class NYlotto(confTest.NYlottoBASE):
         if driver.find_elements_by_name("q") != []:
              print("registration successful and redirected to callback uri")
         else:
-            funct.fullshot(self)
+            funct.fullshot(driver)
             print("E---Redirect screen not reached")
         print("Test complete!")
 
