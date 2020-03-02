@@ -78,6 +78,7 @@ class NYlotto(confTest.NYlottoBASE):
             print("E---Redirect screen not reached on initial registration.")
 
     def test2_regDupePhone(self):
+# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2423
         driver = self.driver
 # opens local file with user data
         notepadfile = open('/Users/nyl01072020.txt', 'r')
