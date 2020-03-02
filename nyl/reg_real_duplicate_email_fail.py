@@ -6,7 +6,7 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, util, confTest
+import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with duplicate email in database
@@ -124,4 +124,6 @@ class NYlotto(confTest.NYlottoBASE):
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main()
+    #First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    #unittest.main()
