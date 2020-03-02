@@ -24,7 +24,7 @@ class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_reg(self):
+    def test_regSSNSuccess(self):
         driver = self.driver
 # opens local file with user data
         notepadfile = open('/Users/nyl01072020.txt', 'r')
