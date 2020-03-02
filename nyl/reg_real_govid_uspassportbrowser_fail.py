@@ -28,7 +28,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2440
         driver = self.driver
         # opens local file with user data
-        notepadfile = open('/Users/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
         # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
         # The driver.get method will navigate to a page given by the URL.
@@ -82,11 +82,11 @@ class NYlotto(confTest.NYlottoBASE):
 #        USpassport.jpg, USface.jpg
         funct.waitAndClick(driver, var.govIdV.passport_start_button)
 # 6th screen. Upload Front of Passport
-        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/marieliao/Desktop/USpassport.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/Shared/testing/USpassport.jpg")
 # 7th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.passport_save_button)
 # 8th screen. Upload Facial Snapshot
-        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/marieliao/Desktop/USface.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/Shared/testing/USface.jpg")
 # 9th screen. Quality check & Save
         time.sleep(2)
         funct.waitAndClick(driver, var.govIdV.passport_facial_save_button)

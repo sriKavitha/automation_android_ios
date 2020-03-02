@@ -26,7 +26,7 @@ class NYlotto(confTest.NYlottoBASE):
     def test_regNonIDPassportBrowserFail(self):
         driver = self.driver
         # opens local file with user data
-        notepadfile = open('/Users/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
         # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
         # The driver.get method will navigate to a page given by the URL.
@@ -78,11 +78,11 @@ class NYlotto(confTest.NYlottoBASE):
 # Random-landscape.jpg, Random-portrait.jpg
         funct.waitAndClick(driver, var.govIdV.passport_start_button)
 # 6th screen. Upload Front of Passport
-        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/marieliao/Desktop/Random-landscape.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/Shared/testing/Random-landscape.jpg")
 # 7th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.passport_save_button)
 # 8th screen. Upload Facial Snapshot
-        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/marieliao/Desktop/Random-portrait.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/Shared/testing/Random-portrait.jpg")
 # 9th screen. Quality check & Save
         time.sleep(2)
         funct.waitAndClick(driver, var.govIdV.passport_facial_save_button)

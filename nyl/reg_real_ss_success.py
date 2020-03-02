@@ -28,7 +28,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2400
         driver = self.driver
 # opens local file with user data
-        notepadfile = open('/Users/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
 # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
