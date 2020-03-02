@@ -111,7 +111,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
         funct.waitAndSend(driver, var.regV.password, entry_info[12])
-        funct.waitAndSend(driver, var.regV.passwordc, entry_info[12])
+        funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
 # Checking that error message appears and registration does not proceed.
