@@ -241,7 +241,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when inputting only letters in password field
-    def test_13regInvalidFormatPswLetters(self):
+    def test13_regInvalidFormatPswLetters(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -255,7 +255,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when inputting special characters in password field
-    def test_14regInvalidFormatPswSymbols(self):
+    def test14_regInvalidFormatPswSymbols(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -272,7 +272,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when inputting mismatched passwords
-    def test_15regMismatchedPsw(self):
+    def test15_regMismatchedPsw(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -288,7 +288,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when underage Date of Birth is inputted
-    def test_16regUnderage(self):
+    def test16_regUnderage(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -303,7 +303,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when mandatory checkboxes are not checked
-    def test_17regChkbxErrors(self):
+    def test17_regChkbxErrors(self):
         driver = self.driver
         driver.get(url)
         # triggering error
