@@ -32,8 +32,8 @@ class NYLdashboard:
     back_b = [By.XPATH, '//*[@content-desc="Navigate up"]']
 
 
-    guestStub = 'Check winning numbers, prizes, and draw dates\nwithout a New York Lottery account'
-    loginStub = 'Log in to experience the full app, including ticket scanning and jackpot notifications'
+    guestStub = 'Check winning numbers, prizes, and draw dates\nwithout a New York Lottery account.'
+    loginStub = 'Log in to experience the full app, including ticket scanning and jackpot notifications.'
 class NYLregistration:
     #main-fields
     base = [By.XPATH, '//*[@class="android.widget.FrameLayout"]']
