@@ -19,6 +19,7 @@ class NYlotto(confTest.NYlottoBASE):
 
 # Checks that user is redirected to Hard Fail screen when fake data is submitted
     def test_regHardFailFakeData(self):
+# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1922
         driver = self.driver
         driver.get(url)
         # putting in acceptable but invalid data
