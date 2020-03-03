@@ -6,7 +6,7 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, util, confTest
+import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with duplicate email in database
@@ -24,10 +24,10 @@ class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_reg1(self):
+    def test01_regInitial(self):
         driver = self.driver
 # opens local file with user data
-        notepadfile = open('/Users/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
 # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
@@ -59,7 +59,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
         funct.waitAndSend(driver, var.regV.password, entry_info[12])
-        funct.waitAndSend(driver, var.regV.passwordc, entry_info[12])
+        funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
 # 2nd screen. OTP selection screen
@@ -73,13 +73,14 @@ class NYlotto(confTest.NYlottoBASE):
         if driver.find_elements_by_name("q") != []:
              print("Initial registration successful.")
         else:
-            funct.fullshot(self)
+            funct.fullshot(driver)
             print("E---Redirect screen not reached on initial registration.")
 
-    def test_reg2(self):
+    def test02_regDupeEmail(self):
+# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1923
         driver = self.driver
 # opens local file with user data
-        notepadfile = open('/Users/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
 # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
@@ -111,17 +112,19 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
         funct.waitAndSend(driver, var.regV.password, entry_info[12])
-        funct.waitAndSend(driver, var.regV.passwordc, entry_info[12])
+        funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
 # Checking that error message appears and registration does not proceed.
         if driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p") != []:
              print("Error message received with duplicate email registration and failed as expected.")
         else:
-            funct.fullshot(self)
+            funct.fullshot(driver)
             print("E---Error message did not appear or other unexpected behavior. Test Failed.")
         print("Test complete!")
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main()
+    #First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    #unittest.main()

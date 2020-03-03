@@ -5,12 +5,13 @@ import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-import var, funct, util, confTest                             #Custom class for NYLgit ad
+import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
-# registration with OTP pass and random images with Driver's License upload on Browser method
+# registration with OTP pass and fake US passport on Browser method
 # For use with Entry Info file version: nyl01072020.txt
-# For use with Image file versions: Random-landscape.jpg, Random-portrait.jpg
+# For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
+# USpassport.jpg, USface.jpg, Intlpassport.jpg, Intlpassportface.jpg
 # Change paths starting on Line 104 for reading images prior to running test
 
 # [Documentation - Variables] Test file specific var
@@ -23,16 +24,19 @@ class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_regdriverslicense(self):
+    def test_regUSPassportBrowserFail(self):
+# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2440
         driver = self.driver
         # opens local file with user data
-        notepadfile = open('/Users/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
         # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
         # The driver.get method will navigate to a page given by the URL.
         # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
         # before returning control to your test or script.
         driver.get(url)
+        # Assertion that the title has Single Sign On in the title.
+        self.assertIn("Single Sign On", driver.title)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         funct.waitAndSend(driver, var.regV.fname, entry_info[0])
         funct.waitAndSend(driver, var.regV.lname, entry_info[1])
@@ -57,7 +61,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
         funct.waitAndSend(driver, var.regV.password, entry_info[12])
-        funct.waitAndSend(driver, var.regV.passwordc, entry_info[12])
+        funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
 # 2nd screen. OTP selection screen
@@ -67,44 +71,41 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
         time.sleep(5)
 # 4th screen. Gov ID document capture selection screen
-# Choosing US Drivers License and Continue on Browser
+# Choosing Passport and Continue on Browser
         funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
-        funct.waitAndClick(driver, var.govIdV.id_drivers_license)
+        funct.waitAndClick(driver, var.govIdV.id_passport)
         funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
         funct.waitAndClick(driver, var.govIdV.browser_link)
         time.sleep(5)
 # 5th screen. Initiate document capture process
 # uploading the different images for the gov id verification
-# Random-landscape.jpg, Random-portrait.jpg
-        funct.waitAndClick(driver, var.govIdV.dl_start_button)
-# 6th screen. Upload Front of Drivers's License & Save
-        funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/marieliao/Desktop/Random-landscape.jpg")
+#        USpassport.jpg, USface.jpg
+        funct.waitAndClick(driver, var.govIdV.passport_start_button)
+# 6th screen. Upload Front of Passport
+        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/Shared/testing/USpassport.jpg")
 # 7th screen. Quality check & Save
-        funct.waitAndClick(driver, var.govIdV.dl_front_save_button)
-# 8th screen. Upload Back of Driver's License
-        funct.waitAndSend(driver, var.govIdV.dl_back_capture_button, "/Users/marieliao/Desktop/Random-landscape.jpg")
+        funct.waitAndClick(driver, var.govIdV.passport_save_button)
+# 8th screen. Upload Facial Snapshot
+        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/Shared/testing/USface.jpg")
 # 9th screen. Quality check & Save
-        funct.waitAndClick(driver, var.govIdV.dl_back_save_button)
-# 10th screen. Upload Facial Snapshot
-        funct.waitAndSend(driver, var.govIdV.dl_facial_capture_button, "/Users/marieliao/Desktop/Random-portrait.jpg")
-# 11th screen. Quality check & Save
         time.sleep(2)
-        funct.waitAndClick(driver, var.govIdV.dl_facial_save_button)
-# 12th screen. Submit all docs for id verification
-        funct.waitAndClick(driver, var.govIdV.dl_submit_button)
+        funct.waitAndClick(driver, var.govIdV.passport_facial_save_button)
+# 10th screen. Submit all docs for id verification
+        funct.waitAndClick(driver, var.govIdV.passport_submit_button)
 # Last screen. Screen should show error message for identity verification.
 # Successful registration would redirect to Google.com. Checking that the search field on google.com is present on page.
         if "Sorry, we were unable to verify your information." in driver.page_source:
-            print("ID Verification Failed message is expected and received!")
+             print("ID Verification Failed message is expected and received!")
         elif driver.find_elements_by_name("q") != []:
             print("E----Reached valid registration screen and redirected to callback uri.")
-            funct.fullshot(self)
+            funct.fullshot(driver)
         else:
-            funct.fullshot(self)
-            print(
-                "E---Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
+            funct.fullshot(driver)
+            print("E---Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
         print("Test complete!")
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main()
+    #First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    #unittest.main()
