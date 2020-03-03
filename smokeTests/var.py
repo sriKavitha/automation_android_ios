@@ -33,7 +33,7 @@ class NYLdashboard:
 
 
     guestStub = 'Check winning numbers, prizes, and draw dates\nwithout a New York Lottery account'
-    loginStub = 'Log in for the full Lottery experience, including access to Players Club and Second Chance Sweepstakes'
+    loginStub = 'Log in to experience the full app, including ticket scanning and jackpot notifications'
 class NYLregistration:
     #main-fields
     base = [By.XPATH, '//*[@class="android.widget.FrameLayout"]']
@@ -67,7 +67,7 @@ class NYLregistration:
     password_e_stub = "You'll need a password with at least eight characters and at least one number."
     confirmPW_e_stub = "Whoops! Passwords do not match."
     firstName_e_stub = "Let's try that again."
-    lastName_e_stub =  "Let's try that again."
+    lastName_e_stub = "Let's try that again."
     phone_e_stub = "Re-enter number."
     age_e_stub = "You must be 18 years \nor older to sign up."
     zip_e_stub = "Invalid ZIP Code."
