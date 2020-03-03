@@ -263,7 +263,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.password, Keys.SHIFT + "1")
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
-        print(driver.find_element(var.regV.password[0],var.regV.password[1]).get_attribute("value"))
+        # print(driver.find_element(var.regV.password[0],var.regV.password[1]).get_attribute("value"))
         if funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == True:
             print("PASS - " + var.regV.password_error[2] + " is present and copy correctly reads as '" + var.regV.passwordErrorStub + "'")
         elif funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == False:
