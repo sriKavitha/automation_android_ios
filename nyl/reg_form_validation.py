@@ -241,7 +241,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when inputting only letters in password field
-    def test_13regInvalidFormatPswLetters(self):
+    def test13_regInvalidFormatPswLetters(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -255,7 +255,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when inputting special characters in password field
-    def test_14regInvalidFormatPswSymbols(self):
+    def test14_regInvalidFormatPswSymbols(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -263,7 +263,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.password, Keys.SHIFT + "1")
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
-        print(driver.find_element(var.regV.password[0],var.regV.password[1]).get_attribute("value"))
+        # print(driver.find_element(var.regV.password[0],var.regV.password[1]).get_attribute("value"))
         if funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == True:
             print("PASS - " + var.regV.password_error[2] + " is present and copy correctly reads as '" + var.regV.passwordErrorStub + "'")
         elif funct.checkErrorText(driver, var.regV.password_error, var.regV.passwordErrorStub) == False:
@@ -272,7 +272,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when inputting mismatched passwords
-    def test_15regMismatchedPsw(self):
+    def test15_regMismatchedPsw(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -288,7 +288,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when underage Date of Birth is inputted
-    def test_16regUnderage(self):
+    def test16_regUnderage(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -303,7 +303,7 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning copy is incorrect.')
 
 # Checks for appearance of error messages when mandatory checkboxes are not checked
-    def test_17regChkbxErrors(self):
+    def test17_regChkbxErrors(self):
         driver = self.driver
         driver.get(url)
         # triggering error
@@ -322,45 +322,6 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - expected " + str(checkCounterExpected) + " red text changes, but found " + str(checkCounter) + ".")
             funct.fullshot(driver)
             raise Exception('Error warning(s) missing.')
-
-# Checks for red text color change in Checkbox errors
-    def test_17regChkbxErrors(self):
-        driver = self.driver
-        driver.get(url)
-        # putting in acceptable but invalid data
-        funct.waitAndSend(driver, var.regV.fname, "Fake")
-        funct.waitAndSend(driver, var.regV.lname, "Test")
-        funct.waitAndSend(driver, var.regV.housenum, "12345")
-        funct.waitAndSend(driver, var.regV.street, "First Street")
-        funct.waitAndSend(driver, var.regV.city, "Anytown")
-        funct.waitAndClick(driver, var.regV.state_dropdown)
-        driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(10) > div > select > option:nth-child(2)").click()
-        funct.waitAndSend(driver, var.regV.zip, "11223")
-        funct.waitAndSend(driver, var.regV.phone, "5559876543")
-        funct.waitAndSend(driver, var.regV.ssn4, "1234")
-        funct.waitAndSend(driver, var.regV.dob, "01/01/1990")
-        funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, "qa@testemail.co")
-        funct.waitAndSend(driver, var.regV.password, "Test1234")
-        funct.waitAndSend(driver, var.regV.confirmPsw, "Test1234")
-        funct.waitAndClick(driver, var.regV.tos_check)
-        funct.waitAndClick(driver, var.regV.submit_button)
-
-        # checking that we get to the "can not verify your identity" screen
-        try:
-            driver.find_elements_by_class_name("migration-failed-body")
-        except:
-            print("Can not find 'Identity verification failed' screen")
-        if "Sorry, we cannot verify your identity." in driver.page_source:
-             print("PASS - Identity verification failed screen reached.")
-        elif driver.find_elements_by_name("q") != []:
-            print("FAIL - Reached successful registration and redirected to callback uri (Google.com)")
-            funct.fullshot(driver)
-            raise Exception('Registration succeeded where it was supposed to fail.')
-        else:
-            print("FAIL - Neither Identity verification failed screen nor Registration successful screen reached.")
-            funct.fullshot(driver)
-            raise Exception('Registration redirected incorrectly.')
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
