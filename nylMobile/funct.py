@@ -71,6 +71,11 @@ def swipeLeftUntil(browser, elem1, elem2):
  # [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
 # to appear prior to the next interaction on the page   
 
+def waitQuick(browser, elem):
+    a = ActionChains(browser)
+    a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+    assert(browser.find_element(elem[0], elem[1]))
+
 def waitUntil(browser, elem):
     a = ActionChains(browser)
     try:
@@ -95,6 +100,11 @@ def waitUntil(browser, elem):
 def waitAndClick(browser, elem):
     waitUntil(browser, elem)
     browser.find_element(elem[0], elem[1]).click()
+
+def coordinateClick(browser, x, y):
+    a = ActionChains(browser)
+    base = browser.find_element(var.NYLregistration.base[0], var.NYLregistration.base[1])
+    a.move_to_element_with_offset(base, x, y).click().perform()
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to send keys to it

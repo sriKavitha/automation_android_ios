@@ -9,7 +9,7 @@ import funct
 
 class CREDSmobile:
     # opens local file with user data
-    notepadfile = open('/Users/nyl02192020.txt', 'r')
+    notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     url = funct.getCredential(entry_info, 'all-games-target')
@@ -78,6 +78,7 @@ class NYLregistration:
 
 class NYLgamesDB:
     hamburger_b = [By.XPATH, '//*[@content-desc="Open Drawer"]']
+    menu_GetNumbers = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/txt_menu_title"])[4]']
     hamburger_home_copy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/txt_menu_title"]']
     mainScreen = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/action_bar_root"]']
     allGames_b = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/tabTitle"])[2]']
@@ -112,3 +113,27 @@ class NYLgamesDB:
 
 class NYLlogin:
     warningList = [By.XPATH, '//*[@class="android.view.View"]']
+
+class NYLgetNumbers:
+    findGame_dropdown = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/game_type_spinner"]']
+    dropdown_megamillions = [By.XPATH, '(//*[@resource-id="android:id/text1"])[2]']
+    dropdown_powerball = [By.XPATH, '(//*[@resource-id="android:id/text1"])[3]']
+    dropdown_lotto = [By.XPATH, '(//*[@resource-id="android:id/text1"])[4]']
+    dropdown_cash4life = [By.XPATH, '(//*[@resource-id="android:id/text1"])[2]']
+    niagaraGame_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/niagara_banner"]']
+    midtownGame_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/midtown_banner"]']
+    bullseye_b = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/state_fair_banner"]']
+    niagara_submit = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/save"])']
+    niagara_startOver = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/tryAgain"])']
+    
+
+    result_1 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/resultContainer"]//*//*)[3]']
+    result_2 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/resultContainer"]//*//*)[6]']
+    result_3 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/resultContainer"]//*//*)[9]']
+    result_4 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/resultContainer"]//*//*)[12]']
+    result_5 = [By.XPATH, '(//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/resultContainer"]//*//*)[15]']
+
+    hamburger_home_copy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/txt_menu_title"]']
+    hamburger_home_copy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/txt_menu_title"]']
+    hamburger_home_copy = [By.XPATH, '//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/txt_menu_title"]']
+    
