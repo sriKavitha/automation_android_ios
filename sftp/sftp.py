@@ -5,7 +5,7 @@ import unittest, HtmlTestRunner
 
 # [Documentation - Summary] function to grab credentials from locally stored credential file via their label
 def getCred(target):
-        sftpCreds = open('/Users/sftpCreds.txt', 'r')
+        sftpCreds = open('/Users/Shared/testing/sftpCreds.txt', 'r')
         entry_info = sftpCreds.read().splitlines()
         targ = str(target + ': ')
         credential = [item for item in entry_info if item.startswith(targ)][0]
