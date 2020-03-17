@@ -43,15 +43,6 @@ class MOBILEnyl(confTest.NYLmobileBASE):
                 funct.waitUntil(driver, var.NYLregistration.pip1)
 
 
-
-# # opens local file with user data
-#         notepadfile = open('/Users/nyl01072020.txt', 'r')
-# # variable for each line in the file
-#         entry_info = notepadfile.read().splitlines()
-# The driver.get method will navigate to a page given by the URL.
-# WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
-# before returning control to your test or script.
-       
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
         #First runner will enable html logs on your current directory, second runner will keep local console logs
