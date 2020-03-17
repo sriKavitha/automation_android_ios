@@ -20,7 +20,7 @@ class NYLmobileBASE(unittest.TestCase):
             "udid": "emulator-5554",
             "platformName": "Android",
             "version" : "8.0",
-            "app": "/Users/app-qa.apk",
+            "app": "/Users/Shared/testing/app-qa.apk",
             "realDevice": False
         }
         self.driver = webdriver.Remote("http://0.0.0.0:4723/wd/hub", desired_caps)
