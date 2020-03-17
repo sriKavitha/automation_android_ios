@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown                        #Custom class for NYL
 import confTest
 import requests, json
-import var, funct, numpy
+import var, funct, numpy, HtmlTestRunner
 
 # [Documentation - Summary] gathers stubs by running an API call
 class NYapi(confTest.NYLmobileBASE):
@@ -242,7 +242,8 @@ class NYapi(confTest.NYLmobileBASE):
             funct.swipeUp(driver, var.NYLgamesDB.mainScreen)
 
 
-
+# Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main(warnings='ignore')    
-    # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
+    # First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
+    # unittest.main(warnings='ignore')

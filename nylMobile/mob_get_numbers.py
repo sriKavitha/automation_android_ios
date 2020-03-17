@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown                        #Custom class for NYL
 import confTest
 import requests, json
-import var, funct, numpy, PIL, cv2
+import var, funct, numpy, PIL, cv2, HtmlTestRunner
 from PIL import ImageGrab, Image
 
 # [Documentation - Summary] uses image detection to click on objects based on the file they look like
@@ -371,6 +371,6 @@ class NYapi(confTest.NYLmobileBASE):
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main(warnings='ignore')    
-    # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
-                
+    # First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
+    # unittest.main(warnings='ignore')
