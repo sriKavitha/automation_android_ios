@@ -244,4 +244,5 @@ class NYapi(confTest.NYLmobileBASE):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(warnings='ignore')    
+    # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))

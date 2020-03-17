@@ -9,7 +9,7 @@ import funct
 
 class CREDSmobile:
     # opens local file with user data
-    notepadfile = open('/Users/nyl02192020.txt', 'r')
+    notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     url = funct.getCredential(entry_info, 'all-games-target')

@@ -55,5 +55,6 @@ class MOBILEnyl(confTest.NYLmobileBASE):
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
 #First runner will enable html logs on your current directory, second runner will keep local console logs
-   # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
-    unittest.main()
+    unittest.main(warnings='ignore')    
+    # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='html_report_dir'))
+    
