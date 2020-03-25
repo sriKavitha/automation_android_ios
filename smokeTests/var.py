@@ -9,7 +9,7 @@ import funct
 
 class CREDSmobile:
     # opens local file with user data
-    notepadfile = open('/Users/nyl02192020.txt', 'r')
+    notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     url = funct.getCredential(entry_info, 'all-games-target')
@@ -32,8 +32,8 @@ class NYLdashboard:
     back_b = [By.XPATH, '//*[@content-desc="Navigate up"]']
 
 
-    guestStub = 'Check winning numbers, prizes, and draw dates\nwithout a New York Lottery account'
-    loginStub = 'Log in for the full Lottery experience, including access to Players Club and Second Chance Sweepstakes'
+    guestStub = 'Check winning numbers, prizes, and draw dates\nwithout a New York Lottery account.'
+    loginStub = 'Log in to experience the full app, including\nticket scanning and jackpot notifications.'
 class NYLregistration:
     #main-fields
     base = [By.XPATH, '//*[@class="android.widget.FrameLayout"]']
@@ -67,7 +67,7 @@ class NYLregistration:
     password_e_stub = "You'll need a password with at least eight characters and at least one number."
     confirmPW_e_stub = "Whoops! Passwords do not match."
     firstName_e_stub = "Let's try that again."
-    lastName_e_stub =  "Let's try that again."
+    lastName_e_stub = "Let's try that again."
     phone_e_stub = "Re-enter number."
     age_e_stub = "You must be 18 years \nor older to sign up."
     zip_e_stub = "Invalid ZIP Code."
