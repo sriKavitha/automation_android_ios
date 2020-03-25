@@ -10,13 +10,13 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with duplicate phone in database
-# For use with Entry Info file version: nyl01072020.txt
+# For use with Entry Info file version: nyl02192020.txt
 
 # [Documentation - Variables] Test file specific variables
-#url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
-url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
+#url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
 #url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
-testemail = "marie.liao+ssotest@rosedigital.co"
+
 testemail2 = "marie.liao+ssotest2@rosedigital.co"
 
 # The test case class is inherited from unittest.TestCase.
@@ -28,13 +28,13 @@ class NYlotto(confTest.NYlottoBASE):
     def test01_regInitial(self):
         driver = self.driver
 # opens local file with user data
-        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
 # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
 # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
 # before returning control to your test or script.
-        driver.get(url)
+        driver.get(self.url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
@@ -58,7 +58,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.ssn4, entry_info[8])
         funct.waitAndSend(driver, var.regV.dob, (entry_info[9] + entry_info[10] + entry_info[11]))
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, testemail)
+        funct.waitAndSend(driver, var.regV.email, self.testemail)
         funct.waitAndSend(driver, var.regV.password, entry_info[12])
         funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
         funct.waitAndClick(driver, var.regV.tos_check)
@@ -81,13 +81,13 @@ class NYlotto(confTest.NYlottoBASE):
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2423
         driver = self.driver
 # opens local file with user data
-        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
 # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
 # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
 # before returning control to your test or script.
-        driver.get(url)
+        driver.get(self.url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
@@ -122,7 +122,22 @@ class NYlotto(confTest.NYlottoBASE):
         else:
             funct.fullshot(driver)
             print("E---Error message did not appear or other unexpected behavior. Test Failed.")
+
+        # Deleting test data
+        try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+        except:
+                print('no test user found')
+        
+# Deleting 2nd test data
+        try:
+                funct.purge(self, testemail2)
+                print('E--- 2nd test user created, but purged')
+        except:
+                pass
         print("Test complete!")
+
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":

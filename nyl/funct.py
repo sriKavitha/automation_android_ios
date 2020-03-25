@@ -6,7 +6,7 @@ import unittest, time, re
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
-import os, json, util
+import os, json, util, boto3, var
 from urllib.parse import urlparse
 
 
@@ -14,6 +14,30 @@ from urllib.parse import urlparse
 # use in the automation test suite of NYL SSO
 
 # [Documentation - Function] starts a browsermob proxy and generates a har file of current page
+def purge(self, email):
+    if self.env == 'dev':
+        userpool='us-east-1_GFTjSQrHQ'
+    elif self.env == 'qa':
+        userpool = 'us-east-1_s3AmL6YeA'
+    elif self.env == 'stage':
+        userpool = 'us-east-1_a3sk4mOvW'
+    client = boto3.client('cognito-idp')
+    testemail = 'email ="' + str(email) + '"'
+    response = client.list_users(
+        UserPoolId=userpool,
+        AttributesToGet=[
+            'email',
+        ],
+        Limit=30,
+        Filter=testemail
+    )
+    testUser = response['Users'][0]['Username']
+    response2 = client.admin_delete_user(
+        UserPoolId='us-east-1_GFTjSQrHQ',
+        Username=testUser
+    )
+    print(response2)
+
 def generateHAR(server, driver):
     hurl = str(driver.current_url)
     server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy",  options={'port': 8090})

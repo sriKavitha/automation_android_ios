@@ -7,10 +7,12 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, util                          #Custom class for NYL
+import var, funct, util                         #Custom class for NYL
+import pytest
 
-#url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
-url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+
+url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
+#url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
 #url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
 testemail = "marie.liao+ssotest@rosedigital.co"
 
@@ -20,6 +22,16 @@ class NYlottoBASE(unittest.TestCase):
 # are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
 
     def setUp(self):
+        self.env = 'dev'
+
+        self.testemail = "marie.liao+ssotest@rosedigital.co"
+        if self.env == 'dev':
+            self.url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
+        elif self.env == 'qa':
+            self.url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+        elif self.env == 'stage':
+            self.url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
+
         warnings.simplefilter("ignore", ResourceWarning)
         # self.driver = webdriver.Remote(
         #    command_executor='http://192.168.86.26:4444/wd/hub',
@@ -35,6 +47,7 @@ class NYlottoBASE(unittest.TestCase):
         #   })
         self.server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy", options={'port': 8090})
         self.server.start()
+        
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--proxy-server={0}".format(url))
         self.driver = webdriver.Chrome(options=chrome_options)
@@ -54,3 +67,10 @@ class NYlottoBASE(unittest.TestCase):
                 funct.generateHAR(self.server, self.driver)
         # self.driver.quit()
         self.assertEqual([], self.verificationErrors)
+
+loader = unittest.TestLoader()
+start_dir = './'
+suite = loader.discover(start_dir)
+
+runner = unittest.TextTestRunner()
+runner.run(suite)

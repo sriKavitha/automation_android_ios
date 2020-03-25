@@ -17,7 +17,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks main error appears when empty form is submitted
     def test01_regSubmitError(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         if funct.checkError(driver, var.regV.submit_button_error) == True:
@@ -30,7 +30,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks main error copy
     def test02_regSubmitErrorCopy(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warning = driver.find_element(var.regV.submit_button_error[0], var.regV.submit_button_error[1])
@@ -44,7 +44,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks mandatory field errors are found
     def test03_regRequiredErrors(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warningList = []
@@ -69,7 +69,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks mandatory field error copy
     def test04_regRequiredErrorsCopy(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warningList = []
@@ -94,7 +94,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks that certain fields do not take letters
     def test05_regUnacceptedLetterErrors(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # grabbing every text field and inputting letters into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "asd"
@@ -120,7 +120,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks that certain fields do not take symbols
     def test06_regUnacceptedSymbolsErrors(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # grabbing every text field and inputting symbols into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "!@#"
@@ -147,7 +147,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks that certain fields do not take numbers
     def test07_regUnacceptedNumbersErrors(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # grabbing every text field and inputting numbers into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "123"
@@ -173,7 +173,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in zip code field
     def test08_regInvalidFormatZipcode(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.zip, "123")
         funct.waitAndSend(driver, var.regV.zip, Keys.TAB)
@@ -187,7 +187,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in phone field
     def test09_regInvalidFormatPhone(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.phone, "123")
         funct.waitAndSend(driver, var.regV.phone, Keys.TAB)
@@ -201,7 +201,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in DOB field
     def test10_regInvalidFormatDOB(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.dob, "123")
         funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
@@ -215,7 +215,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in email field
     def test11_regInvalidFormatEmail(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.email, "123")
         funct.waitAndSend(driver, var.regV.email, Keys.TAB)
@@ -229,7 +229,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting only numbers in password field
     def test12_regInvalidFormatPswNumbers(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "123456789")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
@@ -243,7 +243,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting only letters in password field
     def test13_regInvalidFormatPswLetters(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "asdftest")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
@@ -257,7 +257,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting special characters in password field
     def test14_regInvalidFormatPswSymbols(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.password, Keys.SHIFT + "1")
@@ -274,7 +274,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting mismatched passwords
     def test15_regMismatchedPsw(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.confirmPsw, Keys.SHIFT + "1")
@@ -290,7 +290,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when underage Date of Birth is inputted
     def test16_regUnderage(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.dob, "01/01/2018")
         funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
@@ -305,7 +305,7 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when mandatory checkboxes are not checked
     def test17_regChkbxErrors(self):
         driver = self.driver
-        driver.get(url)
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         # checking for error messages

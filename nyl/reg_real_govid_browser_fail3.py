@@ -5,12 +5,13 @@ import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
+import var, funct, util, confTest                            #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
-# registration with OTP pass and random images with Passport upload on Browser method
+# registration with OTP pass and fake International passport on Browser method
 # For use with Entry Info file version: nyl02192020.txt
-# For use with Image file versions: Random-landscape.jpg, Random-portrait.jpg
+# For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
+# USpassport.jpg, USface.jpg, Intlpassport.jpg, Intlpassportface.jpg
 # Change paths starting on Line 104 for reading images prior to running test
 
 
@@ -18,16 +19,18 @@ class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_regNonIDPassportBrowserFail(self):
+    def test_reg(self):
         driver = self.driver
         # opens local file with user data
-        notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
+        notepadfile = open('/Users/nyl02192020.txt', 'r')
         # variable for each line in the file
         entry_info = notepadfile.read().splitlines()
         # The driver.get method will navigate to a page given by the URL.
         # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
         # before returning control to your test or script.
         driver.get(self.url)
+        # Assertion that the title has Single Sign On in the title.
+        self.assertIn("Single Sign On", driver.title)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         funct.waitAndSend(driver, var.regV.fname, entry_info[0])
         funct.waitAndSend(driver, var.regV.lname, entry_info[1])
@@ -70,14 +73,14 @@ class NYlotto(confTest.NYlottoBASE):
         time.sleep(5)
 # 5th screen. Initiate document capture process
 # uploading the different images for the gov id verification
-# Random-landscape.jpg, Random-portrait.jpg
+# Intlpassport.jpg, Intlpassportface.jpg
         funct.waitAndClick(driver, var.govIdV.passport_start_button)
 # 6th screen. Upload Front of Passport
-        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/Shared/testing/Random-landscape.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_capture_button, "/Users/marieliao/Desktop/Intlpassport.jpg")
 # 7th screen. Quality check & Save
         funct.waitAndClick(driver, var.govIdV.passport_save_button)
 # 8th screen. Upload Facial Snapshot
-        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/Shared/testing/Random-portrait.jpg")
+        funct.waitAndSend(driver, var.govIdV.passport_facial_capture_button, "/Users/marieliao/Desktop/Intlpassportface.jpg")
 # 9th screen. Quality check & Save
         time.sleep(2)
         funct.waitAndClick(driver, var.govIdV.passport_facial_save_button)
@@ -89,20 +92,20 @@ class NYlotto(confTest.NYlottoBASE):
              print("ID Verification Failed message is expected and received!")
         elif driver.find_elements_by_name("q") != []:
             print("E----Reached valid registration screen and redirected to callback uri.")
-            funct.fullshot(driver)
+            funct.fullshot(self)
         else:
-            funct.fullshot(driver)
+            funct.fullshot(self)
             print("E---Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
+        
         # Deleting test data
         try:
                 funct.purge(self, self.testemail)
                 print('test user purged')
         except:
                 print('no test user found')
+                
         print("Test complete!")
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    #First runner will enable html logs on your current directory, second runner will keep local console logs
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    #unittest.main()
+    unittest.main()
