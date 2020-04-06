@@ -18,10 +18,11 @@ def purge(self, email):
     if self.env == 'dev':
         userpool='us-east-1_GFTjSQrHQ'
     elif self.env == 'qa':
-        userpool = 'us-east-1_s3AmL6YeA'
+        userpool = 'us-east-1_QZZDGaPyw'
     elif self.env == 'stage':
-        userpool = 'us-east-1_a3sk4mOvW'
+        userpool = 'us-east-1_v3S7DZTfs'
     client = boto3.client('cognito-idp')
+    print(userpool)
     testemail = 'email ="' + str(email) + '"'
     response = client.list_users(
         UserPoolId=userpool,
@@ -31,12 +32,22 @@ def purge(self, email):
         Limit=30,
         Filter=testemail
     )
+    print(response)
     testUser = response['Users'][0]['Username']
     response2 = client.admin_delete_user(
-        UserPoolId='us-east-1_GFTjSQrHQ',
+        UserPoolId=userpool,
         Username=testUser
     )
     print(response2)
+
+# [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
+# target should be given plainly, without colons
+
+def getCredential(list, target):
+    targ = str(target + ': ')
+    credential = [item for item in list if item.startswith(targ)][0]
+    cred = credential.replace(targ, '')
+    return cred    
 
 def generateHAR(server, driver):
     hurl = str(driver.current_url)
@@ -56,6 +67,8 @@ def generateHAR(server, driver):
     with open(harname, 'w') as har_file:
         json.dump(proxy.har, har_file)
     proxy.close()
+
+
 
 # [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
 def waitUntil(browser, elem):
@@ -82,6 +95,10 @@ def waitAndClick(browser, elem):
 def waitAndSend(browser, elem, keys):
     waitUntil(browser, elem)
     browser.find_element(elem[0], elem[1]).send_keys(keys)
+
+def clearTextField(browser, elem):
+    waitUntil(browser, elem)
+    browser.find_element(elem[0], elem[1]).clear()
 
 # [Documentation - Function] Function that grabs UTC time and converts to human readable format
 def timeStamp():
