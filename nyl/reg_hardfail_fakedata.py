@@ -48,15 +48,22 @@ class NYlotto(confTest.NYlottoBASE):
         elif driver.find_elements_by_name("q") != []:
             print("FAIL - Reached successful registration and redirected to callback uri (Google.com)")
             funct.fullshot(driver)
-            funct.purge(self, self.testemail)
-            print('E-- test user was created but was purged')
+            try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
             raise Exception('Registration succeeded where it was supposed to fail.')
         else:
             print("FAIL - Neither Identity verification failed screen nor Registration successful screen reached.")
             funct.fullshot(driver)
-            funct.purge(self, self.testemail)
-            print('E-- test user was created but was purged')
+            try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
             raise Exception('Registration redirected incorrectly.')
+# Deleting test data
         try:
             funct.purge(self, self.testemail)
             print('E-- test user was created but was purged')
