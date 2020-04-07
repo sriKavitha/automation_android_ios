@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 # [Documentation - Summary] This file creates the functions for
 # use in the automation test suite of NYL SSO
 
-# [Documentation - Function] starts a browsermob proxy and generates a har file of current page
+# [Documentation - Function] Checks for existing test user in userpool and deletes the user if found.
 def purge(self, email):
     if self.env == 'dev':
         userpool='us-east-1_GFTjSQrHQ'
@@ -22,7 +22,7 @@ def purge(self, email):
     elif self.env == 'stage':
         userpool = 'us-east-1_v3S7DZTfs'
     client = boto3.client('cognito-idp')
-    print(userpool)
+    # print(userpool)
     testemail = 'email ="' + str(email) + '"'
     response = client.list_users(
         UserPoolId=userpool,
@@ -42,13 +42,13 @@ def purge(self, email):
 
 # [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
 # target should be given plainly, without colons
-
 def getCredential(list, target):
     targ = str(target + ': ')
     credential = [item for item in list if item.startswith(targ)][0]
     cred = credential.replace(targ, '')
-    return cred    
+    return cred
 
+# [Documentation - Function] starts a browsermob proxy and generates a har file of current page
 def generateHAR(server, driver):
     hurl = str(driver.current_url)
     server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy",  options={'port': 8090})
@@ -67,8 +67,6 @@ def generateHAR(server, driver):
     with open(harname, 'w') as har_file:
         json.dump(proxy.har, har_file)
     proxy.close()
-
-
 
 # [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
 def waitUntil(browser, elem):
