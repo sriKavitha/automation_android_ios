@@ -18,8 +18,9 @@ class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_regSSNSuccess(self):
-        testemail = self.testemail
+    def test_newVerified(self, testemail='self.testemail'):
+        if testemail == 'self.testemail':
+                testemail = self.testemail
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2400
 # Check for existing test user and wipe it from userpool prior to test execution
         try:
