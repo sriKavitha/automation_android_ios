@@ -1,11 +1,33 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for variable file to work
 from selenium.webdriver.common.by import By
+import funct
 
 # [Documentation - Summary] This file creates the variables for
 # NYL Single Sign On page objects for testing user flows
 
 # [Documentation - Variables] Objects on Registration page
+# Credentials for SSO Web user
+class credsSSOWEB:
+    # opens local file with user data
+    notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
+    # turns variable into a list of every line in above notepadfile
+    entry_info = notepadfile.read().splitlines()
+    fname = funct.getCredential(entry_info, 'first-name')
+    lname= funct.getCredential(entry_info, 'last-name')
+    housenum = funct.getCredential(entry_info, 'house-number')
+    street = funct.getCredential(entry_info, 'street-address')
+    city = funct.getCredential(entry_info, 'city')
+    state = funct.getCredential(entry_info, 'state')
+    zip = funct.getCredential(entry_info, 'zip')
+    phone = funct.getCredential(entry_info, 'Phone-number')
+    ssn4 = funct.getCredential(entry_info, 'ssn')
+    dob_month = funct.getCredential(entry_info, 'dob-month')
+    dob_date = funct.getCredential(entry_info, 'dob-date')
+    dob_year = funct.getCredential(entry_info, 'dob-year')
+    password = funct.getCredential(entry_info, 'password')
+
+# Reg page elements
 class regV:
     fname = [By.NAME, "firstName", "fname"]
     mname = [By.NAME, "middleName", "mname"]
