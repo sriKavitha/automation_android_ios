@@ -20,7 +20,7 @@ class NYlottoBASE(unittest.TestCase):
 
         self.testemail = "marie.liao+ssotest@rosedigital.co"
         if self.env == 'dev':
-            self.url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
+            self.url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
         elif self.env == 'qa':
             self.url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
         elif self.env == 'stage':
