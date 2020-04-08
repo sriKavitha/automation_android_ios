@@ -120,12 +120,6 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-# 2nd screen. OTP selection screen
-        funct.waitAndClick(driver, var.otpV.text_button)
-# 3rd screen. OTP code entry screen
-        funct.waitAndSend(driver, var.otpV.otp_input, "111111")
-        funct.waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(5)
 # Checking that error message appears and registration does not proceed.
         if driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p") != []:
              print("PASS - Error message received with duplicate email registration and failed as expected.")
