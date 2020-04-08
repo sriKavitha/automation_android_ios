@@ -8,12 +8,14 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-# [Documentation - Summary] Tests user workflow of successful
-# registration with valid SSN4 and OTP pass
+# [Documentation - Summary] Creates a verified user that has the following flags:
+# custom:ssn_verification	"Y"
+# custom:phone_verification	"Y"
+# custom:gov_id_verification	"X"
+# custom:verified	"Y"
+
 # For use with Entry Info file version: nyl02192020.txt
 
-# The test case ex is inherited from unittest.TestCase.
-# Inheriting from TestCase class is the way to tell unittest module that this is a test case.
 class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
@@ -21,7 +23,6 @@ class NYlotto(confTest.NYlottoBASE):
     def test_newVerified(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
                 testemail = self.testemail
-# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2400
 # Check for existing test user and wipe it from userpool prior to test execution
         try:
             funct.purge(self, testemail)

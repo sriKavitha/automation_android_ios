@@ -8,14 +8,15 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-# [Documentation - Summary] Tests user workflow of successful
-# registration with valid SSN4 and OTP pass
+# [Documentation - Summary] Creates an unverified user that has the following flags:
+# custom:ssn_verification	"N"
+# custom:phone_verification	"N"
+# custom:gov_id_verification	"-"
+# custom:verified	"N"
+
 # For use with Entry Info file version: nyl02192020.txt
 
-# The test case ex is inherited from unittest.TestCase.
-# Inheriting from TestCase class is the way to tell unittest module that this is a test case.
 class NYlotto(confTest.NYlottoBASE):
-    
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
@@ -23,56 +24,55 @@ class NYlotto(confTest.NYlottoBASE):
         if testemail == 'self.testemail':
             testemail = self.testemail
         print(testemail)
+        # Check for existing test user and wipe it from userpool prior to test execution
         try:
                 funct.purge(self, testemail)
                 print('test user purged')
         except:
                 print('no test user found')
-# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2400
         driver = self.driver
-# opens local file with user data
-        notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
-# variable for each line in the file
-        entry_info = notepadfile.read().splitlines()
-# The driver.get method will navigate to a page given by the URL.
-# WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
-# before returning control to your test or script.
+        # The driver.get method will navigate to a page given by the URL.
+        # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
+        # before returning control to your test or script.
+        # url is pulled from confTest
         driver.get(self.url)
-# Assertion that the title has Single Sign On in the title.
+        # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 
-# Instructions for webdriver to read and input user data via the info on the .txt doc.
-        funct.waitAndSend(driver, var.regV.fname, entry_info[0])
-        funct.waitAndSend(driver, var.regV.lname, entry_info[1])
-        funct.waitAndSend(driver, var.regV.housenum, entry_info[2])
-        funct.waitAndSend(driver, var.regV.street, entry_info[3])
-        funct.waitAndSend(driver, var.regV.city, entry_info[4])
-# Find and select the state according to the info in the .txt doc
-# Uses a for loop to iterate through the list of states until element
-# matches the entry info in the text file. Then clicks the element found.
+        # Instructions for webdriver to read and input user data via the info on the .txt doc.
+        # Credentials are localized to one instance via the var file
+        funct.waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
+        funct.waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
+        funct.waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
+        funct.waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
+        funct.waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
+        # Find and select the state according to the info in the .txt doc
+        # Uses a for loop to iterate through the list of states until element
+        # matches the entry info in the text file. Then clicks the element found.
         select_box = driver.find_element_by_name("state")
         funct.waitAndClick(driver, var.regV.state_dropdown)
         options = [x for x in select_box.find_elements_by_tag_name("option")]
         for element in options:
-            if element.text in entry_info[5]:
+            if element.text in var.credsSSOWEB.state:
                 element.click()
                 break
-        funct.waitAndSend(driver, var.regV.zip, entry_info[6])
-        funct.waitAndSend(driver, var.regV.phone, '5168675309')
-        funct.waitAndSend(driver, var.regV.ssn4, entry_info[8])
-        funct.waitAndSend(driver, var.regV.dob, (entry_info[9] + entry_info[10] + entry_info[11]))
+        funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
+        funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+        # Clicks the checkbox for not supplying SSN4 info. Will send user thru ID Verification flow.
+        funct.waitAndClick(driver, var.regV.ss_check)
+        funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
-        funct.waitAndSend(driver, var.regV.password, entry_info[12])
-        funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
+        funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
+        funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-# 2nd screen. OTP selection screen
+        # 2nd screen. OTP selection screen
         funct.waitAndClick(driver, var.otpV.text_button)
-        print("Test complete, usewr created")
+        print("Test complete, user created")
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    #First runner will enable html logs on your current directory, second runner will keep local console logs
-    ###unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    unittest.main()
+    # First runner will enable html logs on your current directory, second runner will keep local console logs
+    #unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    unittest.main(warnings='ignore')
