@@ -6,12 +6,47 @@ import unittest, time, re
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
-import os, json, util
+import os, json, util, boto3, var
 from urllib.parse import urlparse
 
 
 # [Documentation - Summary] This file creates the functions for
 # use in the automation test suite of NYL SSO
+
+# [Documentation - Function] Checks for existing test user in userpool and deletes the user if found.
+def purge(self, email):
+    if self.env == 'dev':
+        userpool='us-east-1_GFTjSQrHQ'
+    elif self.env == 'qa':
+        userpool = 'us-east-1_QZZDGaPyw'
+    elif self.env == 'stage':
+        userpool = 'us-east-1_v3S7DZTfs'
+    client = boto3.client('cognito-idp')
+    # print(userpool)
+    testemail = 'email ="' + str(email) + '"'
+    response = client.list_users(
+        UserPoolId=userpool,
+        AttributesToGet=[
+            'email',
+        ],
+        Limit=30,
+        Filter=testemail
+    )
+    print(response)
+    testUser = response['Users'][0]['Username']
+    response2 = client.admin_delete_user(
+        UserPoolId=userpool,
+        Username=testUser
+    )
+    print(response2)
+
+# [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
+# target should be given plainly, without colons
+def getCredential(list, target):
+    targ = str(target + ': ')
+    credential = [item for item in list if item.startswith(targ)][0]
+    cred = credential.replace(targ, '')
+    return cred
 
 # [Documentation - Function] starts a browsermob proxy and generates a har file of current page
 def generateHAR(server, driver):
@@ -58,6 +93,10 @@ def waitAndClick(browser, elem):
 def waitAndSend(browser, elem, keys):
     waitUntil(browser, elem)
     browser.find_element(elem[0], elem[1]).send_keys(keys)
+
+def clearTextField(browser, elem):
+    waitUntil(browser, elem)
+    browser.find_element(elem[0], elem[1]).clear()
 
 # [Documentation - Function] Function that grabs UTC time and converts to human readable format
 def timeStamp():

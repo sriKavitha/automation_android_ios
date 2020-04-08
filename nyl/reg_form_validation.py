@@ -8,16 +8,13 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-#url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
-url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
-#url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
-
 class NYlotto(confTest.NYlottoBASE):
 
 # Checks main error appears when empty form is submitted
     def test01_regSubmitError(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         if funct.checkError(driver, var.regV.submit_button_error) == True:
@@ -30,7 +27,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks main error copy
     def test02_regSubmitErrorCopy(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warning = driver.find_element(var.regV.submit_button_error[0], var.regV.submit_button_error[1])
@@ -44,7 +42,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks mandatory field errors are found
     def test03_regRequiredErrors(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warningList = []
@@ -69,7 +68,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks mandatory field error copy
     def test04_regRequiredErrorsCopy(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warningList = []
@@ -94,7 +94,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks that certain fields do not take letters
     def test05_regUnacceptedLetterErrors(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # grabbing every text field and inputting letters into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "asd"
@@ -120,7 +121,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks that certain fields do not take symbols
     def test06_regUnacceptedSymbolsErrors(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # grabbing every text field and inputting symbols into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "!@#"
@@ -147,7 +149,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks that certain fields do not take numbers
     def test07_regUnacceptedNumbersErrors(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # grabbing every text field and inputting numbers into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "123"
@@ -173,7 +176,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in zip code field
     def test08_regInvalidFormatZipcode(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.zip, "123")
         funct.waitAndSend(driver, var.regV.zip, Keys.TAB)
@@ -187,7 +191,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in phone field
     def test09_regInvalidFormatPhone(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.phone, "123")
         funct.waitAndSend(driver, var.regV.phone, Keys.TAB)
@@ -201,7 +206,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in DOB field
     def test10_regInvalidFormatDOB(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.dob, "123")
         funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
@@ -215,7 +221,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting invalid data in email field
     def test11_regInvalidFormatEmail(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.email, "123")
         funct.waitAndSend(driver, var.regV.email, Keys.TAB)
@@ -229,7 +236,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting only numbers in password field
     def test12_regInvalidFormatPswNumbers(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "123456789")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
@@ -243,7 +251,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting only letters in password field
     def test13_regInvalidFormatPswLetters(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "asdftest")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
@@ -257,7 +266,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting special characters in password field
     def test14_regInvalidFormatPswSymbols(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.password, Keys.SHIFT + "1")
@@ -274,7 +284,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when inputting mismatched passwords
     def test15_regMismatchedPsw(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.confirmPsw, Keys.SHIFT + "1")
@@ -290,7 +301,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when underage Date of Birth is inputted
     def test16_regUnderage(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndSend(driver, var.regV.dob, "01/01/2018")
         funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
@@ -305,7 +317,8 @@ class NYlotto(confTest.NYlottoBASE):
 # Checks for appearance of error messages when mandatory checkboxes are not checked
     def test17_regChkbxErrors(self):
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         # checking for error messages
@@ -325,4 +338,6 @@ class NYlotto(confTest.NYlottoBASE):
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    # First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    # unittest.main(warnings='ignore')

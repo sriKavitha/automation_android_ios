@@ -8,44 +8,47 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-# [Documentation - Summary] Tests user workflow of successful
-# registration with valid SSN4 and OTP pass
+# [Documentation - Summary] Creates an unverified user that has the following flags:
+# custom:ssn_verification	"N"
+# custom:phone_verification	"N"
+# custom:gov_id_verification	"-"
+# custom:verified	"N"
+
 # For use with Entry Info file version: nyl02192020.txt
 
-# The test case ex is inherited from unittest.TestCase.
-# Inheriting from TestCase class is the way to tell unittest module that this is a test case.
 class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_regSSNSuccess(self):
-        testemail = self.testemail
-# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2400
-# Check for existing test user and wipe it from userpool prior to test execution
+    def test_newUnverified(self, testemail='self.testemail'):
+        if testemail == 'self.testemail':
+            testemail = self.testemail
+        print(testemail)
+        # Check for existing test user and wipe it from userpool prior to test execution
         try:
-            funct.purge(self, testemail)
-            print('test user purged')
+                funct.purge(self, testemail)
+                print('test user purged')
         except:
-            print('no test user found')
+                print('no test user found')
         driver = self.driver
-# The driver.get method will navigate to a page given by the URL.
-# WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
-# before returning control to your test or script.
-# url is pulled from confTest
+        # The driver.get method will navigate to a page given by the URL.
+        # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
+        # before returning control to your test or script.
+        # url is pulled from confTest
         driver.get(self.url)
-# Assertion that the title has Single Sign On in the title.
+        # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 
-# Instructions for webdriver to read and input user data via the info on the .txt doc.
-# Credentials are localized to one instance via the var file
+        # Instructions for webdriver to read and input user data via the info on the .txt doc.
+        # Credentials are localized to one instance via the var file
         funct.waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
         funct.waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
         funct.waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
         funct.waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
         funct.waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
-# Find and select the state according to the info in the .txt doc
-# Uses a for loop to iterate through the list of states until element
-# matches the entry info in the text file. Then clicks the element found.
+        # Find and select the state according to the info in the .txt doc
+        # Uses a for loop to iterate through the list of states until element
+        # matches the entry info in the text file. Then clicks the element found.
         select_box = driver.find_element_by_name("state")
         funct.waitAndClick(driver, var.regV.state_dropdown)
         options = [x for x in select_box.find_elements_by_tag_name("option")]
@@ -55,7 +58,8 @@ class NYlotto(confTest.NYlottoBASE):
                 break
         funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
         funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
-        funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
+        # Clicks the checkbox for not supplying SSN4 info. Will send user thru ID Verification flow.
+        funct.waitAndClick(driver, var.regV.ss_check)
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
@@ -63,32 +67,9 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-# 2nd screen. OTP selection screen
+        # 2nd screen. OTP selection screen
         funct.waitAndClick(driver, var.otpV.text_button)
-# 3rd screen. OTP code entry screen
-        funct.waitAndSend(driver, var.otpV.otp_input, "111111")
-        funct.waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(5)
-# 4th screen. Successful registration should redirect to Google.com.
-# Checking that the search field on google.com is present on page.
-        if driver.find_elements_by_name("q") != []:
-             print("PASS - registration successful and redirected to callback uri")
-        else:
-            funct.fullshot(driver)
-            print("FAIL - Redirect screen not reached.")
-        #     try:
-        #         funct.purge(self, testemail)
-        #         print('test user purged')
-        #     except:
-        #         print('no test user found')
-        #     raise Exception('Registration redirected incorrectly.')
-# Deleting test data
-        # try:
-        #     funct.purge(self, testemail)
-        #     print('test user purged')
-        # except:
-        #     print('no test user found')
-        # print("Test complete!")
+        print("Test complete, user created")
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":

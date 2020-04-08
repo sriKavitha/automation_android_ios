@@ -11,17 +11,14 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 # [Documentation - Summary] Tests user workflow of failed
 # registration with fake data
 
-#url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
-url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
-#url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
-
 class NYlotto(confTest.NYlottoBASE):
 
 # Checks that user is redirected to Hard Fail screen when fake data is submitted
     def test_regHardFailFakeData(self):
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1922
         driver = self.driver
-        driver.get(url)
+        # url is pulled from confTest
+        driver.get(self.url)
         # putting in acceptable but invalid data
         funct.waitAndSend(driver, var.regV.fname, "Fake")
         funct.waitAndSend(driver, var.regV.lname, "Test")
@@ -35,7 +32,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.ssn4, "1234")
         funct.waitAndSend(driver, var.regV.dob, "01/01/1990")
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, "qa@testemail.co")
+        funct.waitAndSend(driver, var.regV.email, self.testemail)
         funct.waitAndSend(driver, var.regV.password, "Test1234")
         funct.waitAndSend(driver, var.regV.confirmPsw, "Test1234")
         funct.waitAndClick(driver, var.regV.tos_check)
@@ -51,12 +48,30 @@ class NYlotto(confTest.NYlottoBASE):
         elif driver.find_elements_by_name("q") != []:
             print("FAIL - Reached successful registration and redirected to callback uri (Google.com)")
             funct.fullshot(driver)
+            try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
             raise Exception('Registration succeeded where it was supposed to fail.')
         else:
             print("FAIL - Neither Identity verification failed screen nor Registration successful screen reached.")
             funct.fullshot(driver)
+            try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
             raise Exception('Registration redirected incorrectly.')
+# Deleting test data
+        try:
+            funct.purge(self, self.testemail)
+            print('E-- test user was created but was purged')
+        except:
+            pass
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    # First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    # unittest.main(warnings='ignore')

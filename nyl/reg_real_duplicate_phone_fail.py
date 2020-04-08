@@ -10,13 +10,8 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with duplicate phone in database
-# For use with Entry Info file version: nyl01072020.txt
+# For use with Entry Info file version: nyl02192020.txt
 
-# [Documentation - Variables] Test file specific variables
-#url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&redirectUri=https://google.com"
-url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
-#url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
-testemail = "marie.liao+ssotest@rosedigital.co"
 testemail2 = "marie.liao+ssotest2@rosedigital.co"
 
 # The test case class is inherited from unittest.TestCase.
@@ -26,23 +21,28 @@ class NYlotto(confTest.NYlottoBASE):
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
     def test01_regInitial(self):
+# Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purge(self, self.testemail)
+            print('test user purged')
+        except:
+            print('no test user found')
         driver = self.driver
-# opens local file with user data
-        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
-# variable for each line in the file
-        entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
 # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
 # before returning control to your test or script.
-        driver.get(url)
+# url is pulled from confTest
+        driver.get(self.url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
+
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
-        funct.waitAndSend(driver, var.regV.fname, entry_info[0])
-        funct.waitAndSend(driver, var.regV.lname, entry_info[1])
-        funct.waitAndSend(driver, var.regV.housenum, entry_info[2])
-        funct.waitAndSend(driver, var.regV.street, entry_info[3])
-        funct.waitAndSend(driver, var.regV.city, entry_info[4])
+# Credentials are localized to one instance via the var file
+        funct.waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
+        funct.waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
+        funct.waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
+        funct.waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
+        funct.waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
 # Find and select the state according to the info in the .txt doc
 # Uses a for loop to iterate through the list of states until element
 # matches the entry info in the text file. Then clicks the element found.
@@ -50,17 +50,17 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.regV.state_dropdown)
         options = [x for x in select_box.find_elements_by_tag_name("option")]
         for element in options:
-            if element.text in entry_info[5]:
+            if element.text in var.credsSSOWEB.state:
                 element.click()
                 break
-        funct.waitAndSend(driver, var.regV.zip, entry_info[6])
-        funct.waitAndSend(driver, var.regV.phone, entry_info[7])
-        funct.waitAndSend(driver, var.regV.ssn4, entry_info[8])
-        funct.waitAndSend(driver, var.regV.dob, (entry_info[9] + entry_info[10] + entry_info[11]))
+        funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
+        funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+        funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
+        funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, testemail)
-        funct.waitAndSend(driver, var.regV.password, entry_info[12])
-        funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
+        funct.waitAndSend(driver, var.regV.email, self.testemail)
+        funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
+        funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
 # 2nd screen. OTP selection screen
@@ -76,26 +76,31 @@ class NYlotto(confTest.NYlottoBASE):
         else:
             funct.fullshot(driver)
             print("E---Redirect screen not reached on initial registration.")
+            try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
+            raise Exception('Registration redirected incorrectly.')
 
     def test2_regDupePhone(self):
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2423
         driver = self.driver
-# opens local file with user data
-        notepadfile = open('/Users/Shared/testing/nyl01072020.txt', 'r')
-# variable for each line in the file
-        entry_info = notepadfile.read().splitlines()
 # The driver.get method will navigate to a page given by the URL.
 # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
 # before returning control to your test or script.
-        driver.get(url)
+# url is pulled from confTest
+        driver.get(self.url)
 # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
+
 # Instructions for webdriver to read and input user data via the info on the .txt doc.
-        funct.waitAndSend(driver, var.regV.fname, entry_info[0])
-        funct.waitAndSend(driver, var.regV.lname, entry_info[1])
-        funct.waitAndSend(driver, var.regV.housenum, entry_info[2])
-        funct.waitAndSend(driver, var.regV.street, entry_info[3])
-        funct.waitAndSend(driver, var.regV.city, entry_info[4])
+# Credentials are localized to one instance via the var file
+        funct.waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
+        funct.waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
+        funct.waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
+        funct.waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
+        funct.waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
 # Find and select the state according to the info in the .txt doc
 # Uses a for loop to iterate through the list of states until element
 # matches the entry info in the text file. Then clicks the element found.
@@ -103,17 +108,17 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.regV.state_dropdown)
         options = [x for x in select_box.find_elements_by_tag_name("option")]
         for element in options:
-            if element.text in entry_info[5]:
+            if element.text in var.credsSSOWEB.state:
                 element.click()
                 break
-        funct.waitAndSend(driver, var.regV.zip, entry_info[6])
-        funct.waitAndSend(driver, var.regV.phone, entry_info[7])
-        funct.waitAndSend(driver, var.regV.ssn4, entry_info[8])
-        funct.waitAndSend(driver, var.regV.dob, (entry_info[9] + entry_info[10] + entry_info[11]))
+        funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
+        funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+        funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
+        funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, testemail2)
-        funct.waitAndSend(driver, var.regV.password, entry_info[12])
-        funct.waitAndSend(driver, var.regV.confirmPsw, entry_info[12])
+        funct.waitAndSend(driver, var.regV.email, self.testemail)
+        funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
+        funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
 # Checking that error message appears and registration does not proceed.
@@ -122,10 +127,25 @@ class NYlotto(confTest.NYlottoBASE):
         else:
             funct.fullshot(driver)
             print("E---Error message did not appear or other unexpected behavior. Test Failed.")
+
+# Deleting test data
+        try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+        except:
+                print('no test user found')
+        
+# Deleting 2nd test data
+        try:
+                funct.purge(self, testemail2)
+                print('E--- 2nd test user created, but purged')
+        except:
+                pass
         print("Test complete!")
+
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    #First runner will enable html logs on your current directory, second runner will keep local console logs
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    #unittest.main()
+    # First runner will enable html logs on your current directory, second runner will keep local console logs
+    unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    # unittest.main(warnings='ignore')
