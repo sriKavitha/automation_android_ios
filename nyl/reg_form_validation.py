@@ -336,8 +336,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             raise Exception('Error warning(s) missing.')
 
-# Boiler plate code to run the test suite
+# use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    # First runner will enable html logs on your current directory, second runner will keep local console logs
-    unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    # unittest.main(warnings='ignore')
+    if  confTest.NYlottoBASE.report == "terminal":
+        unittest.main(warnings='ignore')
+    elif confTest.NYlottoBASE.report == "html":
+        unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))

@@ -10,7 +10,7 @@ import funct
 # Credentials for SSO Web user
 class credsSSOWEB:
     # opens local file with user data
-    notepadfile = open('/Users/Shared/testing/nyl02192020.txt', 'r')
+    notepadfile = open('/Users/Shared/testing/nyl04082020.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'first-name')
