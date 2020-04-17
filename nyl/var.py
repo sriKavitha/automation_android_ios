@@ -142,10 +142,22 @@ class govIdV:
 
 # [Documentation - Variables] Objects on Login page
 class loginV:
-    email = [By.ID, "sso-email"]
-    password = [By.NAME, "password"]
-    login_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span"]
-    forgot_password_link = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p > a"]
+    email = [By.ID, "sso-email", "email"]
+    password = [By.NAME, "password", "password"]
+    login_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span", "login_button"]
+    forgot_password_link = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p > a", "forgot_password_link"]
+
+# error variables
+    email_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group.has-prepend > div.is-error.invalid-feedback", "email_error"]
+    password_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(3) > div.is-error.invalid-feedback", "password_error"]
+    login_button_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p.submit-error", "login_button_error"]
+
+# error copy
+    requiredErrorStub = 'Required'
+    emailErrorStub = 'Invalid email address'
+    loginErrorStub = 'There is a problem with the data you entered, please try again.'
+    badEmailErrorStub = 'Username and password combination did not match.'
+    badPasswordErrorStub = 'Username and password combination did not match.'
 
 # [Documentation - Variables] Objects on Reset Password page
 class resetPswV:
