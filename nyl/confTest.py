@@ -21,10 +21,19 @@ class NYlottoBASE(unittest.TestCase):
         self.testemail = "marie.liao+ssotest@rosedigital.co"
         if self.env == 'dev':
             self.url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
+            self.login_url = "https://sso-dev.nylservices.net/login?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
+            self.reset_url = "https://sso-dev.nylservices.net/reset-password?clientId=29d5np06tgg87unmhfoa3pkma7"
+            self.update_url = "https://sso-dev.nylservices.net/update-profile?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
         elif self.env == 'qa':
             self.url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+            self.login_url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+            self.reset_url = "https://sso-qa.nylservices.net/reset-password?clientId=4a0p01j46oms3j18l90lbtma0o"
+            self.update_url = "https://sso-qa.nylservices.net/update-profile?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
         elif self.env == 'stage':
             self.url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
+            self.login_url = "https://sso-stage.nylservices.net/login?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
+            self.reset_url = "https://sso-stage.nylservices.net/reset-password?clientId=6pdeoajlh4ttgktolu3jir8gp6"
+            self.update_url = "https://sso-stage.nylservices.net/update-profile?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
 
         warnings.simplefilter("ignore", ResourceWarning)
         # self.driver = webdriver.Remote(
@@ -44,6 +53,7 @@ class NYlottoBASE(unittest.TestCase):
         
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--proxy-server={0}".format(self.url))
+        chrome_options.add_argument("--incognito")
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(12)
         self.driver.maximize_window()
