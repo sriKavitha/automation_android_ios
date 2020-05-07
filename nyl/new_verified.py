@@ -14,7 +14,7 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 # custom:gov_id_verification	"X"
 # custom:verified	"Y"
 
-# For use with Entry Info file version: nyl02192020.txt
+# For use with Entry Info file version: nyl04082020.txt
 
 class NYlotto(confTest.NYlottoBASE):
 

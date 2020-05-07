@@ -10,7 +10,7 @@ import var, funct, util, confTest, HtmlTestRunner  # Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with OTP pass and fake US passport on Browser method
-# For use with Entry Info file version: nyl02192020.txt
+# For use with Entry Info file version: nyl04082020.txt
 # For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
 # USpassport.jpg, USface.jpg, Intlpassport.jpg, Intlpassportface.jpg
 # Change paths starting on Line 104 for reading images prior to running test
@@ -125,8 +125,9 @@ class NYlotto(confTest.NYlottoBASE):
         print("Test complete!")
 
 
-# Boiler plate code to run the test suite
+# use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    # First runner will enable html logs on your current directory, second runner will keep local console logs
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    # unittest.main()
+    if  confTest.NYlottoBASE.report == "terminal":
+        unittest.main(warnings='ignore')
+    elif confTest.NYlottoBASE.report == "html":
+        unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))

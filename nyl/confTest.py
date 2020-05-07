@@ -11,11 +11,14 @@ import var, funct, util                         #Custom class for NYL
 import pytest
 
 class NYlottoBASE(unittest.TestCase):
-
+#report can be "html" for testrunner reports or "terminal" for direct terminal feedback
+    #report = 'terminal'
+    report = "html"
 # The setUp is part of initialization, this method will get called before every test function which you
 # are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
 
     def setUp(self):
+        #.env can be "dev", "qa", or "stage" to denote which environment and credentials to use
         self.env = 'dev'
 
         self.testemail = "marie.liao+ssotest@rosedigital.co"
@@ -72,9 +75,9 @@ class NYlottoBASE(unittest.TestCase):
         # self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 
-# loader = unittest.TestLoader()
-# start_dir = './'
-# suite = loader.discover(start_dir)
-#
-# runner = unittest.TextTestRunner()
-# runner.run(suite)
+##Test Runner:
+#In python3 you can run discover mode from the terminal without any code changes, the code to run is as folloew:
+#$python3 -m unittest discover -s <project_directory> -p "<starting_syntax>*.py"
+#EG:
+#$python3 -m unittest discover -s nyl/ -p "reg*.py" 
+#would, assuming you were in the QA/ directory, run all test-cases on all files that began with "reg" in the nyl/ folder 

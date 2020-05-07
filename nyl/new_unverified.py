@@ -14,7 +14,7 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 # custom:gov_id_verification	"-"
 # custom:verified	"N"
 
-# For use with Entry Info file version: nyl02192020.txt
+# For use with Entry Info file version: nyl04082020.txt
 
 class NYlotto(confTest.NYlottoBASE):
 
@@ -32,7 +32,7 @@ class NYlotto(confTest.NYlottoBASE):
                 print('no test user found')
         driver = self.driver
         # The driver.get method will navigate to a page given by the URL.
-        # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
+
         # before returning control to your test or script.
         # url is pulled from confTest
         driver.get(self.url)
@@ -71,8 +71,11 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.otpV.text_button)
         print("Test complete, user created")
 
-# Boiler plate code to run the test suite
+
+# use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    # First runner will enable html logs on your current directory, second runner will keep local console logs
-    #unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    unittest.main(warnings='ignore')
+    if  confTest.NYlottoBASE.report == "terminal":
+        unittest.main(warnings='ignore')
+    elif confTest.NYlottoBASE.report == "html":
+        unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    
