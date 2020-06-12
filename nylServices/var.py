@@ -28,10 +28,9 @@ class CREDSapi:
     zip = funct.getCredential(entry_info, 'zip')
     pnum = funct.getCredential(entry_info, 'Phone-number')
     ssn = funct.getCredential(entry_info, 'ssn')
-    dob_month = funct.getCredential(entry_info,'dob-month')
+    dob_month = funct.getCredential(entry_info, 'dob-month')
     dob_date = funct.getCredential(entry_info, 'dob-date')
     dob_year = funct.getCredential(entry_info, 'dob-year')
     password = funct.getCredential(entry_info, 'password')
     mobileUN = funct.getCredential(entry_info, 'mobile-un')
     mobilePW = funct.getCredential(entry_info, 'mobile-pw')
-
