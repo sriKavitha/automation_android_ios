@@ -20,6 +20,8 @@ class NYlotto(confTest.NYlottoBASE):
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
     def test01_regInitial(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
 # Check for existing test user and wipe it from userpool prior to test execution
         try:
             funct.purge(self, self.testemail)
@@ -83,6 +85,8 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Registration redirected incorrectly.')
 
     def test02_regDupeEmail(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1923
         driver = self.driver
 # The driver.get method will navigate to a page given by the URL.
