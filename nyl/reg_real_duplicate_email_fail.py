@@ -115,7 +115,7 @@ class NYlotto(confTest.NYlottoBASE):
                 element.click()
                 break
         funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
-        funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+        funct.waitAndSend(driver, var.regV.phone, "3472929732")
         funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
