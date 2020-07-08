@@ -120,7 +120,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, self.testemail)
+        funct.waitAndSend(driver, var.regV.email, testemail2)
         funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
         funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
@@ -139,8 +139,6 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Warning should say "' + var.regV.duplicatePhoneErrorStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
             funct.fullshot(driver)
             raise Exception('Error warning(s) copy is incorrect')
-        # if driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p") != []:
-        #      print("Error message received with duplicate email registration and failed as expected.")
         else:
             try:
                 funct.purge(self, self.testemail)

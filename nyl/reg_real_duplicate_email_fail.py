@@ -138,8 +138,6 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Warning should say "' + var.regV.duplicateEmailErrorStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
             funct.fullshot(driver)
             raise Exception('Error warning(s) copy is incorrect')
-        # if driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p") != []:
-        #      print("PASS - Error message received with duplicate email registration and failed as expected.")
         else:
             try:
                 funct.purge(self, self.testemail)

@@ -12,14 +12,14 @@ import pytest
 
 class NYlottoBASE(unittest.TestCase):
 #report can be "html" for testrunner reports or "terminal" for direct terminal feedback
-    #report = 'terminal'
-    report = "html"
+    report = 'terminal'
+    #report = "html"
 # The setUp is part of initialization, this method will get called before every test function which you
 # are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
 
     def setUp(self):
         #.env can be "dev", "qa", or "stage" to denote which environment and credentials to use
-        self.env = 'dev'
+        self.env = 'qa'
 
         self.testemail = "marie.liao+ssotest@rosedigital.co"
         if self.env == 'dev':
