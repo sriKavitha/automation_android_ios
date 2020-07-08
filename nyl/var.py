@@ -10,7 +10,7 @@ import funct
 # Credentials for SSO Web user
 class credsSSOWEB:
     # opens local file with user data
-    notepadfile = open('/Users/Shared/testing/nyl04082020.txt', 'r')
+    notepadfile = open('/Users/Shared/testing/nyl06102020.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'first-name')
@@ -78,6 +78,8 @@ class regV:
     emailErrorStub = 'Invalid email address'
     passwordErrorStub = 'Your password must follow the password guidelines.'
     confirmPswErrorStub = 'Passwords must match'
+    duplicateEmailErrorStub = 'This email is already registered with an account. Please log in or reset your password.'
+    duplicatePhoneErrorStub = 'This phone number is already registered with an account. Please log in or reset your password.'
 
 # [Documentation - Variables] Objects on OTP pages
 class otpV:
@@ -156,8 +158,8 @@ class loginV:
     requiredErrorStub = 'Required'
     emailErrorStub = 'Invalid email address'
     loginErrorStub = 'There is a problem with the data you entered, please try again.'
-    badEmailErrorStub = 'Username and password combination did not match.'
-    badPasswordErrorStub = 'Username and password combination did not match.'
+    badEmailErrorStub = 'Your email address and password do not match.'
+    badPasswordErrorStub = 'Your email address and password do not match.'
 
 # [Documentation - Variables] Objects on Reset Password page
 class resetPswV:

@@ -12,6 +12,8 @@ class NYlotto(confTest.NYlottoBASE):
 
 # Checks that incorrect email login attempt displays error
     def test01_loginIncorrectEmailError(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
         driver = self.driver
         # url is pulled from confTest
         driver.get(self.login_url)
@@ -29,6 +31,8 @@ class NYlotto(confTest.NYlottoBASE):
 
 # Checks that incorrect email login attempt displays correct error message
     def test02_loginIncorrectEmailErrorCopy(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
         driver = self.driver
         # url is pulled from confTest
         driver.get(self.login_url)
@@ -48,6 +52,8 @@ class NYlotto(confTest.NYlottoBASE):
 
 # Checks that incorrect password login attempt displays error
     def test03_loginIncorrectPswError(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
         # creates a verified user with valid SSN4
         testemail = self.testemail
         # Check for existing test user and wipe it from userpool prior to test execution
@@ -141,6 +147,8 @@ class NYlotto(confTest.NYlottoBASE):
 
 # Checks that incorrect password login attempt displays correct error message
     def test04_loginIncorrectPswErrorCopy(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
         # creates a verified user with valid SSN4
         testemail = self.testemail
         # Check for existing test user and wipe it from userpool prior to test execution
