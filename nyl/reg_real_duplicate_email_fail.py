@@ -20,6 +20,8 @@ class NYlotto(confTest.NYlottoBASE):
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
     def test01_regInitial(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
 # Check for existing test user and wipe it from userpool prior to test execution
         try:
             funct.purge(self, self.testemail)
@@ -83,6 +85,8 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Registration redirected incorrectly.')
 
     def test02_regDupeEmail(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1923
         driver = self.driver
 # The driver.get method will navigate to a page given by the URL.
@@ -111,7 +115,7 @@ class NYlotto(confTest.NYlottoBASE):
                 element.click()
                 break
         funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
-        funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+        funct.waitAndSend(driver, var.regV.phone, "3472929732")
         funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
@@ -120,18 +124,30 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-# Checking that error message appears and registration does not proceed.
-        if driver.find_elements_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p") != []:
-             print("PASS - Error message received with duplicate email registration and failed as expected.")
-        else:
-            funct.fullshot(driver)
-            print("FAIL - Error message did not appear or other unexpected behavior.")
+        # Checking that error message appears and registration does not proceed.
+        warning = driver.find_element(var.regV.submit_button_error[0], var.regV.submit_button_error[1])
+        if funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.duplicateEmailErrorStub) == True:
+            print('PASS - Error warnings found and warning copy is correct')
+            print('Warning text displayed is "' + warning.get_attribute("innerText") + '"')
+        elif funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.duplicateEmailErrorStub) == False:
             try:
                 funct.purge(self, self.testemail)
                 print('test user purged')
             except:
                 print('no test user found')
-# Deleting test data
+            print('FAIL - Warning should say "' + var.regV.duplicateEmailErrorStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
+            funct.fullshot(driver)
+            raise Exception('Error warning(s) copy is incorrect')
+        else:
+            try:
+                funct.purge(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
+            print("E---Error message did not appear or other unexpected behavior. Test Failed.")
+            funct.fullshot(driver)
+            raise Exception('Unexpected message or behavior.')
+        # Deleting test data
         try:
             funct.purge(self, self.testemail)
             print('test user purged')
@@ -141,7 +157,7 @@ class NYlotto(confTest.NYlottoBASE):
 
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    if  confTest.NYlottoBASE.report == "terminal":
+    if confTest.NYlottoBASE.report == "terminal":
         unittest.main(warnings='ignore')
     elif confTest.NYlottoBASE.report == "html":
         unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
