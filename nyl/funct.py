@@ -145,3 +145,59 @@ def checkValue(browser, elem, valueExpected):
         return True
     else:
         return False
+
+# [Documentation - Function] Creates a verified user that has the following flags:
+# # custom:ssn_verification	"Y"
+# # custom:phone_verification	"Y"
+# # custom:gov_id_verification	"X"
+# # custom:verified	"Y"
+def createVerifiedUser(self, email):
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            purge(self, email)
+            print('test user purged')
+        except:
+            print('no test user found')
+        driver = self.driver
+        driver.get(self.url)
+        # Instructions for webdriver to read and input user data via the info on the .txt doc.
+        # Credentials are localized to one instance via the var file
+        waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
+        waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
+        waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
+        waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
+        waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
+        # Find and select the state according to the info in the .txt doc
+        # Uses a for loop to iterate through the list of states until element
+        # matches the entry info in the text file. Then clicks the element found.
+        select_box = driver.find_element_by_name("state")
+        waitAndClick(driver, var.regV.state_dropdown)
+        options = [x for x in select_box.find_elements_by_tag_name("option")]
+        for element in options:
+            if element.text in var.credsSSOWEB.state:
+                element.click()
+                break
+        waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
+        waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+        waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
+        waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
+        waitAndClick(driver, var.regV.dob_check)
+        waitAndSend(driver, var.regV.email, email)
+        waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
+        waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
+        waitAndClick(driver, var.regV.tos_check)
+        waitAndClick(driver, var.regV.submit_button)
+        # 2nd screen. OTP selection screen
+        waitAndClick(driver, var.otpV.text_button)
+        # 3rd screen. OTP code entry screen
+        waitAndSend(driver, var.otpV.otp_input, "111111")
+        waitAndClick(driver, var.otpV.otp_continue_button)
+        time.sleep(5)
+        # 4th screen. Successful registration should redirect to Google.com.
+        # Checking that the search field on google.com is present on page.
+        if driver.find_elements_by_name("q") != []:
+            print('Verified user registration is successful.')
+        else:
+            fullshot(driver)
+            print('FAIL - User registration redirect screen not reached. Test can not proceed')
+            raise Exception('Registration redirected incorrectly')
