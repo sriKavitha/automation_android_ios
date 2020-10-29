@@ -41,6 +41,33 @@ def purge(self, email):
     )
     print(response2)
 
+# [Documentation - Function] Checks for existing test user in Mobile App userpool and deletes the user if found.
+def purgeMobile(self, email):
+    if self.env == 'dev':
+        userpool = 'us-east-1_OSdCjCmwo'
+    elif self.env == 'qa':
+        userpool = 'us-east-1_Fwp84k69u'
+    elif self.env == 'stage':
+        userpool = 'us-east-1_hG2UobNyZ'
+    client = boto3.client('cognito-idp')
+    # print(userpool)
+    testemail = 'email ="' + str(email) + '"'
+    response = client.list_users(
+        UserPoolId=userpool,
+        AttributesToGet=[
+            'email',
+        ],
+        Limit=30,
+        Filter=testemail
+    )
+    print(response)
+    testUser = response['Users'][0]['Username']
+    response2 = client.admin_delete_user(
+        UserPoolId=userpool,
+        Username=testUser
+    )
+    print(response2)
+
 # [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
 # target should be given plainly, without colons
 def getCredential(list, target):
