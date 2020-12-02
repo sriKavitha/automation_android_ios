@@ -83,7 +83,6 @@ class NYLServices(confTest.NYLservicesBASE):
             print(sso_registerCall.status_code)
             print(sso_registerCall.text)
 
-        # TODO refactor getting error message:"NotAuthorizedException" "We can't find an account with this email address."
         # POST /sso/refresh-token
         refresh_token_headers = {"x-api-key": x_api_key}
         refresh_token_payload = {"clientId": client_id, "refreshToken": sso_register_refresh_token}
