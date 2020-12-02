@@ -85,16 +85,16 @@ class NYLServices(confTest.NYLservicesBASE):
 
         # TODO refactor getting error message:"NotAuthorizedException" "We can't find an account with this email address."
         # POST /sso/refresh-token
-        # refresh_token_headers = {"x-api-key": x_api_key}
-        # refresh_token_payload = {"clientId": client_id, "refreshToken": sso_register_refresh_token}
-        # refreshTokenCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/refresh-token', headers=refresh_token_headers,
-        #                                 json=refresh_token_payload)
-        # if refreshTokenCall.status_code == 200:
-        #     print("POST /sso/refresh-token Status Code: " + str(refreshTokenCall.status_code))
-        # else:
-        #     print("ERROR - POST /sso/refresh-token Status Code: ")
-        #     print(refreshTokenCall.status_code)
-        #     print(refreshTokenCall.text)
+        refresh_token_headers = {"x-api-key": x_api_key}
+        refresh_token_payload = {"clientId": client_id, "refreshToken": sso_register_refresh_token}
+        refreshTokenCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/refresh-token', headers=refresh_token_headers,
+                                        json=refresh_token_payload)
+        if refreshTokenCall.status_code == 200:
+            print("POST /sso/refresh-token Status Code: " + str(refreshTokenCall.status_code))
+        else:
+            print("ERROR - POST /sso/refresh-token Status Code: ")
+            print(refreshTokenCall.status_code)
+            print(refreshTokenCall.text)
 
         # PUT /sso/register-verify (SSN Confirmation)
         ssn_confirm_payload = {"ssnConfirmation": {"ssn": "1111"}}
@@ -339,7 +339,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(ticketscanCountCall.text)
 
         # POST /ticket-scan/inquiry (Mobile user)
-        ticketscan_inquiry_payload = {"barcodeData": "87500250900538108490920102"}
+        ticketscan_inquiry_payload = {"barcodeData": "87600275207207466326295006"}
         ticketscan_inquiry_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
         ticketscanInquiryCall = requests.post('https://api-' + self.env + '.nylservices.net/ticket-scan/inquiry', headers=ticketscan_inquiry_headers, json=ticketscan_inquiry_payload)
         if ticketscanCountCall.status_code == 200:
@@ -396,11 +396,12 @@ class NYLServices(confTest.NYLservicesBASE):
             print(mobile_logoutCall.text)
             print('\n')
 
-        # TODO Need to get correct headers and payload for following
+        # TODO Need to get correct headers and payload for the following endpoints
         # TODO POST /sso/confirm-reset-password
         # TODO GET /sso/email-confirmation-resend
         # TODO POST /sso/verify-jwt
         # TODO PATCH /users
+        # TODO All Admin Console endpoints
 
         # Clean up - clear test user from userpool
         # Check for existing test SSO user and wipe it from userpool prior to register api call
