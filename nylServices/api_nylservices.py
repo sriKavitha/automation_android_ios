@@ -353,7 +353,7 @@ class NYLServices(confTest.NYLservicesBASE):
         ticketscan_inquiry_payload = {"barcodeData": "87600275207207466326295006"}
         ticketscan_inquiry_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
         ticketscanInquiryCall = requests.post('https://api-' + self.env + '.nylservices.net/ticket-scan/inquiry', headers=ticketscan_inquiry_headers, json=ticketscan_inquiry_payload)
-        if ticketscanCountCall.status_code == 200:
+        if ticketscanInquiryCall.status_code == 200:
             print("POST /ticket-scan/inquiry Status Code: " + str(ticketscanInquiryCall.status_code))
         else:
             print("ERROR - GET /ticket-scan/inquiry Status Code: ")
