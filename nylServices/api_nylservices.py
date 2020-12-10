@@ -92,6 +92,12 @@ class NYLServices(confTest.NYLservicesBASE):
         # print(sso_register_access_token)
         # print(sso_register_refresh_token)
 
+        # [Documentation - detail] Conditional check due to IDDW verification dependency with user verification
+        if '"hardFail":true' in str(sso_registerCall.text):
+            print('ERROR - IDDW Verification failed for user and user not created.\nRegistration response = ')
+            print(sso_registerCall.text)
+            raise Exception('Failed user creation. Unable to proceed further. Change test user data in creds file.')
+
         # POST /sso/refresh-token
         refresh_token_headers = {"x-api-key": x_api_key}
         refresh_token_payload = {"clientId": client_id, "refreshToken": sso_register_refresh_token}
