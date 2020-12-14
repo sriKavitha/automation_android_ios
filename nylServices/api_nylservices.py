@@ -72,16 +72,31 @@ class NYLServices(confTest.NYLservicesBASE):
                                 'zip': var.CREDSapi.ssoZip, 'ssn4': var.CREDSapi.ssoSSN, 'noSsn4': 'false'}
         sso_registerCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/register-verify',
                                          json=sso_register_payload)
-        sso_register_access_token = str(sso_registerCall.text[24:1026])
-        sso_register_refresh_token = str(sso_registerCall.text[1082:2866])
-        # print('SSO Register Session AccessToken: ' + sso_register_access_token)
-        # print('SSO Register Session RefreshToken: ' + sso_register_refresh_token)
         if sso_registerCall.status_code == 200:
             print('POST /sso/register-verify (SSN Registration) Status Code: ' + str(sso_registerCall.status_code))
         else:
             print("ERROR - POST /sso/register-verify (SSN Registration) Status Code: ")
             print(sso_registerCall.status_code)
             print(sso_registerCall.text)
+
+        # [Documentation - detail] grabbing the accessToken and refreshToken from the registration response body for use in later api calls
+        registerResponse = []
+        quoted = re.compile('"(.*?)"')
+        for value in quoted.findall(sso_registerCall.text):
+            # print(value)
+            registerResponse.append(value)
+        sso_register_access_token = registerResponse[2]
+        sso_register_refresh_token = registerResponse[7]
+        # For debugging token issues
+        # print(sso_registerCall.text)
+        # print(sso_register_access_token)
+        # print(sso_register_refresh_token)
+
+        # [Documentation - detail] Conditional check due to IDDW verification dependency with user verification
+        if '"hardFail":true' in str(sso_registerCall.text):
+            print('ERROR - IDDW Verification failed for user and user not created.\nRegistration response = ')
+            print(sso_registerCall.text)
+            raise Exception('Failed user creation. Unable to proceed further. Change test user data in creds file.')
 
         # POST /sso/refresh-token
         refresh_token_headers = {"x-api-key": x_api_key}
@@ -177,10 +192,6 @@ class NYLServices(confTest.NYLservicesBASE):
         # POST /sso/login (SSO user)
         sso_login_payload = {"email": testemailSSO, "clientId": client_id, "password": var.CREDSapi.ssoPW}
         sso_loginCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/login', json=sso_login_payload)
-        sso_login_access_token = str(sso_loginCall.text[24:1026])
-        sso_login_refresh_token = str(sso_loginCall.text[1082:2866])
-        # print("SSO Login Session AccessToken: " + sso_login_access_token)
-        # print("SSO Login Session RefreshToken: " + sso_login_refresh_token)
         if sso_loginCall.status_code == 200:
             print("PUT /sso/login (SSO User) Status Code: " + str(sso_loginCall.status_code))
         else:
@@ -226,10 +237,6 @@ class NYLServices(confTest.NYLservicesBASE):
         mobile_register_payload = {'clientId': m_client_id, 'email': testemailMOB, 'password': var.CREDSapi.mobilePW, 'firstName': var.CREDSapi.mobileFName, 'lastName': var.CREDSapi.mobileLName, 'phone': var.CREDSapi.mobilePhone}
         mobile_registerCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/register',
                                          json=mobile_register_payload)
-        mobile_register_access_token = str(sso_registerCall.text[24:1026])
-        mobile_register_refresh_token = str(sso_registerCall.text[1082:2866])
-        # print('Mobile Register Session AccessToken: ' + mobile_register_access_token)
-        # print('Mobile Register Session RefreshToken: ' + mobile_register_refresh_token)
         if mobile_registerCall.status_code == 200:
             print('POST /sso/register (Mobile Registration) Status Code: ' + str(mobile_registerCall.status_code))
         else:
@@ -237,12 +244,23 @@ class NYLServices(confTest.NYLservicesBASE):
             print(mobile_registerCall.status_code)
             print(mobile_registerCall.text)
 
+        # [Documentation - detail] grabbing the accessToken and refreshToken from the registration response body for use in later api calls
+        mobile_registerResponse = []
+        quoted = re.compile('"(.*?)"')
+        for value in quoted.findall(sso_registerCall.text):
+            # print(value)
+            mobile_registerResponse.append(value)
+        mobile_register_access_token = mobile_registerResponse[2]
+        # For debugging token issues
+        # print(mobile_registerCall.text)
+        # print(mobile_register_access_token)
+
         # GET /promotions (Mobile user)
         promotions_headers = {'x-api-key': m_x_api_key}
         promotionsCall = requests.get('https://api-' + self.env + '.nylservices.net/promotions',
                                       headers=promotions_headers)
         if promotionsCall.status_code == 200:
-            print("GET /promotions (Mobile user)Status Code: " + str(promotionsCall.status_code))
+            print("GET /promotions (Mobile user) Status Code: " + str(promotionsCall.status_code))
         else:
             print("ERROR - GET /promotions (Mobile user) Status Code: ")
             print(promotionsCall.status_code)
@@ -341,7 +359,7 @@ class NYLServices(confTest.NYLservicesBASE):
         ticketscan_inquiry_payload = {"barcodeData": "87600275207207466326295006"}
         ticketscan_inquiry_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
         ticketscanInquiryCall = requests.post('https://api-' + self.env + '.nylservices.net/ticket-scan/inquiry', headers=ticketscan_inquiry_headers, json=ticketscan_inquiry_payload)
-        if ticketscanCountCall.status_code == 200:
+        if ticketscanInquiryCall.status_code == 200:
             print("POST /ticket-scan/inquiry Status Code: " + str(ticketscanInquiryCall.status_code))
         else:
             print("ERROR - GET /ticket-scan/inquiry Status Code: ")
@@ -418,7 +436,7 @@ class NYLServices(confTest.NYLservicesBASE):
 
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    if  confTest.NYLservicesBASE.report == "terminal":
+    if confTest.NYLservicesBASE.report == "terminal":
         unittest.main(warnings='ignore')
     elif confTest.NYLservicesBASE.report == "html":
         unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
