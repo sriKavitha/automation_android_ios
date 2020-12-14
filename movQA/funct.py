@@ -6,18 +6,17 @@ import unittest, time, re
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
-import os, json, boto3
-import var
+import os, json, util, boto3, var
 from urllib.parse import urlparse
 
 
 # [Documentation - Summary] This file creates the functions for
-# use in the automation test suite of NYL Services API
+# use in the automation test suite of NYL SSO
 
 # [Documentation - Function] Checks for existing test user in userpool and deletes the user if found.
 def purge(self, email):
     if self.env == 'dev':
-        userpool = 'us-east-1_GFTjSQrHQ'
+        userpool='us-east-1_GFTjSQrHQ'
     elif self.env == 'qa':
         userpool = 'us-east-1_QZZDGaPyw'
     elif self.env == 'stage':
@@ -98,29 +97,59 @@ def generateHAR(server, driver):
 
 # [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
 def waitUntil(browser, elem):
-    a = ActionChains(browser)
     try:
-        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+        browser.find_element(elem[0], elem[1])
         assert(browser.find_element(elem[0], elem[1]))
     except:
         time.sleep(2)
         try:
-            a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
-            assert(browser.find_element(elem[0], elem[1]))
+            
+            #browser.execute_script("arguments[0].scrollIntoView();", browser.find_element(elem[0], elem[1]))
+            browser.find_element(elem[0], elem[1])
         except:
             print("E--" + elem[1] + " elem not found")
+            browser.find_element(elem[0], elem[1])
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to click on it
+def checkElem(browser, elem):
+        browser.find_element(elem[0], elem[1])
+        assert(browser.find_element(elem[0], elem[1]))
+
+def Allow(self):
+        try:
+                print("finding allow1")
+                funct.checkElem(driver, var.homePage.allowB2)
+                funct.waitAndClick(driver, var.homePage.allowB2)
+                print("found")     
+        except:
+                pass           
+        try:
+                print("finding allow2")
+                driver.find_element_by_xpath('//*[@name="Allow"]').click()
+                print("found")   
+        except:
+                pass   
+
 def waitAndClick(browser, elem):
     waitUntil(browser, elem)
+    #a.move_to_element(browser.find_element(elem[0], elem[1])).click()  
     browser.find_element(elem[0], elem[1]).click()
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to send keys to it
 def waitAndSend(browser, elem, keys):
     waitUntil(browser, elem)
+    browser.find_element(elem[0], elem[1]).click()
     browser.find_element(elem[0], elem[1]).send_keys(keys)
+    try:
+        waitAndClick(driver, var.signIn.doneB)
+    except:
+        pass
+
+def waitAndClear(browser, elem):
+    waitUntil(browser, elem)
+    browser.find_element(elem[0], elem[1]).clear()
 
 def clearTextField(browser, elem):
     waitUntil(browser, elem)
@@ -143,11 +172,11 @@ def checkText(browser, elem, stub):
         assert el.text == stub
 
 # [Documentation - Function] Function that calls the script to grab full page UTC timestamped screenshot
-# def fullshot(browser):
-#     browser.set_window_position(0, 0)
-#     browser.maximize_window()
-#     timestamp = timeStamp() + '.png'
-#     util.fullpage_screenshot(browser, timestamp)
+def fullshot(browser):
+    browser.set_window_position(0, 0)
+    browser.maximize_window()
+    timestamp = timeStamp() + '.png'
+    util.fullpage_screenshot(browser, timestamp)
 
 # [Documentation - Function] Checks that an error exists
 def checkError(browser, elemWarning):
