@@ -10,7 +10,7 @@ import funct
 # Credentials for SSO Web user
 class credsSSOWEB:
     # opens local file with user data
-    notepadfile = open('/Users/Shared/testing/nyl04082020.txt', 'r')
+    notepadfile = open('/Users/Shared/testing/nyl06102020.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'first-name')
@@ -68,6 +68,7 @@ class regV:
     confirmPsw_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback", "confirmPsw_error"]
     tos_check_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(5) > div > label", "tos_check_error"]
     submit_button_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p", "submit_button_error"]
+
 # error copy
     requiredErrorStub = 'Required'
     submitErrorStub = 'Please see required fields above to complete registration.'
@@ -78,6 +79,8 @@ class regV:
     emailErrorStub = 'Invalid email address'
     passwordErrorStub = 'Your password must follow the password guidelines.'
     confirmPswErrorStub = 'Passwords must match'
+    duplicateEmailErrorStub = 'This email is already registered with an account. Please log in or reset your password.'
+    duplicatePhoneErrorStub = 'This phone number is already registered with an account. Please log in or reset your password.'
 
 # [Documentation - Variables] Objects on OTP pages
 class otpV:
@@ -156,8 +159,8 @@ class loginV:
     requiredErrorStub = 'Required'
     emailErrorStub = 'Invalid email address'
     loginErrorStub = 'There is a problem with the data you entered, please try again.'
-    badEmailErrorStub = 'Username and password combination did not match.'
-    badPasswordErrorStub = 'Username and password combination did not match.'
+    badEmailErrorStub = 'Your email address and password do not match.'
+    badPasswordErrorStub = 'Your email address and password do not match.'
 
 # [Documentation - Variables] Objects on Reset Password page
 class resetPswV:
@@ -166,17 +169,40 @@ class resetPswV:
 
 # [Documentation - Variables] Objects on Update Profile page
 class updateProfV:
-    fname = [By.NAME, "firstName"]
-    mname = [By.NAME, "middleName"]
-    lname = [By.NAME, "lastName"]
-    suffix = [By.NAME, "suffix"]
-    housenum = [By.NAME, "streetNumber"]
-    street = [By.NAME, "street"]
-    add2 = [By.NAME, "addressLine2"]
-    city = [By.NAME, "city"]
-    state = [By.NAME, "state"]
-    zip = [By.NAME, "zip"]
-    phone = [By.NAME, "phone"]
-    dob = [By.NAME, "birthdate"]
-    email = [By.ID, "sso-email"]
-    update_submit_button = [By.CLASS_NAME, "nyl-btn"]
+    fname = [By.NAME, 'firstName', 'fname']
+    mname = [By.NAME, 'middleName', 'mname']
+    lname = [By.NAME, 'lastName', 'lname']
+    suffix = [By.NAME, 'suffix', 'suffix']
+    housenum = [By.NAME, 'streetNumber', 'housenum']
+    street = [By.NAME, 'street', 'street']
+    add2 = [By.NAME, 'addressLine2', 'add2']
+    city = [By.NAME, 'city', 'city']
+    state_dropdown = [By.NAME, 'state', 'state_dropdown']
+    zip = [By.NAME, 'zip', 'zip']
+    phone = [By.NAME, 'phone', 'phone']
+    dob = [By.NAME, 'birthdate', 'birthdate']
+    email = [By.ID, 'sso-email', 'email']
+    update_button = [By.CLASS_NAME, 'nyl-btn', 'update_button']
+    signout_button = [By.CLASS_NAME, 'sign-out-all-cta', 'signout_button']
+
+# error variables
+    fname_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(2) > div.is-error.invalid-feedback', 'fname_error']
+    lname_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(4) > div.is-error.invalid-feedback', 'lname_error']
+    housenum_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(6) > div.is-error.invalid-feedback', 'housenum_error']
+    street_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(7) > div.is-error.invalid-feedback', 'street_error']
+    city_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(9) > div.is-error.invalid-feedback', 'city_error']
+    state_dropdown_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > div', 'state_dropdown_error']
+    zip_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(11) > div.is-error.invalid-feedback', 'zip_error']
+    phone_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.has-prepend > div.is-error.invalid-feedback', 'phone_error']
+    dob_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(13) > div.is-error.invalid-feedback', 'dob_error']
+    update_button_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-group-wrapper > div > p', 'update_button_error']
+
+# error copy
+    requiredErrorStub = 'Required'
+    fnameErrorStub = 'Must contain only letters'
+    lnameErrorStub = 'Must contain only letters'
+    cityLengthErrorStub = 'If your town name is over 21 characters, please submit only 20 characters and the form will identify town based on zip code.'
+    zipErrorStub = 'Invalid zipcode'
+    phoneErrorStub = 'Invalid phone number'
+    dobErrorStub = 'Please enter a valid birth date'
+    updateErrorStub = 'All inputs must be valid in order to submit the form.'
