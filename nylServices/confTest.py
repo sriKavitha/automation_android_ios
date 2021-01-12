@@ -19,7 +19,7 @@ class NYLservicesBASE(unittest.TestCase):
 
     def setUp(self):
         # .env can be "dev", "qa", or "stage" to denote which environment and credentials to use
-        self.env = 'dev'
+        self.env = 'stage'
 
         self.verificationErrors = []
         self.accept_next_alert = True
