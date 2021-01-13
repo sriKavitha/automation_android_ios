@@ -11,7 +11,7 @@ class NYLServices(confTest.NYLservicesBASE):
     def test_apiStatusCode(self):
         # [Documentation - Summary] Checks that response status code 200 is returned
         # for Nylservices APIs with proper payloads in requests
-        # For use with Creds file version: api10292020.txt
+        # For use with Creds file version: api01122021.txt
 
         # time.sleep() added between calls so tests do not hit AWS Batch API limits
 
