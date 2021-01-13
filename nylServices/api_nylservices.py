@@ -19,9 +19,9 @@ class NYLServices(confTest.NYLservicesBASE):
 
         ts = funct.timeStamp()
         # email for ssn registration
-        testemailSSO = 'marie.liao+sso' + ts + '@rosedigital.co'
+        testemailSSO = 'qa+sso' + ts + '@rosedigital.co'
         # email for mobile app registration
-        testemailMOB = 'marie.liao+mobile' + ts + '@rosedigital.co'
+        testemailMOB = 'qa+mobile' + ts + '@rosedigital.co'
 
         # Check for existing test SSO user and wipe it from userpool prior to register api call
         try:
