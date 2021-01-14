@@ -11,15 +11,17 @@ class NYLServices(confTest.NYLservicesBASE):
     def test_apiStatusCode(self):
         # [Documentation - Summary] Checks that response status code 200 is returned
         # for Nylservices APIs with proper payloads in requests
-        # For use with Creds file version: api10292020.txt
+        # For use with Creds file version: api01122021.txt
+
+        # time.sleep() added between calls so tests do not hit AWS Batch API limits
 
         testenv = self.env
 
         ts = funct.timeStamp()
         # email for ssn registration
-        testemailSSO = 'marie.liao+sso' + ts + '@rosedigital.co'
+        testemailSSO = 'qa+sso' + ts + '@rosedigital.co'
         # email for mobile app registration
-        testemailMOB = 'marie.liao+mobile' + ts + '@rosedigital.co'
+        testemailMOB = 'qa+mobile' + ts + '@rosedigital.co'
 
         # Check for existing test SSO user and wipe it from userpool prior to register api call
         try:
@@ -99,6 +101,7 @@ class NYLServices(confTest.NYLservicesBASE):
             raise Exception('Failed user creation. Unable to proceed further. Change test user data in creds file.')
 
         # POST /sso/refresh-token
+        time.sleep(1)
         refresh_token_headers = {"x-api-key": x_api_key}
         refresh_token_payload = {"clientId": client_id, "refreshToken": sso_register_refresh_token}
         refreshTokenCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/refresh-token', headers=refresh_token_headers,
@@ -111,6 +114,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(refreshTokenCall.text)
 
         # PUT /sso/register-verify (SSN Confirmation)
+        time.sleep(1)
         ssn_confirm_payload = {"ssnConfirmation": {"ssn": "1111"}}
         ssn_confirm_headers = {'Authorization': sso_register_access_token}
         ssnConfirmCall = requests.put('https://api-' + self.env + '.nylservices.net/sso/register-verify', headers=ssn_confirm_headers,
@@ -123,6 +127,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(ssnConfirmCall.text)
 
         # POST /sso/phone-code-gen
+        time.sleep(1)
         phone_gen_payload = {"type": "sms"}
         phone_gen_headers = {'Authorization': sso_register_access_token}
         phoneGenCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/phone-code-gen', headers=phone_gen_headers,
@@ -135,6 +140,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(phoneGenCall.text)
 
         # PUT /sso/register-verify (Phone Confirmation)
+        time.sleep(1)
         phone_confirm_payload = {"phoneConfirmation": {"asi": "true", "pincode": "1111", "pinType": "sms"}}
         phone_confirm_headers = {'Authorization': sso_register_access_token}
         phoneConfirmCall = requests.put('https://api-' + self.env + '.nylservices.net/sso/register-verify', headers=phone_confirm_headers,
@@ -147,6 +153,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(phoneConfirmCall.text)
 
         # PUT /sso/register-verify (Profile Update)
+        time.sleep(1)
         profile_update_headers = {'Authorization': sso_register_access_token}
         profile_update_payload = {'profileUpdate': {'verify': 'true', 'firstName': var.CREDSapi.ssoFName, 'lastName': var.CREDSapi.ssoLName,
                                 'phone': var.CREDSapi.ssoPhone,
@@ -165,6 +172,7 @@ class NYLServices(confTest.NYLservicesBASE):
 
         # TODO this request needs to be refactored for STAGE as the handle_govid_code must be dynamically generated
         # PUT /sso/handle-govid-response
+        time.sleep(1)
         if testenv == 'stage':
             pass
         elif testenv == 'dev' or 'qa':
@@ -180,6 +188,7 @@ class NYLServices(confTest.NYLservicesBASE):
                 print(handleGovidCall.text)
 
         # GET /users
+        time.sleep(1)
         users_headers = {'Authorization': sso_register_access_token}
         usersGetCall = requests.get('https://api-' + self.env + '.nylservices.net/users', headers=users_headers)
         if usersGetCall.status_code == 200:
@@ -190,6 +199,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(usersGetCall.text)
 
         # POST /sso/login (SSO user)
+        time.sleep(1)
         sso_login_payload = {"email": testemailSSO, "clientId": client_id, "password": var.CREDSapi.ssoPW}
         sso_loginCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/login', json=sso_login_payload)
         if sso_loginCall.status_code == 200:
@@ -200,6 +210,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(sso_loginCall.text)
 
         # POST /sso/logout
+        time.sleep(1)
         sso_logout_headers = {'Authorization': sso_register_access_token}
         sso_logout_payload = {"clientId": client_id, "accessToken": sso_register_access_token}
         sso_logoutCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/logout', headers=sso_logout_headers, json=sso_logout_payload)
@@ -211,6 +222,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(sso_logoutCall.text)
 
         # POST /sso/email-exists-check (SSO user)
+        time.sleep(1)
         email_exists_payload = {"email": testemailSSO, "clientId": client_id}
         emailExistsCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/email-exists-check',
                                         json=email_exists_payload)
@@ -222,6 +234,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(emailExistsCall.text)
 
         # POST /sso/reset-password (SSO user)
+        time.sleep(1)
         reset_password_headers = {'Authorization': sso_register_access_token}
         reset_password_payload = {"email": testemailSSO, "clientId": client_id}
         resetPasswordCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/reset-password', headers=reset_password_headers,
@@ -234,6 +247,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(resetPasswordCall.text)
 
         # POST /sso/register (Mobile user)
+        time.sleep(1)
         mobile_register_payload = {'clientId': m_client_id, 'email': testemailMOB, 'password': var.CREDSapi.mobilePW, 'firstName': var.CREDSapi.mobileFName, 'lastName': var.CREDSapi.mobileLName, 'phone': var.CREDSapi.mobilePhone}
         mobile_registerCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/register',
                                          json=mobile_register_payload)
@@ -256,6 +270,7 @@ class NYLServices(confTest.NYLservicesBASE):
         # print(mobile_register_access_token)
 
         # GET /promotions (Mobile user)
+        time.sleep(1)
         promotions_headers = {'x-api-key': m_x_api_key}
         promotionsCall = requests.get('https://api-' + self.env + '.nylservices.net/promotions',
                                       headers=promotions_headers)
@@ -267,6 +282,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(promotionsCall.text)
 
         # GET /retailers/all (Mobile user)
+        time.sleep(1)
         retailers_headers = {'x-api-key': m_x_api_key}
         retailersAllCall = requests.get('https://api-' + self.env + '.nylservices.net/retailers/all',
                                         headers=retailers_headers)
@@ -278,6 +294,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(retailersAllCall.text)
 
         # POST /sso/login (Mobile user)
+        time.sleep(1)
         mobile_login_payload = {"email": testemailMOB, "clientId": m_client_id, "password": var.CREDSapi.mobilePW}
         mobile_loginCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/login', json=mobile_login_payload)
         if mobile_loginCall.status_code == 200:
@@ -288,6 +305,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(mobile_loginCall.text)
 
         # GET /preferences (Mobile user)
+        time.sleep(1)
         preferences_headers = {'x-api-key': m_x_api_key, 'Authorization': mobile_register_access_token}
         params = {'type': 'app'}
         preferencesGetCall = requests.get('https://api-' + self.env + '.nylservices.net/preferences', headers=preferences_headers, params=params)
@@ -299,6 +317,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(preferencesGetCall.text)
 
         # POST /preferences (Mobile user)
+        time.sleep(1)
         preferences_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key, 'Fcm-token': m_fcm_token}
         params = {'type': 'app'}
         preferences_payload = {"myGames": ["lotto", "megamillions"], "notifications": {"lotto": {"dayOfDrawing": "true", "minimumJackpot": "2500000"}}, "draws": {"lotto": [[1, 8, 72, 2, 1], [2, 8, 72, 2, 1], [3, 8, 72, 2, 1], [4, 8, 72, 2, 1]], "cash4life": [[1, 8, 72, 2, 1], [2, 8, 72, 2, 1], [3, 8, 72, 2, 1], [4, 8, 72, 2, 1]]}, "quickdraw": {"theme": 1}}
@@ -311,6 +330,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(preferencesPostCall.text)
 
         # GET /mobile-static-views/:pageid
+        time.sleep(1)
         pages = ["settings-page", "visit-customer-service-center", "conditions", "privacy-policy", "contact-us", "faq-page", "ticket-purchase-policy", "faq-how-often-winning-numbers-updated", "faq-other-sources-winning-numbers", "faq-accurate-information", "faq-where-claim-prize", "faq-how-long-tickets-valid", "faq-connection-use-app", "faq-how-get-quick-draw-results", "faq-how-often-quick-draw-drawings", "faq-trouble-seeing-results", "faq-draw-times-games", "list-view-no-retailers-found", "mega-millions-how-to-play", "powerball-how-to-play", "lotto-how-to-play", "cash4life-how-to-play", "take-5-how-to-play", "numbers-how-to-play", "win-4-how-to-play", "quick-draw-how-to-play", "pick-10-how-to-play"]
         pages_headers = {'x-api-key': m_x_api_key}
         pagePassedFlags = []
@@ -318,6 +338,7 @@ class NYLServices(confTest.NYLservicesBASE):
         pageFailedStatusCode = []
         pageFailedList = []
         for page in pages:
+            time.sleep(2)
             indiPageCall = requests.get('https://api-' + self.env + '.nylservices.net//mobile-static-views/' + page, headers=pages_headers)
             if indiPageCall.status_code == 200:
                 pagePassedFlags.append(page)
@@ -330,7 +351,7 @@ class NYLServices(confTest.NYLservicesBASE):
 
         if pageFailedList != []:
             print("ERROR - These individual GET /mobile-static-views/:pageid endpoints and their status codes:")
-            print(pageFailedFlags)
+            print(pageFailedList)
         else:
             # print(pagePassedFlags)
             print("PASS - ALL individual GET /mobile-static-views/:pageid endpoints received Status Code: 200 ")
@@ -346,6 +367,7 @@ class NYLServices(confTest.NYLservicesBASE):
         print('***WARNING*** \n')
 
         # GET /ticket-scan/count (Mobile user)
+        time.sleep(1)
         ticketscan_count_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
         ticketscanCountCall = requests.get('https://api-' + self.env + '.nylservices.net/ticket-scan/count', headers=ticketscan_count_headers)
         if ticketscanCountCall.status_code == 200:
@@ -356,6 +378,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(ticketscanCountCall.text)
 
         # POST /ticket-scan/inquiry (Mobile user)
+        time.sleep(1)
         ticketscan_inquiry_payload = {"barcodeData": "87600275207207466326295006"}
         ticketscan_inquiry_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
         ticketscanInquiryCall = requests.post('https://api-' + self.env + '.nylservices.net/ticket-scan/inquiry', headers=ticketscan_inquiry_headers, json=ticketscan_inquiry_payload)
@@ -367,6 +390,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(ticketscanInquiryCall.text)
 
         # GET /games/all/draws
+        time.sleep(1)
         games_alldraws_headers = {'x-api-key': m_x_api_key}
         gamesAllDrawsCall = requests.get('https://api-' + self.env + '.nylservices.net/games/all/draws', headers=games_alldraws_headers)
         if gamesAllDrawsCall.status_code == 200:
@@ -377,6 +401,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print(gamesAllDrawsCall.text)
 
         # GET /games/{game-name}/draws
+        time.sleep(1)
         games = ["megamillions", "powerball", "lotto", "cash4life", "take5", "numbers", "win4", "quickdraw", "pick10"]
         headers = {'x-api-key': m_x_api_key}
         gamePassedFlags = []
@@ -384,6 +409,7 @@ class NYLServices(confTest.NYLservicesBASE):
         gameFailedStatusCode = []
         gameFailedList = []
         for game in games:
+            time.sleep(2)
             indiGameCall = requests.get('https://api-' + self.env + '.nylservices.net/games/' + game + '/draws', headers=headers)
             if indiGameCall.status_code == 200:
                 gamePassedFlags.append(game)
@@ -402,6 +428,7 @@ class NYLServices(confTest.NYLservicesBASE):
             print("PASS - ALL individual GET /games/{game-name}/draws endpoints received Status Code: 200 ")
 
         # POST /sso/logout (Mobile user)
+        time.sleep(1)
         mobile_logout_headers = {'Authorization': mobile_register_access_token}
         mobile_logout_payload = {"clientId": m_client_id, "accessToken": mobile_register_access_token}
         mobile_logoutCall = requests.post('https://api-' + self.env + '.nylservices.net/sso/logout', headers=mobile_logout_headers, json=mobile_logout_payload)

@@ -10,7 +10,7 @@ import funct
 # Credentials for NYL Services API
 class CREDSapi:
     # opens local file with user data
-    notepadfile = open('/Users/Shared/testing/api10292020.txt', 'r')
+    notepadfile = open('/Users/Shared/testing/api01122021.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
 
