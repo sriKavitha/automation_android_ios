@@ -3,7 +3,7 @@ import warnings
 import unittest, time, re
 import csv
 import HtmlTestRunner
-import var, funct, confTest     # Custom class
+import confTest    # Custom class
 
 class Rewild(confTest.RewildBrowserBASE):
     # check redirects by opening browser, waiting for redirect, verifying the url is as expected
@@ -11,7 +11,7 @@ class Rewild(confTest.RewildBrowserBASE):
         driver = self.driver
         from_urls = []
         to_urls = []
-        with open('redirect-test.csv', mode='r') as csv_file:
+        with open('../Rewild/files/Rewild - redirect breakdown - Mapped _team_ slugs.csv', mode='r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
@@ -22,7 +22,7 @@ class Rewild(confTest.RewildBrowserBASE):
             # print(from_urls)
             # print(to_urls)
 
-        # from_urls = ['https://rewildstaging.wpengine.com/']
+        # from_urls = ['https://www.globalwildlfe.org']
         # to_urls = ['https://www.rewild.org']
         redirectsPassedList = []
         redirectsFailedUrls = []
@@ -36,17 +36,24 @@ class Rewild(confTest.RewildBrowserBASE):
             driver.execute_script("window.open('');")
             # switch to new window with switch_to.window()
             driver.switch_to.window(driver.window_handles[1])
-            driver.get(f)
-            time.sleep(20)
-            if driver.current_url == t:
-                redirectsPassedList.append(f)
-                print('Successful redirect on: ' + f + ' Returned url: ' + driver.current_url)
-            else:
-                redirectsFailedUrls.append(f)
-                redirectsExpectedUrls.append(t)
-                redirectsCurrentUrls.append(driver.current_url)
-                print('Failed redirect: ' + f + ' Expected url: ' + t + ' Returned url: ' + driver.current_url)
-            driver.close()
+            try:
+                driver.get(f)
+                time.sleep(11)
+                if driver.current_url == t:
+                    redirectsPassedList.append(f)
+                else:
+                    redirectsFailedUrls.append(f)
+                    redirectsExpectedUrls.append(t)
+                    redirectsCurrentUrls.append(driver.current_url)
+                    print(f'FAILED redirect: {f} - Expected_url: {t} - Returned_url: {driver.current_url}')
+                driver.close()
+            except (RuntimeError, TypeError, NameError, ValueError) as e:
+                print(f'ERROR encountered: - {e} - {f} - Expected_url: {t} - Returned_url: {driver.current_url}')
+            except:
+                if driver.current_url == t:
+                    redirectsPassedList.append(f)
+                else:
+                    print(f'ERROR exception: {f} - Expected_url: {t} - Returned_url: {driver.current_url}')
             # switch back to old window with switch_to.window()
             driver.switch_to.window(driver.window_handles[0])
 
@@ -57,6 +64,7 @@ class Rewild(confTest.RewildBrowserBASE):
             print("ERROR - These individual urls did NOT redirect as expected:")
             print(f'(Initial URL, Expected URL, Returned URL)')
             print(redirectsFailedList)
+            raise Exception
         else:
             print("PASS - ALL individual urls redirected as expected ")
 
