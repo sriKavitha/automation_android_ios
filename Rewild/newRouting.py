@@ -10,7 +10,7 @@ class Rewild(confTest.RewildHeadlessBASE):
     # test the links under subcategory /get-to-know/[slug] and /wild-about/[slug] return 200s
     def test_newRoute(self):
         new_urls = []
-        with open('newroute.csv', mode='r') as csv_file:
+        with open('../Rewild/files/newroute.csv', mode='r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
@@ -31,8 +31,9 @@ class Rewild(confTest.RewildHeadlessBASE):
 
 
         if routingFailedList != []:
-            print("ERROR - These individual urls did NOT have 200 Status code:")
+            print("FAIL - These individual urls did NOT have 200 Status code:")
             print(routingFailedList)
+            raise Exception
         else:
             print("PASS - ALL individual urls returned 200 Status code")
             print(new_urls)
