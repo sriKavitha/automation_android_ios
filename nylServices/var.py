@@ -14,7 +14,7 @@ class CREDSapi:
     if confTest.NYLservicesBASE.testdata == 'iddw':
         notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
     elif confTest.NYLservicesBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/marie.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/api01122021.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
 
