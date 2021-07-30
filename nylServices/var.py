@@ -1,7 +1,7 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for variable file to work
 from selenium.webdriver.common.by import By
-import funct
+import funct, confTest
 # [Documentation - Summary] This file creates the variables for
 # NYL App objects for testing user flows
 
@@ -9,8 +9,12 @@ import funct
 
 # Credentials for NYL Services API
 class CREDSapi:
-    # opens local file with user data
-    notepadfile = open('/Users/Shared/testing/api01122021.txt', 'r')
+    # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
+    # opens specific local creds file with user data according to confTest variable
+    if confTest.NYLservicesBASE.testdata == 'iddw':
+        notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
+    elif confTest.NYLservicesBASE.testdata == 'real':
+        notepadfile = open('/Users/Shared/testing/api01122021.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
 

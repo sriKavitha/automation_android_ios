@@ -1,7 +1,7 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for variable file to work
 from selenium.webdriver.common.by import By
-import funct
+import funct, confTest
 
 # [Documentation - Summary] This file creates the variables for
 # NYL Single Sign On page objects for testing user flows
@@ -9,23 +9,27 @@ import funct
 # [Documentation - Variables] Objects on Registration page
 # Credentials for SSO Web user
 class credsSSOWEB:
-    # opens local file with user data
-    notepadfile = open('/Users/Shared/testing/nyl06102020.txt', 'r')
+    # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
+    # opens specific local creds file with user data according to confTest variable
+    if confTest.NYlottoBASE.testdata == 'iddw':
+        notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
+    elif confTest.NYlottoBASE.testdata == 'real':
+        notepadfile = open('/Users/Shared/testing/api01122021.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
-    fname = funct.getCredential(entry_info, 'first-name')
-    lname= funct.getCredential(entry_info, 'last-name')
-    housenum = funct.getCredential(entry_info, 'house-number')
-    street = funct.getCredential(entry_info, 'street-address')
-    city = funct.getCredential(entry_info, 'city')
-    state = funct.getCredential(entry_info, 'state')
-    zip = funct.getCredential(entry_info, 'zip')
-    phone = funct.getCredential(entry_info, 'Phone-number')
-    ssn4 = funct.getCredential(entry_info, 'ssn')
-    dob_month = funct.getCredential(entry_info, 'dob-month')
-    dob_date = funct.getCredential(entry_info, 'dob-date')
-    dob_year = funct.getCredential(entry_info, 'dob-year')
-    password = funct.getCredential(entry_info, 'password')
+    fname = funct.getCredential(entry_info, 'sso-first-name')
+    lname= funct.getCredential(entry_info, 'sso-last-name')
+    housenum = funct.getCredential(entry_info, 'sso-house-number')
+    street = funct.getCredential(entry_info, 'sso-street-address')
+    city = funct.getCredential(entry_info, 'sso-city')
+    state = funct.getCredential(entry_info, 'sso-state')
+    zip = funct.getCredential(entry_info, 'sso-zip')
+    phone = funct.getCredential(entry_info, 'sso-phone')
+    ssn4 = funct.getCredential(entry_info, 'sso-ssn')
+    dob_month = funct.getCredential(entry_info, 'sso-dob-month')
+    dob_date = funct.getCredential(entry_info, 'sso-dob-date')
+    dob_year = funct.getCredential(entry_info, 'sso-dob-year')
+    password = funct.getCredential(entry_info, 'sso-test-password')
 
 # Reg page elements
 class regV:

@@ -8,12 +8,16 @@ from selenium.webdriver.common.keys import Keys     #Keys class provide keys in 
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util                         #Custom class for NYL
-import pytest
 
 class NYlottoBASE(unittest.TestCase):
 #report can be "html" for testrunner reports or "terminal" for direct terminal feedback
     report = 'terminal'
-    #report = "html"
+    #report = 'html'
+
+# testdata can be "iddw" or "real" to denote which credential files to use in var.py
+    # testdata = 'iddw'
+    testdata = 'real'
+
 # The setUp is part of initialization, this method will get called before every test function which you
 # are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
 
