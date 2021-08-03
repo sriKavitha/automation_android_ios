@@ -20,10 +20,11 @@ class CREDSadmin:
 
 # [Documentation - Variables] Elements on Login page
 class loginV:
-    email = [By.ID, "signInFormUsername", "email"]
-    password = [By.ID, "signInFormPassword", "password"]
+    email = [By.XPATH, '(//input[@id="signInFormUsername"])[2]'
+    , "email"]
+    password = [By.XPATH, '(//input[@id="signInFormPassword"])[2]', "password"]
     forgot_password_link = [By.XPATH, "/html/body/div[1]/div/div[1]/div[2]/div[2]/div[3]/div/div/form/a", "forgot_password_link"]
-    signin_button = [By.NAME, "signInSubmitButton", "signin_button"]
+    signin_button = [By.XPATH, '(//input[@name="signInSubmitButton"])[2]', "signin_button"]
 
 # [Documentation - Variables] Elements on Home Dashboard page
 # class homeDashV:
