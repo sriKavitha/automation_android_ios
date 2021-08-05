@@ -21,6 +21,15 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndSend(driver, var.loginV.email, var.CREDSadmin.superadmin_username)
         funct.waitAndSend(driver, var.loginV.password, var.CREDSadmin.superadmin_psw)
         funct.waitAndClick(driver, var.loginV.signin_button)
+        time.sleep(1)
+        # Successful login should redirect to dashboard home page.
+        # Checking that the home breadcrumb button is present on page.
+        if driver.find_elements_by_xpath(var.homeDashV.home_breadcrumb_link[1]) != []:
+            print('PASS - login successful and redirected to Dashboard home')
+        else:
+            funct.fullshot(driver)
+            print('FAIL - Login attempt failed or redirected incorrectly')
+            raise Exception('Unexpected behavior encountered')
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":

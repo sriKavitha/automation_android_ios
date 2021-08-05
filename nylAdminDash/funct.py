@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
 import os, json, boto3
-import var
+import var, util
 from urllib.parse import urlparse
 
 
@@ -143,11 +143,11 @@ def checkText(browser, elem, stub):
         assert el.text == stub
 
 # [Documentation - Function] Function that calls the script to grab full page UTC timestamped screenshot
-# def fullshot(browser):
-#     browser.set_window_position(0, 0)
-#     browser.maximize_window()
-#     timestamp = timeStamp() + '.png'
-#     util.fullpage_screenshot(browser, timestamp)
+def fullshot(browser):
+    browser.set_window_position(0, 0)
+    browser.maximize_window()
+    timestamp = timeStamp() + '.png'
+    util.fullpage_screenshot(browser, timestamp)
 
 # [Documentation - Function] Checks that an error exists
 def checkError(browser, elemWarning):

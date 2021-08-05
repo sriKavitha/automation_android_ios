@@ -20,11 +20,26 @@ class CREDSadmin:
 
 # [Documentation - Variables] Elements on Login page
 class loginV:
-    email = [By.XPATH, '(//input[@id="signInFormUsername"])[2]'
-    , "email"]
-    password = [By.XPATH, '(//input[@id="signInFormPassword"])[2]', "password"]
-    forgot_password_link = [By.XPATH, "/html/body/div[1]/div/div[1]/div[2]/div[2]/div[3]/div/div/form/a", "forgot_password_link"]
-    signin_button = [By.XPATH, '(//input[@name="signInSubmitButton"])[2]', "signin_button"]
+    email = [By.XPATH, '(//input[@id="signInFormUsername"])[2]', 'email']
+    password = [By.XPATH, '(//input[@id="signInFormPassword"])[2]', 'password']
+    forgotPassword_link = [By.XPATH, '/html/body/div[1]/div/div[1]/div[2]/div[2]/div[3]/div/div/form/a', 'forgotPassword_link']
+    signin_button = [By.XPATH, '(//input[@name="signInSubmitButton"])[2]', 'signin_button']
 
 # [Documentation - Variables] Elements on Home Dashboard page
-# class homeDashV:
+class homeDashV:
+    home_breadcrumb_link = [By.XPATH, '//*[@id="kt_subheader"]/div/div/div/a[1]', 'home_breadcrumb_link']
+    search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/input', 'search_input']
+    category_email = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'category_email']
+    operator_contains = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'operator_contains']
+    search_button = [By.CSS_SELECTOR, '#kt_content > div.kt-container.kt-container--fluid.kt-grid__item.kt-grid__item--fluid > div > div > div > div.kt-portlet__body > div:nth-child(1) > div > div > div > div > div > div > div.form-group > button', 'signin_button']
+    bulkAction_button = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[2]/div/div/div/div/button', 'bulkAction_button']
+    li_verification = [By.XPATH, '/html/body/div[2]/div/div/ul/li[1]', "li_verification"]
+    li_unverification = [By.XPATH, '/html/body/div[2]/div/div/ul/li[2]', "li_unverification"]
+    li_lock = [By.XPATH, '/html/body/div[2]/div/div/ul/li[3]', "li_lock"]
+    li_unlock = [By.XPATH, '/html/body/div[2]/div/div/ul/li[4]', "li_unlock"]
+    li_delete = [By.XPATH, '/html/body/div[2]/div/div/ul/li[5]', "li_delete"]
+    comment_textarea = [By.XPATH, '//textarea[@id="comment"]', 'comment_textarea']
+    comment_phrase_textarea = [By.XPATH, '//input[@id="phrase"]', 'comment_phrase_textarea']
+    comment_ok_button = [By.XPATH, '/html/body/div[3]/div/div[2]/div/div[2]/div[3]/button[2]', 'comment_ok_button']
+    returnedUser_checkbox = [By.XPATH, '(//input[@type="checkbox"])[2]', 'returnedUser_checkbox']
+    no_data_msg = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td/div/p', 'no_data_msg']
