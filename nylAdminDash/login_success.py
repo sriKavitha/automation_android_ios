@@ -24,7 +24,7 @@ class NYLadmin(confTest.NYLadminBASE):
         time.sleep(1)
         # Successful login should redirect to dashboard home page.
         # Checking that the home breadcrumb button is present on page.
-        if driver.find_elements_by_xpath(var.homeDashV.home_breadcrumb_link[1]) != []:
+        if driver.find_elements_by_xpath(var.dashV.home_breadcrumb_link[1]) != []:
             print('PASS - login successful and redirected to Dashboard home')
         else:
             funct.fullshot(driver)
