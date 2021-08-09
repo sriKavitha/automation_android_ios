@@ -1,0 +1,93 @@
+# [Documentation - Setup] This section lists all dependencies
+# that are imported for this test file to work
+from selenium import webdriver  #webdriver module provides all WebDriver implementations
+import warnings
+import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
+from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
+from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
+from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
+import var, funct, confTest, HTMLTestRunner   #Custom class for NYL
+
+class NYLadmin(confTest.NYLadminBASE):
+
+# Checks deletion and purge of user with email search is successful
+    def test01_loginSuccess(self):
+        driver = self.driver
+        # url is pulled from confTest
+        driver.get(self.url)
+
+        testemail = self.testemail
+        # Instructions for webdriver to read and input user data via the info on the .txt doc.
+        # Credentials are localized to one instance via the var file
+        funct.waitAndSend(driver, var.loginV.email, var.CREDSadmin.superadmin_username)
+        funct.waitAndSend(driver, var.loginV.password, var.CREDSadmin.superadmin_psw)
+        funct.waitAndClick(driver, var.loginV.signin_button)
+        # Search for test user via Email
+        funct.waitAndSend(driver, var.dashV.search_input, "Email")
+        funct.waitAndClick(driver, var.dashV.category_email)
+        funct.waitAndClick(driver, var.dashV.operator_contains)
+        funct.waitAndSend(driver, var.dashV.search_input, testemail)
+        driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
+        funct.waitAndClick(driver, var.dashV.search_button)
+        time.sleep(5)
+        # Checks the returned user is the correct user
+        source = driver.page_source
+        num_returned = source.count(testemail)
+        if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+            print("No user found, check user data")
+        elif num_returned != 2:
+            print("User not found, check user data")
+        else:
+            pass
+        # Clicks checkbox for first user returned
+        funct.waitAndClick(driver, var.dashV.searchedUser_checkbox)
+        funct.waitAndClick(driver, var.dashV.bulkAction_button)
+        funct.waitAndClick(driver, var.dashV.li_delete)
+        # Submits comment and mandatory text for completion
+        ts = funct.timeStamp()
+        funct.waitAndSend(driver, var.dashV.comment_textarea, "automated test change at " + ts)
+        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        funct.waitAndSend(driver, var.dashV.comment_phrase_textarea, "mark for deletion")
+        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        time.sleep(5)
+        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        # # Navigates to Pending Deletion user list to purge user
+        funct.waitAndClick(driver, var.dashV.pendingDeletion_link)
+        # Search for test user via Email
+        funct.waitAndSend(driver, var.dashV.search_input, "Email")
+        funct.waitAndClick(driver, var.dashV.category_email)
+        funct.waitAndClick(driver, var.dashV.operator_contains)
+        funct.waitAndSend(driver, var.dashV.search_input, testemail)
+        driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
+        funct.waitAndClick(driver, var.dashV.search_button)
+        time.sleep(5)
+        # Checks the returned user is the correct user
+        source = driver.page_source
+        num_returned = source.count(testemail)
+        if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+            print("No user found, check user data")
+        elif num_returned != 2:
+            print("User not found, check user data")
+        else:
+            pass
+        # Clicks checkbox for first user returned
+        funct.waitAndClick(driver, var.dashV.pendingDeleteUser_checkbox)
+        funct.waitAndClick(driver, var.dashV.bulkAction_button)
+        funct.waitAndClick(driver, var.dashV.li_permDelete)
+        # Submits comment and mandatory text for completion
+        ts = funct.timeStamp()
+        funct.waitAndSend(driver, var.dashV.comment_textarea, "automated test change at " + ts)
+        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        funct.waitAndSend(driver, var.dashV.comment_phrase_textarea, "purge")
+        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        time.sleep(5)
+        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        time.sleep(5)
+        if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+            print("Test user found and purged")
+
+# Boiler plate code to run the test suite
+if __name__ == "__main__":
+    # First runner will enable html logs on your current directory, second runner will keep local console logs
+    # unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
+    unittest.main(warnings='ignore')
