@@ -11,7 +11,7 @@ import var, funct, confTest, HTMLTestRunner   #Custom class for NYL
 class NYLadmin(confTest.NYLadminBASE):
 
 # Checks deletion and purge of user with email search is successful
-    def test01_loginSuccess(self):
+    def test01_deleteSuccess(self):
         driver = self.driver
         # url is pulled from confTest
         driver.get(self.url)
@@ -28,15 +28,16 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndClick(driver, var.dashV.operator_contains)
         funct.waitAndSend(driver, var.dashV.search_input, testemail)
         driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
+        time.sleep(2)
         funct.waitAndClick(driver, var.dashV.search_button)
         time.sleep(5)
         # Checks the returned user is the correct user
         source = driver.page_source
         num_returned = source.count(testemail)
         if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
-            print("No user found, check user data")
+            raise Exception("No user found, check user data")
         elif num_returned != 2:
-            print("User not found, check user data")
+            raise Exception("User not found, check user data")
         else:
             pass
         # Clicks checkbox for first user returned
@@ -59,15 +60,16 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndClick(driver, var.dashV.operator_contains)
         funct.waitAndSend(driver, var.dashV.search_input, testemail)
         driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
+        time.sleep(2)
         funct.waitAndClick(driver, var.dashV.search_button)
-        time.sleep(5)
+        time.sleep(3)
         # Checks the returned user is the correct user
         source = driver.page_source
         num_returned = source.count(testemail)
         if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
-            print("No user found, check user data")
+            raise Exception("No user found, check user data")
         elif num_returned != 2:
-            print("User not found, check user data")
+            raise Exception("User not found, check user data")
         else:
             pass
         # Clicks checkbox for first user returned
@@ -80,11 +82,16 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndClick(driver, var.dashV.modal_ok_button)
         funct.waitAndSend(driver, var.dashV.comment_phrase_textarea, "purge")
         funct.waitAndClick(driver, var.dashV.modal_ok_button)
-        time.sleep(5)
+        time.sleep(2)
         funct.waitAndClick(driver, var.dashV.modal_ok_button)
-        time.sleep(5)
+        time.sleep(3)
+        # Search for test user via Email again to confirm user is gone from system
+        funct.waitAndClick(driver, var.dashV.search_button)
+        time.sleep(3)
         if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
             print("Test user found and purged")
+        else:
+            raise Exception("User not purged, try again.")
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":

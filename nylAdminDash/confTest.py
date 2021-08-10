@@ -15,8 +15,8 @@ class NYLadminBASE(unittest.TestCase):
     #report = 'html'
 
 # testdata can be "iddw" or "real" to denote which credential files to use in var.py
-#     testdata = 'iddw'
-    testdata = 'real'
+    testdata = 'iddw'
+    #testdata = 'real'
 
     # The setUp is part of initialization, this method will get called before every test function which you
     # are going to write in this test case class.
