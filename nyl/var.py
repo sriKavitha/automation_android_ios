@@ -54,7 +54,7 @@ class regV:
     tos_check = [By.NAME, "acceptedTermsAndConditions", "tos_check"]
     cnw_check = [By.NAME, "collectnwin", "cnw_check"]
     nylnews_check = [By.NAME, "newsletter", "nylnews_check"]
-    submit_button = [By.CLASS_NAME, "nyl-btn", "submit_button"]
+    submit_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/form/div[2]/div[7]/button/span', "submit_button"]
 
 # error variables
     fname_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(2) > div.is-error.invalid-feedback", "fname_error"]
@@ -89,8 +89,8 @@ class regV:
 # [Documentation - Variables] Objects on OTP pages
 class otpV:
 # otp method selection page
-    text_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > div > button.nyl-btn-single.button-1 > span"]
-    call_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > div > button.nyl-btn-single.button-2 > span"]
+    text_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[1]/span']
+    call_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[2]/span']
 # otp code entry page
     otp_input = [By.NAME, "otp"]
     otp_continue_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(4) > button > span"]

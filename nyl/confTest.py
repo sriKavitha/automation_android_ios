@@ -15,17 +15,17 @@ class NYlottoBASE(unittest.TestCase):
     #report = 'html'
 
 # testdata can be "iddw" or "real" to denote which credential files to use in var.py
-    # testdata = 'iddw'
-    testdata = 'real'
+    testdata = 'iddw'
+    # testdata = 'real'
 
 # The setUp is part of initialization, this method will get called before every test function which you
 # are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
 
     def setUp(self):
         #.env can be "dev", "qa", or "stage" to denote which environment and credentials to use
-        self.env = 'qa'
+        self.env = 'dev'
 
-        self.testemail = "marie.liao+ssotest@rosedigital.co"
+        self.testemail = "qa+ssotest@rosedigital.co"
         if self.env == 'dev':
             self.url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
             self.login_url = "https://sso-dev.nylservices.net/login?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
