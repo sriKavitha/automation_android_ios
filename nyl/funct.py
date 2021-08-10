@@ -2,43 +2,96 @@
 # that are imported for function file to work
 from browsermobproxy import Server
 from selenium import webdriver
-import unittest, time, re
+import time
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
-import os, json, util, boto3, var
+import json, util, var
 from urllib.parse import urlparse
-
 
 # [Documentation - Summary] This file creates the functions for
 # use in the automation test suite of NYL SSO
 
-# [Documentation - Function] Checks for existing test user in userpool and deletes the user if found.
-def purge(self, email):
+# [Documentation - Function] Checks for existing test user in SSO userpool
+# and if found deletes the user through the Admin Dashboard.
+
+def purgeSSO(self, email):
     if self.env == 'dev':
-        userpool='us-east-1_GFTjSQrHQ'
+        self.url = 'https://admin-dev.nylservices.net/'
     elif self.env == 'qa':
-        userpool = 'us-east-1_QZZDGaPyw'
+        self.url = 'https://admin-qa.nylservices.net/'
     elif self.env == 'stage':
-        userpool = 'us-east-1_v3S7DZTfs'
-    client = boto3.client('cognito-idp')
-    # print(userpool)
-    testemail = 'email ="' + str(email) + '"'
-    response = client.list_users(
-        UserPoolId=userpool,
-        AttributesToGet=[
-            'email',
-        ],
-        Limit=30,
-        Filter=testemail
-    )
-    print(response)
-    testUser = response['Users'][0]['Username']
-    response2 = client.admin_delete_user(
-        UserPoolId=userpool,
-        Username=testUser
-    )
-    print(response2)
+        self.url = 'https://admin-stage.nylservices.net/'
+
+    driver = self.driver
+    driver.get(self.url)
+    # Instructions for webdriver to read and input user data via the info on the .txt doc.
+    # Credentials are localized to one instance via the var file
+    waitAndSend(driver, var.loginV.email, var.CREDSadmin.superadmin_username)
+    waitAndSend(driver, var.loginV.password, var.CREDSadmin.superadmin_psw)
+    waitAndClick(driver, var.loginV.signin_button)
+    # Search for test user via Email
+    waitAndSend(driver, var.dashV.search_input, "Email")
+    waitAndClick(driver, var.dashV.category_email)
+    waitAndClick(driver, var.dashV.operator_contains)
+    waitAndSend(driver, var.dashV.search_input, email)
+    driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
+    waitAndClick(driver, var.dashV.search_button)
+    time.sleep(5)
+    # Checks the returned user is the correct user
+    source = driver.page_source
+    num_returned = source.count(email)
+    if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+        print("No user found, check user data")
+    elif num_returned != 2:
+        print("User not found, check user data")
+    else:
+        pass
+    # Clicks checkbox for first user returned
+    waitAndClick(driver, var.dashV.searchedUser_checkbox)
+    waitAndClick(driver, var.dashV.bulkAction_button)
+    waitAndClick(driver, var.dashV.li_delete)
+    # Submits comment and mandatory text for completion
+    ts = timeStamp()
+    waitAndSend(driver, var.dashV.comment_textarea, "automated test change at " + ts)
+    waitAndClick(driver, var.dashV.modal_ok_button)
+    waitAndSend(driver, var.dashV.comment_phrase_textarea, "mark for deletion")
+    waitAndClick(driver, var.dashV.modal_ok_button)
+    time.sleep(5)
+    waitAndClick(driver, var.dashV.modal_ok_button)
+    # # Navigates to Pending Deletion user list to purge user
+    waitAndClick(driver, var.dashV.pendingDeletion_link)
+    # Search for test user via Email
+    waitAndSend(driver, var.dashV.search_input, "Email")
+    waitAndClick(driver, var.dashV.category_email)
+    waitAndClick(driver, var.dashV.operator_contains)
+    waitAndSend(driver, var.dashV.search_input, email)
+    driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
+    waitAndClick(driver, var.dashV.search_button)
+    time.sleep(5)
+    # Checks the returned user is the correct user
+    source = driver.page_source
+    num_returned = source.count(email)
+    if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+        print("No user found, check user data")
+    elif num_returned != 2:
+        print("User not found, check user data")
+    else:
+        pass
+    # Clicks checkbox for first user returned
+    waitAndClick(driver, var.dashV.pendingDeleteUser_checkbox)
+    waitAndClick(driver, var.dashV.bulkAction_button)
+    waitAndClick(driver, var.dashV.li_permDelete)
+    # Submits comment and mandatory text for completion
+    ts = timeStamp()
+    waitAndSend(driver, var.dashV.comment_textarea, "automated test change at " + ts)
+    waitAndClick(driver, var.dashV.modal_ok_button)
+    waitAndSend(driver, var.dashV.comment_phrase_textarea, "purge")
+    waitAndClick(driver, var.dashV.modal_ok_button)
+    time.sleep(5)
+    waitAndClick(driver, var.dashV.modal_ok_button)
+    time.sleep(5)
+    if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+        print("Test user found and purged")
 
 # [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
 # target should be given plainly, without colons
@@ -154,7 +207,7 @@ def checkValue(browser, elem, valueExpected):
 def createVerifiedUser(self, email):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
-            purge(self, email)
+            purgeSSO(self, email)
             print('test user purged')
         except:
             print('no test user found')
@@ -180,7 +233,8 @@ def createVerifiedUser(self, email):
         waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
         waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
         waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
-        waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
+        waitAndSend(driver, var.regV.dob, (
+                    var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         waitAndClick(driver, var.regV.dob_check)
         waitAndSend(driver, var.regV.email, email)
         waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)

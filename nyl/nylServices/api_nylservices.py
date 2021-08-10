@@ -2,9 +2,10 @@ from selenium import webdriver  # webdriver module provides all WebDriver implem
 import warnings
 import unittest, time, re  # unittest is the testing framework, provides module for organizing test cases
 import requests, json           # Requests provides ability to hit API Json provides ability to encode & decode Json files
-import HtmlTestRunner
-import var, funct, confTest     # Custom class for NYL
+import HTMLTestRunner
 
+from nylServices import var, funct, confTest     # Custom class for NYL
+from nylAdminDash import var, funct, confTest
 
 class NYLServices(confTest.NYLservicesBASE):
 
@@ -25,7 +26,7 @@ class NYLServices(confTest.NYLservicesBASE):
 
         # Check for existing test SSO user and wipe it from userpool prior to register api call
         try:
-            funct.purge(self, testemailSSO)
+            nylAdminDash.funct.purgeSSO(self, testemailSSO)
             print('test user ' + testemailSSO + ' purged \n')
         except:
             print('no test user ' + testemailSSO + ' found \n')
@@ -450,7 +451,7 @@ class NYLServices(confTest.NYLservicesBASE):
         # Clean up - clear test user from userpool
         # Check for existing test SSO user and wipe it from userpool prior to register api call
         try:
-            funct.purge(self, testemailSSO)
+            nylAdminDash.funct.purgeSSO(self, testemailSSO)
             print('test user ' + testemailSSO + ' purged \n')
         except:
             print('no test user ' + testemailSSO + ' found \n')

@@ -19,71 +19,71 @@ class NYLadmin(confTest.NYLadminBASE):
         testemail = self.testemail
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         # Credentials are localized to one instance via the var file
-        funct.waitAndSend(driver, var.loginV.email, var.CREDSadmin.superadmin_username)
-        funct.waitAndSend(driver, var.loginV.password, var.CREDSadmin.superadmin_psw)
-        funct.waitAndClick(driver, var.loginV.signin_button)
+        funct.waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
+        funct.waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
+        funct.waitAndClick(driver, var.adminLoginVar.signin_button)
         # Search for test user via Email
-        funct.waitAndSend(driver, var.dashV.search_input, "Email")
-        funct.waitAndClick(driver, var.dashV.category_email)
-        funct.waitAndClick(driver, var.dashV.operator_contains)
-        funct.waitAndSend(driver, var.dashV.search_input, testemail)
-        driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
-        funct.waitAndClick(driver, var.dashV.search_button)
+        funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
+        funct.waitAndClick(driver, var.adminDashVar.category_email)
+        funct.waitAndClick(driver, var.adminDashVar.operator_contains)
+        funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
+        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+        funct.waitAndClick(driver, var.adminDashVar.search_button)
         time.sleep(5)
         # Checks the returned user is the correct user
         source = driver.page_source
         num_returned = source.count(testemail)
-        if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+        if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
             print("No user found, check user data")
         elif num_returned != 2:
             print("User not found, check user data")
         else:
             pass
         # Clicks checkbox for first user returned
-        funct.waitAndClick(driver, var.dashV.searchedUser_checkbox)
-        funct.waitAndClick(driver, var.dashV.bulkAction_button)
-        funct.waitAndClick(driver, var.dashV.li_delete)
+        funct.waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
+        funct.waitAndClick(driver, var.adminDashVar.bulkAction_button)
+        funct.waitAndClick(driver, var.adminDashVar.li_delete)
         # Submits comment and mandatory text for completion
         ts = funct.timeStamp()
-        funct.waitAndSend(driver, var.dashV.comment_textarea, "automated test change at " + ts)
-        funct.waitAndClick(driver, var.dashV.modal_ok_button)
-        funct.waitAndSend(driver, var.dashV.comment_phrase_textarea, "mark for deletion")
-        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+        funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
+        funct.waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "mark for deletion")
+        funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
         time.sleep(5)
-        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
         # # Navigates to Pending Deletion user list to purge user
-        funct.waitAndClick(driver, var.dashV.pendingDeletion_link)
+        funct.waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
         # Search for test user via Email
-        funct.waitAndSend(driver, var.dashV.search_input, "Email")
-        funct.waitAndClick(driver, var.dashV.category_email)
-        funct.waitAndClick(driver, var.dashV.operator_contains)
-        funct.waitAndSend(driver, var.dashV.search_input, testemail)
-        driver.find_element_by_xpath(var.dashV.search_input[1]).send_keys(Keys.ENTER)
-        funct.waitAndClick(driver, var.dashV.search_button)
+        funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
+        funct.waitAndClick(driver, var.adminDashVar.category_email)
+        funct.waitAndClick(driver, var.adminDashVar.operator_contains)
+        funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
+        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+        funct.waitAndClick(driver, var.adminDashVar.search_button)
         time.sleep(5)
         # Checks the returned user is the correct user
         source = driver.page_source
         num_returned = source.count(testemail)
-        if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+        if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
             print("No user found, check user data")
         elif num_returned != 2:
             print("User not found, check user data")
         else:
             pass
         # Clicks checkbox for first user returned
-        funct.waitAndClick(driver, var.dashV.pendingDeleteUser_checkbox)
-        funct.waitAndClick(driver, var.dashV.bulkAction_button)
-        funct.waitAndClick(driver, var.dashV.li_permDelete)
+        funct.waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
+        funct.waitAndClick(driver, var.adminDashVar.bulkAction_button)
+        funct.waitAndClick(driver, var.adminDashVar.li_permDelete)
         # Submits comment and mandatory text for completion
         ts = funct.timeStamp()
-        funct.waitAndSend(driver, var.dashV.comment_textarea, "automated test change at " + ts)
-        funct.waitAndClick(driver, var.dashV.modal_ok_button)
-        funct.waitAndSend(driver, var.dashV.comment_phrase_textarea, "purge")
-        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+        funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
+        funct.waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "purge")
+        funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
         time.sleep(5)
-        funct.waitAndClick(driver, var.dashV.modal_ok_button)
+        funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
         time.sleep(5)
-        if driver.find_elements_by_xpath(var.dashV.no_data_msg[1]) != []:
+        if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
             print("Test user found and purged")
 
 # Boiler plate code to run the test suite

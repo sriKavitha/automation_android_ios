@@ -18,13 +18,13 @@ class NYLadmin(confTest.NYLadminBASE):
 
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         # Credentials are localized to one instance via the var file
-        funct.waitAndSend(driver, var.loginV.email, var.CREDSadmin.superadmin_username)
-        funct.waitAndSend(driver, var.loginV.password, var.CREDSadmin.superadmin_psw)
-        funct.waitAndClick(driver, var.loginV.signin_button)
+        funct.waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
+        funct.waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
+        funct.waitAndClick(driver, var.adminLoginVar.signin_button)
         time.sleep(1)
         # Successful login should redirect to dashboard home page.
         # Checking that the home breadcrumb button is present on page.
-        if driver.find_elements_by_xpath(var.dashV.home_breadcrumb_link[1]) != []:
+        if driver.find_elements_by_xpath(var.adminDashVar.home_breadcrumb_link[1]) != []:
             print('PASS - login successful and redirected to Dashboard home')
         else:
             funct.fullshot(driver)
