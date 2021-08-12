@@ -1,13 +1,17 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for this test file to work
-import unittest, time  #unittest is the testing framework, provides module for organizing test cases
+from selenium import webdriver  #webdriver module provides all WebDriver implementations
+import warnings
+import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from nyl import confTest, funct, var, util  #Custom class for NYL
+from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
+from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
+import var, funct, confTest, HTMLTestRunner   #Custom class for NYL
 
 class NYLadmin(confTest.NYLadminBASE):
 
-# Checks deletion and purge of user with email search is successful
-    def test01_loginSuccess(self):
+# Checks deletion and purge of user with email search is successful    def test01_deleteSuccess(self):
+    def test01_deleteSuccess(self):
         driver = self.driver
         # url is pulled from confTest
         driver.get(self.url)
@@ -24,15 +28,16 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndClick(driver, var.adminDashVar.operator_contains)
         funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
         driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+        time.sleep(2)
         funct.waitAndClick(driver, var.adminDashVar.search_button)
-        time.sleep(5)
+        time.sleep(3)
         # Checks the returned user is the correct user
         source = driver.page_source
         num_returned = source.count(testemail)
         if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
-            print("No user found, check user data")
+            raise Exception("No user found, check user data")
         elif num_returned != 2:
-            print("User not found, check user data")
+            raise Exception("User not found, check user data")
         else:
             pass
         # Clicks checkbox for first user returned
@@ -55,15 +60,16 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndClick(driver, var.adminDashVar.operator_contains)
         funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
         driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+        time.sleep(2)
         funct.waitAndClick(driver, var.adminDashVar.search_button)
-        time.sleep(5)
+        time.sleep(3)
         # Checks the returned user is the correct user
         source = driver.page_source
         num_returned = source.count(testemail)
         if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
-            print("No user found, check user data")
+            raise Exception("No user found, check user data")
         elif num_returned != 2:
-            print("User not found, check user data")
+            raise Exception("User not found, check user data")
         else:
             pass
         # Clicks checkbox for first user returned
@@ -76,11 +82,16 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
         funct.waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "purge")
         funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
-        time.sleep(5)
+        time.sleep(2)
         funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
-        time.sleep(5)
+        time.sleep(3)
+        # Search for test user via Email again to confirm user is gone from system
+        funct.waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(3)
         if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
             print("Test user found and purged")
+        else:
+            raise Exception("User not purged, try again.")
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
