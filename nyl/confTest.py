@@ -4,7 +4,7 @@ from selenium import webdriver  #webdriver module provides all WebDriver impleme
 import warnings
 from browsermobproxy import Server
 import unittest  #unittest is the testing framework, provides module for organizing test cases
-from nyl import funct  #Custom class for NYL
+import funct  #Custom class for NYL
 
 ###==============================================================###
 # Global variables

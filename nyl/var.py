@@ -2,7 +2,7 @@
 # that are imported for variable file to work
 from selenium.webdriver.common.by import By
 
-from nyl import funct, confTest
+import funct, confTest
 
 ###==============================================================###
 # NYL Admin Dash

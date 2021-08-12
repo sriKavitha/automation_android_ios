@@ -4,8 +4,7 @@ import unittest, time, re  # unittest is the testing framework, provides module 
 import requests, json           # Requests provides ability to hit API Json provides ability to encode & decode Json files
 import HTMLTestRunner
 
-from nylServices import var, funct, confTest     # Custom class for NYL
-from nylAdminDash import var, funct, confTest
+import var, funct, confTest     # Custom class for NYL
 
 class NYLServices(confTest.NYLservicesBASE):
 

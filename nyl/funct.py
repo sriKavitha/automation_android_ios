@@ -10,7 +10,7 @@ from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 
-from nyl import util, var
+import util, var
 
 
 # [Documentation - Summary] This file creates the functions for
