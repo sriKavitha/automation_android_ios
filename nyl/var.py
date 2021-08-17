@@ -14,9 +14,9 @@ import funct, confTest
 class CREDSadmin:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
-    if confTest.testdata == 'iddw':
+    if confTest.NYLadminBASE.testdata == 'iddw':
         notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
-    elif confTest.testdata == 'real':
+    elif confTest.NYLadminBASE.testdata == 'real':
         notepadfile = open('/Users/Shared/testing/nyl08022021.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()

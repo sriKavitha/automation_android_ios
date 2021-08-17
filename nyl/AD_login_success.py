@@ -1,7 +1,7 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for this test file to work
 import unittest, time  #unittest is the testing framework, provides module for organizing test cases
-import confTest, funct, var, util  #Custom class for NYL
+import var, funct, confTest, HTMLTestRunner   #Custom class for NYL
 
 class NYLadmin(confTest.NYLadminBASE):
 
