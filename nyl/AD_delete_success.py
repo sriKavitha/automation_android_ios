@@ -14,7 +14,7 @@ class NYLadmin(confTest.NYLadminBASE):
     def test01_deleteSuccess(self):
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.admin_url)
 
         testemail = self.testemail
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
@@ -23,9 +23,10 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         funct.waitAndClick(driver, var.adminLoginVar.signin_button)
         # Search for test user via Email
-        funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
-        funct.waitAndClick(driver, var.adminDashVar.category_email)
-        funct.waitAndClick(driver, var.adminDashVar.operator_contains)
+        funct.waitAndClick(driver, var.adminDashVar.search_input)
+        # funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
+        # funct.waitAndClick(driver, var.adminDashVar.category_email)
+        # funct.waitAndClick(driver, var.adminDashVar.operator_contains)
         funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
         driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
         time.sleep(2)
@@ -55,9 +56,10 @@ class NYLadmin(confTest.NYLadminBASE):
         # # Navigates to Pending Deletion user list to purge user
         funct.waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
         # Search for test user via Email
-        funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
-        funct.waitAndClick(driver, var.adminDashVar.category_email)
-        funct.waitAndClick(driver, var.adminDashVar.operator_contains)
+        funct.waitAndClick(driver, var.adminDashVar.search_input)
+        # funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
+        # funct.waitAndClick(driver, var.adminDashVar.category_email)
+        # funct.waitAndClick(driver, var.adminDashVar.operator_contains)
         funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
         driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
         time.sleep(2)

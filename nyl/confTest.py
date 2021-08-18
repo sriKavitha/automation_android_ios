@@ -36,11 +36,11 @@ class NYLadminBASE(unittest.TestCase):
         self.testemail = globalVar.testemail
 
         if self.env == 'dev':
-            self.url = 'https://admin-dev.nylservices.net/'
+            self.admin_url = 'https://admin-dev.nylservices.net/'
         elif self.env == 'qa':
-            self.url = 'https://admin-qa.nylservices.net/'
+            self.admin_url = 'https://admin-qa.nylservices.net/'
         elif self.env == 'stage':
-            self.url = 'https://admin-stage.nylservices.net/'
+            self.admin_url = 'https://admin-stage.nylservices.net/'
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")

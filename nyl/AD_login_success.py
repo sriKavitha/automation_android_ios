@@ -9,7 +9,7 @@ class NYLadmin(confTest.NYLadminBASE):
     def test01_loginSuccess(self):
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.admin_url)
 
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         # Credentials are localized to one instance via the var file
