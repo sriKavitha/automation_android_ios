@@ -25,8 +25,8 @@ class CREDSadmin:
 
 # [Documentation - Variables] Elements on Login page
 class adminLoginVar:
-    email = [By.XPATH, '(//input[@id="signInFormUsername"])[2]', 'email']
-    password = [By.XPATH, '(//input[@id="signInFormPassword"])[2]', 'password']
+    email = [By.XPATH, '(//input[@id="signInFormUsername"])[2]', 'email_field']
+    password = [By.XPATH, '(//input[@id="signInFormPassword"])[2]', 'password_field']
     forgotPassword_link = [By.XPATH, '/html/body/div[1]/div/div[1]/div[2]/div[2]/div[3]/div/div/form/a', 'forgotPassword_link']
     signin_button = [By.XPATH, '(//input[@name="signInSubmitButton"])[2]', 'signin_button']
 
@@ -38,8 +38,18 @@ class adminDashVar:
     permanentlyDeleted_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[3]/a/span', 'permanentlyDeleted_link']
     admins_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[4]/a/span', 'admins_link']
     features_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[5]/a/span', 'features_link']
-    search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/input', 'search_input']
-    category_email = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'category_email']
+    # TODO due to ongoing Admin Dash work in dev env, different locators are used for same element, will need to update once AD work is complete
+    if confTest.globalVar.env == 'dev':
+        search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/input', 'search_input']
+    else:
+        search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/input', 'search_input']
+    category_fname = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'category_fname']
+    category_lname = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[3]/a', 'category_lname']
+    category_address = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[4]/a', 'category_address']
+    category_phone = [By.XPATH,
+                      '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[5]/a',
+                      'category_phone']
+    category_email = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[6]/a', 'category_email']
     operator_contains = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'operator_contains']
     search_button = [By.CSS_SELECTOR, '#kt_content > div.kt-container.kt-container--fluid.kt-grid__item.kt-grid__item--fluid > div > div > div > div.kt-portlet__body > div:nth-child(1) > div > div > div > div > div > div > div.form-group > button', 'signin_button']
     bulkAction_button = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[2]/div/div/div/div/button', 'bulkAction_button']
@@ -53,7 +63,11 @@ class adminDashVar:
     comment_textarea = [By.XPATH, '//textarea[@id="comment"]', 'comment_textarea']
     comment_phrase_textarea = [By.XPATH, '//input[@id="phrase"]', 'comment_phrase_textarea']
     modal_ok_button = [By.XPATH, '/html/body/div[3]/div/div[2]/div/div[2]/div[3]/button[2]', 'modal_ok_button']
-    searchedUser_checkbox = [By.XPATH, '(//input[@type="checkbox"])[2]', 'searchedUser_checkbox']
+    # TODO due to ongoing Admin Dash work in dev env, different locators are used for same element, will need to update once AD work is complete
+    if confTest.globalVar.env == 'dev':
+        searchedUser_checkbox = [By.XPATH, '(//input[@type="checkbox"])[2]', 'searchedUser_checkbox']
+    else:
+        searchedUser_checkbox = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td[1]/label/span/input', 'searchedUser_checkbox']
     pendingDeleteUser_checkbox = [By.XPATH, '(//input[@type="checkbox"])[1]', 'pendingDeleteUser_checkbox']
     no_data_msg = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td/div/p', 'no_data_msg']
 
@@ -67,9 +81,9 @@ class adminDashVar:
 class CREDSapi:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
-    if confTest.testdata == 'iddw':
+    if confTest.NYLservicesBASE.testdata == 'iddw':
         notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
-    elif confTest.testdata == 'real':
+    elif confTest.NYLservicesBASE.testdata == 'real':
         notepadfile = open('/Users/Shared/testing/nyl08022021.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
@@ -120,9 +134,9 @@ class CREDSapi:
 class credsSSOWEB:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
-    if confTest.testdata == 'iddw':
+    if confTest.NYlottoBASE.testdata == 'iddw':
         notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
-    elif confTest.testdata == 'real':
+    elif confTest.NYlottoBASE.testdata == 'real':
         notepadfile = open('/Users/Shared/testing/nyl08022021.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
@@ -163,7 +177,7 @@ class regV:
     tos_check = [By.NAME, "acceptedTermsAndConditions", "tos_check"]
     cnw_check = [By.NAME, "collectnwin", "cnw_check"]
     nylnews_check = [By.NAME, "newsletter", "nylnews_check"]
-    submit_button = [By.CLASS_NAME, "nyl-btn", "submit_button"]
+    submit_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/form/div[2]/div[7]/button/span', "submit_button"]
 
 # error variables
     fname_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(2) > div.is-error.invalid-feedback", "fname_error"]
@@ -198,8 +212,8 @@ class regV:
 # [Documentation - Variables] Objects on OTP pages
 class otpV:
 # otp method selection page
-    text_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > div > button.nyl-btn-single.button-1 > span"]
-    call_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > div > button.nyl-btn-single.button-2 > span"]
+    text_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[1]/span']
+    call_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[2]/span']
 # otp code entry page
     otp_input = [By.NAME, "otp"]
     otp_continue_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(4) > button > span"]

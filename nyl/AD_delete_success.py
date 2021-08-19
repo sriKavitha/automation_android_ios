@@ -23,12 +23,16 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         funct.waitAndClick(driver, var.adminLoginVar.signin_button)
         # Search for test user via Email
-        funct.waitAndClick(driver, var.adminDashVar.search_input)
-        # funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
-        # funct.waitAndClick(driver, var.adminDashVar.category_email)
-        # funct.waitAndClick(driver, var.adminDashVar.operator_contains)
-        funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
-        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+        # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
+        if self.env == 'dev':
+            funct.waitAndClick(driver, var.adminDashVar.search_input)
+            funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
+        else:
+            funct.waitAndClick(driver, var.adminDashVar.search_input)
+            funct.waitAndClick(driver, var.adminDashVar.category_email)
+            funct.waitAndClick(driver, var.adminDashVar.operator_contains)
+            funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
+            driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
         time.sleep(2)
         funct.waitAndClick(driver, var.adminDashVar.search_button)
         time.sleep(3)
@@ -56,12 +60,16 @@ class NYLadmin(confTest.NYLadminBASE):
         # # Navigates to Pending Deletion user list to purge user
         funct.waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
         # Search for test user via Email
-        funct.waitAndClick(driver, var.adminDashVar.search_input)
-        # funct.waitAndSend(driver, var.adminDashVar.search_input, "Email")
-        # funct.waitAndClick(driver, var.adminDashVar.category_email)
-        # funct.waitAndClick(driver, var.adminDashVar.operator_contains)
-        funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
-        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+        # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
+        if self.env == 'dev':
+            funct.waitAndClick(driver, var.adminDashVar.search_input)
+            funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
+        else:
+            funct.waitAndClick(driver, var.adminDashVar.search_input)
+            funct.waitAndClick(driver, var.adminDashVar.category_email)
+            funct.waitAndClick(driver, var.adminDashVar.operator_contains)
+            funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
+            driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
         time.sleep(2)
         funct.waitAndClick(driver, var.adminDashVar.search_button)
         time.sleep(3)
