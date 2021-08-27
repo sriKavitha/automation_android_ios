@@ -24,11 +24,17 @@ class NYLServices(confTest.NYLservicesBASE):
         testemailMOB = 'qa+mobile' + ts + '@rosedigital.co'
 
         # Check for existing test SSO user and wipe it from userpool prior to register api call
-        try:
-            nylAdminDash.funct.purgeSSO(self, testemailSSO)
-            print('test user ' + testemailSSO + ' purged \n')
-        except:
-            print('no test user ' + testemailSSO + ' found \n')
+        # Purge with email search on dev and phone search on qa/ stage env
+        if self.env != 'dev':
+            try:
+                funct.purgeSSOphone(self, var.CREDSapi.ssoPhone)
+            except:
+                pass
+        else:
+            try:
+                funct.purgeSSOemail(self, testemailSSO)
+            except:
+                pass
         # Check for existing test Mobile user and wipe it from userpool prior to register api call
         try:
             funct.purgeMobile(self, testemailMOB)
@@ -76,6 +82,7 @@ class NYLServices(confTest.NYLservicesBASE):
                                          json=sso_register_payload)
         if sso_registerCall.status_code == 200:
             print('POST /sso/register-verify (SSN Registration) Status Code: ' + str(sso_registerCall.status_code))
+            print(sso_registerCall.text)
         else:
             print("ERROR - POST /sso/register-verify (SSN Registration) Status Code: ")
             print(sso_registerCall.status_code)
@@ -99,6 +106,10 @@ class NYLServices(confTest.NYLservicesBASE):
             print('ERROR - IDDW Verification failed for user and user not created.\nRegistration response = ')
             print(sso_registerCall.text)
             raise Exception('Failed user creation. Unable to proceed further. Change test user data in creds file.')
+        elif '"phoneDuplicate":true' in str(sso_registerCall.text):
+            print('ERROR - Duplicate phone for user and user not created.\nRegistration response = ')
+            print(sso_registerCall.text)
+            raise Exception('Failed user creation. Unable to proceed further. Purge phone number or change user data.')
 
         # POST /sso/refresh-token
         time.sleep(1)
@@ -450,8 +461,7 @@ class NYLServices(confTest.NYLservicesBASE):
         # Clean up - clear test user from userpool
         # Check for existing test SSO user and wipe it from userpool prior to register api call
         try:
-            nylAdminDash.funct.purgeSSO(self, testemailSSO)
-            print('test user ' + testemailSSO + ' purged \n')
+            funct.purgeSSOemail(self, testemailSSO)
         except:
             print('no test user ' + testemailSSO + ' found \n')
         # Check for existing test Mobile user and wipe it from userpool prior to register api call

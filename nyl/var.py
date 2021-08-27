@@ -51,26 +51,31 @@ class adminDashVar:
                       'category_phone']
     category_email = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[6]/a', 'category_email']
     operator_contains = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'operator_contains']
-    search_button = [By.CSS_SELECTOR, '#kt_content > div.kt-container.kt-container--fluid.kt-grid__item.kt-grid__item--fluid > div > div > div > div.kt-portlet__body > div:nth-child(1) > div > div > div > div > div > div > div.form-group > button', 'signin_button']
+    # search_button = [By.CSS_SELECTOR, '#kt_content > div.kt-container.kt-container--fluid.kt-grid__item.kt-grid__item--fluid > div > div > div > div.kt-portlet__body > div:nth-child(1) > div > div > div > div > div > div > div.form-group > button', 'search_button']
+    search_button = [By.XPATH, '//button[@class="ml-2 btn btn-wide btn-primary btn-upper"]', 'search_button']
     bulkAction_button = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[2]/div/div/div/div/button', 'bulkAction_button']
-    li_verification = [By.XPATH, '/html/body/div[2]/div/div/ul/li[1]', "li_verification"]
-    li_unverification = [By.XPATH, '/html/body/div[2]/div/div/ul/li[2]', "li_unverification"]
-    li_lock = [By.XPATH, '/html/body/div[2]/div/div/ul/li[3]', "li_lock"]
-    li_unlock = [By.XPATH, '/html/body/div[2]/div/div/ul/li[4]', "li_unlock"]
-    li_delete = [By.XPATH, '/html/body/div[2]/div/div/ul/li[5]', "li_delete"]
-    li_cancelDelete = [By.XPATH, '/html/body/div[2]/div/div/ul/li[1]', 'li_cancelDelete']
-    li_permDelete = [By.XPATH, '/html/body/div[2]/div/div/ul/li[2]', 'li_permDelete']
+    li_verification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', "li_verification"]
+    li_unverification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', "li_unverification"]
+    li_lock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[3]', "li_lock"]
+    li_unlock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[4]', "li_unlock"]
+    li_delete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[5]', "li_delete"]
+    li_cancelDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_cancelDelete']
+    li_permDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_permDelete']
     comment_textarea = [By.XPATH, '//textarea[@id="comment"]', 'comment_textarea']
     comment_phrase_textarea = [By.XPATH, '//input[@id="phrase"]', 'comment_phrase_textarea']
-    modal_ok_button = [By.XPATH, '/html/body/div[3]/div/div[2]/div/div[2]/div[3]/button[2]', 'modal_ok_button']
+    modal_ok_button = [By.XPATH, '//button[@class="ant-btn ant-btn-primary"]', 'modal_ok_button']
+    ext1_modal_ok_button = [By.XPATH, '(//button[@class="ant-btn ant-btn-primary"])[1]', 'ext1_modal_ok_button']
+    ext2_modal_ok_button = [By.XPATH, '(//button[@class="ant-btn ant-btn-primary"])[2]', 'ext2_modal_ok_button']
+
     # TODO due to ongoing Admin Dash work in dev env, different locators are used for same element, will need to update once AD work is complete
     if confTest.globalVar.env == 'dev':
         searchedUser_checkbox = [By.XPATH, '(//input[@type="checkbox"])[2]', 'searchedUser_checkbox']
     else:
         searchedUser_checkbox = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td[1]/label/span/input', 'searchedUser_checkbox']
+        # searchedUser_checkbox = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td[1]/label/span/input']
     pendingDeleteUser_checkbox = [By.XPATH, '(//input[@type="checkbox"])[1]', 'pendingDeleteUser_checkbox']
     no_data_msg = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td/div/p', 'no_data_msg']
-
+    extend_button = [By.XPATH, '//button[@class="ant-btn ant-btn-primary"]', 'extend_button']
 ###==============================================================###
 # NYL Services API
 ###==============================================================###
