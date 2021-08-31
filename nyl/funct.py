@@ -26,7 +26,6 @@ def purgeSSOemail(self, email):
     elif self.env == 'stage':
         self.admin_url = 'https://admin-stage.nylservices.net/'
     driver = self.driver
-    # url is pulled from confTest
     driver.get(self.admin_url)
     testemail = email
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
@@ -42,7 +41,8 @@ def purgeSSOemail(self, email):
         except:
             pass
     # Search for test user via Email
-    # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
+    # TODO due to ongoing Admin Dash work in dev env, this if else is in place,
+    #  will need to update once AD work is complete
     if self.env == 'dev':
         waitAndClick(driver, var.adminDashVar.search_input)
         waitAndSend(driver, var.adminDashVar.search_input, testemail)
@@ -52,26 +52,33 @@ def purgeSSOemail(self, email):
         waitAndClick(driver, var.adminDashVar.operator_contains)
         waitAndSend(driver, var.adminDashVar.search_input, testemail)
         driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
-    time.sleep(3)
-    waitAndClick(driver, var.adminDashVar.search_button)
-    # time.sleep(3)
+    try:
+        waitAndClick(driver, var.adminDashVar.search_button)
+    except:
+        waitAndClick(driver, var.adminDashVar.search_button)
+    time.sleep(5)
     # Checks the returned user is the correct user
-    source = driver.page_source
-    num_returned = source.count(testemail)
-    if num_returned <= 2:
-        pass
-    elif num_returned > 2:
-        print('More than 1 user found, check test user data')
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        closeWindow(driver, 'New York Lottery - Admin Dashboard')
-        exit()
-    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
+    rows = []
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if len(rows) == 1:
+        if driver.find_element_by_xpath('//td[@class="ant-table-cell"][4]').text == testemail:  # email
+            pass  # check that first user returned is has the same email address
+        else:
+            print(f'unexpected behavior: please check screenshot')
+            fullshot(driver)
+    elif len(rows) >= 2:  # more than 1 user was returned in table
+        fullshot(driver)
+        print(f'More than 1 user found with {testemail}, check test user data')
+        raise Exception
+    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
         print(f'no test user {testemail} found')
         # open new window with execute_script()
         driver.execute_script("window.open('');")
         closeWindow(driver, 'New York Lottery - Admin Dashboard')
         exit()
+    else:
+        print(f'unexpected behavior: please check screenshot')
+        fullshot(driver)
     # Clicks checkbox for first user returned
     waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
     waitAndClick(driver, var.adminDashVar.bulkAction_button)
@@ -79,7 +86,8 @@ def purgeSSOemail(self, email):
     # Submits comment and mandatory text for completion
     ts = timeStamp()
     waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
-    # time.sleep(1)
+    # attempt to click the modal "OK" buttons to proceed to next step
+    # different locator for same button depending on new session or extended session
     try:
         waitAndClick(driver, var.adminDashVar.modal_ok_button)
     except:
@@ -141,23 +149,27 @@ def purgeSSOemail(self, email):
     # time.sleep(2)
     waitAndClick(driver, var.adminDashVar.search_button)
     time.sleep(5)
-    # Checks the returned user is the correct user
-    source = driver.page_source
-    num_returned = source.count(testemail)
-    if num_returned <= 2:
-        pass
-    elif num_returned > 2:
-        print('More than 1 user found on Pending Deletion list, check test user data')
+    rows = []
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if len(rows) == 1:
+        if driver.find_element_by_xpath('//td[@class="ant-table-cell"][4]').text == testemail:  # email
+            pass # check that first user returned is has the same email address
+        else:
+            print(f'unexpected behavior: please check screenshot')
+            fullshot(driver)
+    elif len(rows) >= 2:  # more than 1 user was returned in table
+        fullshot(driver)
+        print(f'More than 1 user found on Pending Deletion list with {testemail}, check test user data')
+        raise Exception
+    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
+        print(f'no test user {testemail} found')
         # open new window with execute_script()
         driver.execute_script("window.open('');")
         closeWindow(driver, 'New York Lottery - Admin Dashboard')
         exit()
-    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
-        print(f'test user {testemail} NOT found on Pending Deletion list')
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        closeWindow(driver, 'New York Lottery - Admin Dashboard')
-        exit()
+    else:
+        print(f'unexpected behavior: please check screenshot')
+        fullshot(driver)
     # Clicks checkbox for first user returned
     waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
     waitAndClick(driver, var.adminDashVar.bulkAction_button)
@@ -213,18 +225,18 @@ def purgeSSOemail(self, email):
     # Search for test user via Email again to confirm user is gone from system
     waitAndClick(driver, var.adminDashVar.search_button)
     time.sleep(3)
-    source = driver.page_source
-    num_returned = source.count(testemail)
-    if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  #search returns no data
         print(f'test user {testemail} found and purged')
-    elif num_returned > 2:
-        print(f'More than 1 user found in Pending Deletion list, check test userpool')
-        fullshot()
+    elif len(rows) >= 1:  # search returns list of users
+        fullshot(driver)
+        print(f'user still in Pending Deletion list with {testemail}, check user pool')
+        raise Exception
     else:
         print(f'unexpected behavior: please check screenshot')
-        fullshot()
+        fullshot(driver)
 
-# [Documentation - Function] Checks for existing test user email in SSO userpool
+# [Documentation - Function] Checks for existing test user phone number in SSO userpool
 # and if found deletes the user through the Admin Dashboard.
 def purgeSSOphone(self, phone):
     if self.env == 'dev':
@@ -237,7 +249,7 @@ def purgeSSOphone(self, phone):
     # url is pulled from confTest
     driver.get(self.admin_url)
     testphone = phone
-    formatted_phone = '+1 (' + testphone[:3] + ') ' + testphone[3:6] + '-' + testphone[6:]# +1 (407) 348-7541
+    formatted_phone = '+1 (' + testphone[:3] + ') ' + testphone[3:6] + '-' + testphone[6:]  # match the formatiing in the returned users table: +1 (407) 348-7541
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
     # Credentials are localized to one instance via the var file
     try:
@@ -250,7 +262,7 @@ def purgeSSOphone(self, phone):
             print('Admin Dash Session persisted, login bypassed')
         except:
             pass
-    # Search for test user via Email
+    # Search for test user via phone
     # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
     if self.env == 'dev':
         waitAndClick(driver, var.adminDashVar.search_input)
@@ -261,26 +273,32 @@ def purgeSSOphone(self, phone):
         waitAndClick(driver, var.adminDashVar.operator_contains)
         waitAndSend(driver, var.adminDashVar.search_input, testphone)
         driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
-    time.sleep(2)
-    waitAndClick(driver, var.adminDashVar.search_button)
-    time.sleep(3)
+    try:
+        waitAndClick(driver, var.adminDashVar.search_button)
+    except:
+        waitAndClick(driver, var.adminDashVar.search_button)
+    time.sleep(5)
     # Checks the returned user is the correct user
-    source = driver.page_source
-    num_returned = source.count(formatted_phone)
-    if num_returned == 1:
-        pass
-    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
-        print(f'no test user with phone {testphone} found')
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if len(rows) == 1:
+        if driver.find_element_by_xpath('//td[@class="ant-table-cell"][6]').text == formatted_phone:  # phone
+            pass  # check that first user returned has the same phone
+        else:
+            print(f'unexpected behavior: please check screenshot')
+            fullshot(driver)
+    elif len(rows) >= 2:  # more than 1 user was returned in table
+        fullshot(driver)
+        print(f'More than 1 user found with {formatted_phone}, check test user data')
+        raise Exception
+    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
+        print(f'no test user {formatted_phone} found')
         # open new window with execute_script()
         driver.execute_script("window.open('');")
         closeWindow(driver, 'New York Lottery - Admin Dashboard')
         exit()
-    elif num_returned >= 2:
-        print('More than 1 user found, check test user data')
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        closeWindow(driver, 'New York Lottery - Admin Dashboard')
-        exit()
+    else:
+        print(f'unexpected behavior: please check screenshot')
+        fullshot(driver)
     # Clicks checkbox for first user returned
     waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
     waitAndClick(driver, var.adminDashVar.bulkAction_button)
@@ -316,7 +334,7 @@ def purgeSSOphone(self, phone):
             pass
     # # Navigates to Pending Deletion user list to purge user
     waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
-    # Search for test user via Email
+    # Search for test user via phone number
     # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
     if self.env == 'dev':
         waitAndClick(driver, var.adminDashVar.search_input)
@@ -331,22 +349,26 @@ def purgeSSOphone(self, phone):
     waitAndClick(driver, var.adminDashVar.search_button)
     time.sleep(3)
     # Checks the returned user is the correct user
-    source = driver.page_source
-    num_returned = source.count(formatted_phone)
-    if num_returned == 1:
-        pass
-    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
-        print(f'test user {testphone} NOT found on Pending Deletion list')
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if len(rows) == 1:
+        if driver.find_element_by_xpath('//td[@class="ant-table-cell"][6]').text == formatted_phone:  # phone
+            pass  # check that first user returned has the same phone
+        else:
+            print(f'unexpected behavior: please check screenshot')
+            fullshot(driver)
+    elif len(rows) >= 2:  # more than 1 user was returned in table
+        fullshot(driver)
+        print(f'More than 1 user found on Pending Deletion list with {formatted_phone}, check test user data')
+        raise Exception
+    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
+        print(f'test user {formatted_phone} NOT found on Pending Deletion list')
         # open new window with execute_script()
         driver.execute_script("window.open('');")
         closeWindow(driver, 'New York Lottery - Admin Dashboard')
         exit()
-    elif num_returned >= 2:
-        print('More than 1 user found on Pending Deletion list, check test user data')
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        closeWindow(driver, 'New York Lottery - Admin Dashboard')
-        exit()
+    else:
+        print(f'unexpected behavior: please check screenshot')
+        fullshot(driver)
     # Clicks checkbox for first user returned
     waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
     waitAndClick(driver, var.adminDashVar.bulkAction_button)
@@ -384,29 +406,18 @@ def purgeSSOphone(self, phone):
     # Search for test user via Email again to confirm user is gone from system
     waitAndClick(driver, var.adminDashVar.search_button)
     time.sleep(3)
-    source = driver.page_source
-    num_returned = source.count(formatted_phone)
-    if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
-        print(f'test user {testphone} found and purged')
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        closeWindow(driver, 'New York Lottery - Admin Dashboard')
-        exit()
-    elif num_returned >= 1:
-        print(f'test user {testphone} still in Pending Deletion list and NOT purged')
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        closeWindow(driver, 'New York Lottery - Admin Dashboard')
-        exit()
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  #search returns no data
+        print(f'test user {formatted_phone} found and purged')
+    elif len(rows) >= 1:  # search returns list of users
+        fullshot(driver)
+        print(f'user still in Pending Deletion list with {formatted_phone}, check user pool')
+        raise Exception
     else:
         print(f'unexpected behavior: please check screenshot')
-        fullshot(self)
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        closeWindow(driver, 'New York Lottery - Admin Dashboard')
-        exit()
+        fullshot(driver)
 
-# [Documentation - Function] Checks for existing test user in Mobile App userpool and deletes the user if found.
+    # [Documentation - Function] Checks for existing test user in Mobile App userpool and deletes the user if found.
 def purgeMobile(self, email):
     if self.env == 'dev':
         userpool = 'us-east-1_OSdCjCmwo'
@@ -547,7 +558,7 @@ def checkValue(browser, elem, valueExpected):
 def createVerifiedUser(self, email):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
-            purgeSSO(self, email)
+            purgeSSOemail(self, email)
             print('test user purged')
         except:
             print('no test user found')
