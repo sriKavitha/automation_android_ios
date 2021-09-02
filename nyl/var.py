@@ -199,7 +199,7 @@ class regV:
     password_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(3) > div.is-error.invalid-feedback", "password_error"]
     confirmPsw_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback", "confirmPsw_error"]
     tos_check_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(5) > div > label", "tos_check_error"]
-    submit_button_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.button-wrap > p", "submit_button_error"]
+    submit_button_error = [By.XPATH, '//p[@class="submit-error"]', "submit_button_error"]
 
 # error copy
     requiredErrorStub = 'Required'
@@ -285,7 +285,7 @@ class loginV:
 # error variables
     email_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group.has-prepend > div.is-error.invalid-feedback", "email_error"]
     password_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(3) > div.is-error.invalid-feedback", "password_error"]
-    login_button_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p.submit-error", "login_button_error"]
+    login_button_error = [By.XPATH, '//p[@class="submit-error"]', "login_button_error"]
 
 # error copy
     requiredErrorStub = 'Required'

@@ -53,9 +53,16 @@ def purgeSSOemail(self, email):
         waitAndSend(driver, var.adminDashVar.search_input, testemail)
         driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
     try:
+        time.sleep(2)
+        waitAndClick(driver, var.adminDashVar.search_button)
         waitAndClick(driver, var.adminDashVar.search_button)
     except:
-        waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(2)
+        try:
+            waitAndClick(driver, var.adminDashVar.search_button)
+        except:
+            waitAndClick(driver, var.adminDashVar.search_button)
+
     time.sleep(5)
     # Checks the returned user is the correct user
     rows = []
@@ -563,7 +570,7 @@ def createVerifiedUser(self, email):
         except:
             print('no test user found')
         driver = self.driver
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         # Credentials are localized to one instance via the var file
         waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
