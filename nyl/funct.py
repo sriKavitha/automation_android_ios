@@ -573,9 +573,8 @@ def createVerifiedUser(self, email):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
             purgeSSOemail(self, email)
-            print('test user purged')
         except:
-            print('no test user found')
+            pass
         driver = self.driver
         driver.get(self.reg_url)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
@@ -616,6 +615,9 @@ def createVerifiedUser(self, email):
         # Checking that the search field on google.com is present on page.
         if driver.find_elements_by_name("q") != []:
             print('Verified user registration is successful.')
+            # open new window with execute_script()
+            driver.execute_script("window.open('');")
+            closeWindow(driver, 'New York Lottery - Single Sign On')
         else:
             fullshot(driver)
             print('FAIL - User registration redirect screen not reached. Test can not proceed')

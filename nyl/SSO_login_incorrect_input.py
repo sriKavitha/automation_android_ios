@@ -11,9 +11,9 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 class NYlotto(confTest.NYlottoBASE):
 
 # Checks that incorrect email login attempt displays error
-    def test01_loginIncorrectEmailError(self):
+    def test_01_loginIncorrectEmailError(self):
         testenv = self.env
-        print("TESTING " + testenv + " ENVIRONMENT")
+        print("\nTESTING " + testenv + " ENVIRONMENT")
         driver = self.driver
         # url is pulled from confTest
         driver.get(self.login_url)
@@ -33,7 +33,7 @@ class NYlotto(confTest.NYlottoBASE):
         warning = driver.find_element(var.loginV.login_button_error[0], var.loginV.login_button_error[1])
         if funct.checkErrorText(driver, var.loginV.login_button_error, var.loginV.badEmailErrorStub) == True:
             print('PASS - Error warnings found and warning copy is correct')
-            print('Warning text displayed is "' + warning.get_attribute("innerText") + '"')
+            # print('Warning text displayed is "' + warning.get_attribute("innerText") + '"')
         elif funct.checkErrorText(driver, var.loginV.login_button_error, var.loginV.badEmailErrorStub) == False:
             print('FAIL - Warning should say "' + var.loginV.badEmailErrorStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
             funct.fullshot(driver)
@@ -41,23 +41,16 @@ class NYlotto(confTest.NYlottoBASE):
 
 
 # Checks that incorrect password login attempt displays error
-    def test02_loginIncorrectPswError(self):
+    def test_02_loginIncorrectPswError(self):
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
-        # creates a verified user with valid SSN4
         testemail = self.testemail
-        # # Check for existing test user and wipe it from userpool prior to test execution
-        # try:
-        #     funct.purgeSSOemail(self, testemail)
-        #     print('test user purged')
-        # except:
-        #     print('no test user found')
         driver = self.driver
+        print('\n----------\n' + 'Test setup')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
-        # open new window with execute_script()
-        driver.execute_script("window.open('');")
-        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
-        # url is pulled from confTest
+        print('----------')
+        # switch to login page
         driver.get(self.login_url)
         # triggering error
         funct.waitAndSend(driver, var.loginV.email, testemail)
@@ -81,12 +74,12 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             raise Exception('Error warning(s) copy is incorrect')
         # Deleting test data
-        print('\n\nTest complete!\n\nTest clean up commencing')
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
         try:
             funct.purgeSSOemail(self, testemail)
-            print('test user purged')
         except:
-            print('no test user found')
+            pass
+        print('----------')
 
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
