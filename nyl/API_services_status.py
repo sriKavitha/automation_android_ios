@@ -2,7 +2,7 @@ from selenium import webdriver  # webdriver module provides all WebDriver implem
 import warnings
 import unittest, time, re  # unittest is the testing framework, provides module for organizing test cases
 import requests, json           # Requests provides ability to hit API Json provides ability to encode & decode Json files
-import HTMLTestRunner
+import HtmlTestRunner
 
 import var, funct, confTest     # Custom class for NYL
 
