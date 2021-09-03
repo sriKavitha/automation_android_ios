@@ -10,11 +10,13 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYlotto(confTest.NYlottoBASE):
 
-# Checks main error appears when empty form is submitted
-    def test01_regSubmitError(self):
+    def test_01_regSubmitError(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
+        print("\nChecks main error appears when empty form is submitted")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         if funct.checkError(driver, var.regV.submit_button_error) == True:
@@ -23,12 +25,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - " + var.regV.submit_button_error[2] + " is missing")
             funct.fullshot(driver)
             raise Exception('Error warning element not found.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks main error copy
-    def test02_regSubmitErrorCopy(self):
+    def test_02_regSubmitErrorCopy(self):
+        print("\nChecks main error copy")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warning = driver.find_element(var.regV.submit_button_error[0], var.regV.submit_button_error[1])
@@ -38,12 +42,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Warning should say " + var.regV.submitErrorStub + " , but says " + warning.get_attribute("innerText") + "!")
             funct.fullshot(driver)
             raise Exception('Error copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks mandatory field errors are found
-    def test03_regRequiredErrors(self):
+    def test_03_regRequiredErrors(self):
+        print("\nChecks mandatory field errors are found")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warningList = []
@@ -64,12 +70,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("Error warning(s) missing")
             funct.fullshot(driver)
             raise Exception("Error warning element not found.")
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks mandatory field error copy
-    def test04_regRequiredErrorsCopy(self):
+    def test_04_regRequiredErrorsCopy(self):
+        print("\nChecks mandatory field error copy")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         warningList = []
@@ -90,12 +98,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("Error warning(s) copy is incorrect.")
             funct.fullshot(driver)
             raise Exception("Error warning(s) copy is incorrect.")
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks that certain fields do not take letters
-    def test05_regUnacceptedLetterErrors(self):
+    def test_05_regUnacceptedLetterErrors(self):
+        print("\nChecks that certain fields do not take letters")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # grabbing every text field and inputting letters into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "asd"
@@ -117,12 +127,14 @@ class NYlotto(confTest.NYlottoBASE):
             print(" fields.")
             funct.fullshot(driver)
             raise Exception("Invalid values allowed in fields.")
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks that certain fields do not take symbols
-    def test06_regUnacceptedSymbolsErrors(self):
+    def test_06_regUnacceptedSymbolsErrors(self):
+        print("\nChecks that certain fields do not take symbols")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # grabbing every text field and inputting symbols into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "!@#"
@@ -145,12 +157,14 @@ class NYlotto(confTest.NYlottoBASE):
             print(" fields.")
             funct.fullshot(driver)
             raise Exception("Invalid values allowed in fields.")
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks that certain fields do not take numbers
-    def test07_regUnacceptedNumbersErrors(self):
+    def test_07_regUnacceptedNumbersErrors(self):
+        print("\nChecks that certain fields do not take numbers")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # grabbing every text field and inputting numbers into it, triggering error
         textFields = driver.find_elements_by_class_name("form-control")
         valueInputted = "123"
@@ -172,12 +186,14 @@ class NYlotto(confTest.NYlottoBASE):
             print(" fields.")
             funct.fullshot(driver)
             raise Exception("Invalid values allowed in fields.")
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting invalid data in zip code field
-    def test08_regInvalidFormatZipcode(self):
+    def test_08_regInvalidFormatZipcode(self):
+        print("\nChecks for appearance of error messages when inputting invalid data in zip code field")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.zip, "123")
         funct.waitAndSend(driver, var.regV.zip, Keys.TAB)
@@ -187,12 +203,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.zipErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting invalid data in phone field
-    def test09_regInvalidFormatPhone(self):
+    def test_09_regInvalidFormatPhone(self):
+        print("\nChecks for appearance of error messages when inputting invalid data in phone field")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.phone, "123")
         funct.waitAndSend(driver, var.regV.phone, Keys.TAB)
@@ -202,12 +220,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.phoneErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting invalid data in DOB field
-    def test10_regInvalidFormatDOB(self):
+    def test_10_regInvalidFormatDOB(self):
+        print("\nChecks for appearance of error messages when inputting invalid data in DOB field")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.dob, "123")
         funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
@@ -217,12 +237,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.dobErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting invalid data in email field
-    def test11_regInvalidFormatEmail(self):
+    def test_11_regInvalidFormatEmail(self):
+        print("\nChecks for appearance of error messages when inputting invalid data in email field")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.email, "123")
         funct.waitAndSend(driver, var.regV.email, Keys.TAB)
@@ -232,12 +254,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.emailErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting only numbers in password field
-    def test12_regInvalidFormatPswNumbers(self):
+    def test_12_regInvalidFormatPswNumbers(self):
+        print("\nChecks for appearance of error messages when inputting only numbers in password field")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "123456789")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
@@ -247,12 +271,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.passwordErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting only letters in password field
-    def test13_regInvalidFormatPswLetters(self):
+    def test_13_regInvalidFormatPswLetters(self):
+        print("\nChecks for appearance of error messages when inputting only letters in password field")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "asdftest")
         funct.waitAndSend(driver, var.regV.password, Keys.TAB)
@@ -262,12 +288,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.passwordErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting special characters in password field
-    def test14_regInvalidFormatPswSymbols(self):
+    def test_14_regInvalidFormatPswSymbols(self):
+        print("\nChecks for appearance of error messages when inputting special characters in password field")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.password, Keys.SHIFT + "1")
@@ -280,12 +308,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.passwordErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when inputting mismatched passwords
-    def test15_regMismatchedPsw(self):
+    def test_15_regMismatchedPsw(self):
+        print("\nChecks for appearance of error messages when inputting mismatched passwords")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.password, "test")
         funct.waitAndSend(driver, var.regV.confirmPsw, Keys.SHIFT + "1")
@@ -297,12 +327,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.confirmPswErrorStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when underage Date of Birth is inputted
-    def test16_regUnderage(self):
+    def test_16_regUnderage(self):
+        print("\nChecks for appearance of error messages when underage Date of Birth is inputted")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndSend(driver, var.regV.dob, "01/01/2018")
         funct.waitAndSend(driver, var.regV.dob, Keys.TAB)
@@ -313,12 +345,14 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Error warning copy is incorrect and does not read '" + var.regV.dobErrorUnderageStub + "'")
             funct.fullshot(driver)
             raise Exception('Error warning copy is incorrect.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
-# Checks for appearance of error messages when mandatory checkboxes are not checked
-    def test17_regChkbxErrors(self):
+    def test_17_regChkbxErrors(self):
+        print("\nChecks for appearance of error messages when mandatory checkboxes are not checked")
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # triggering error
         funct.waitAndClick(driver, var.regV.submit_button)
         # checking for error messages
@@ -335,6 +369,8 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - expected " + str(checkCounterExpected) + " red text changes, but found " + str(checkCounter) + ".")
             funct.fullshot(driver)
             raise Exception('Error warning(s) missing.')
+        funct.closeWindow(driver, 'New York Lottery - Single Sign On')
+        print('----------')
 
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
