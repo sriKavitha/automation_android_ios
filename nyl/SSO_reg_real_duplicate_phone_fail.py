@@ -8,106 +8,39 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-# [Documentation - Summary] Tests user workflow of failed
-# registration with duplicate phone in database
-# For use with Entry Info file version: nyl04082020.txt
-
-testemail2 = "marie.liao+ssotest2@rosedigital.co"
-
 # The test case class is inherited from unittest.TestCase.
 # Inheriting from TestCase class is the way to tell unittest module that this is a test case.
 class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test01_regInitial(self):
+    def test_01_regDupePhone(self):
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
-# Check for existing test user and wipe it from userpool prior to test execution
-        try:
-            funct.purge(self, self.testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2423
+        print("\nChecks for failed registration with duplicate phone in userpool")
+        testemail = self.testemail
+        testemail2 = "qa+ssotest2@rosedigital.co"
         driver = self.driver
-# The driver.get method will navigate to a page given by the URL.
-# WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
-# before returning control to your test or script.
-# url is pulled from confTest
-        driver.get(self.url)
-# Assertion that the title has Single Sign On in the title.
+        print('\n----------\n' + 'Test setup')
+        # creates a verified user with valid SSN4
+        funct.createVerifiedUser(self, testemail)
+        print('----------')
+        # Switch to blank registration page
+        driver.get(self.reg_url)
+        # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 
-# Instructions for webdriver to read and input user data via the info on the .txt doc.
-# Credentials are localized to one instance via the var file
+        # Instructions for webdriver to read and input user data via the info on the .txt doc.
+        # Credentials are localized to one instance via the var file
         funct.waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
         funct.waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
         funct.waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
         funct.waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
         funct.waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
-# Find and select the state according to the info in the .txt doc
-# Uses a for loop to iterate through the list of states until element
-# matches the entry info in the text file. Then clicks the element found.
-        select_box = driver.find_element_by_name("state")
-        funct.waitAndClick(driver, var.regV.state_dropdown)
-        options = [x for x in select_box.find_elements_by_tag_name("option")]
-        for element in options:
-            if element.text in var.credsSSOWEB.state:
-                element.click()
-                break
-        funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
-        funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
-        funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
-        funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
-        funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, self.testemail)
-        funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
-        funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
-        funct.waitAndClick(driver, var.regV.tos_check)
-        funct.waitAndClick(driver, var.regV.submit_button)
-# 2nd screen. OTP selection screen
-        funct.waitAndClick(driver, var.otpV.text_button)
-# 3rd screen. OTP code entry screen
-        funct.waitAndSend(driver, var.otpV.otp_input, "111111")
-        funct.waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(5)
-# 4th screen. Successful registration should redirect to Google.com.
-# Checking that the search field on google.com is present on page.
-        if driver.find_elements_by_name("q") != []:
-             print("Initial registration successful.")
-        else:
-            funct.fullshot(driver)
-            print("E---Redirect screen not reached on initial registration.")
-            try:
-                funct.purge(self, self.testemail)
-                print('test user purged')
-            except:
-                print('no test user found')
-            raise Exception('Registration redirected incorrectly.')
-
-    def test2_regDupePhone(self):
-        testenv = self.env
-        print("TESTING " + testenv + " ENVIRONMENT")
-# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2423
-        driver = self.driver
-# The driver.get method will navigate to a page given by the URL.
-# WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
-# before returning control to your test or script.
-# url is pulled from confTest
-        driver.get(self.url)
-# Assertion that the title has Single Sign On in the title.
-        self.assertIn("Single Sign On", driver.title)
-
-# Instructions for webdriver to read and input user data via the info on the .txt doc.
-# Credentials are localized to one instance via the var file
-        funct.waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
-        funct.waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
-        funct.waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
-        funct.waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
-        funct.waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
-# Find and select the state according to the info in the .txt doc
-# Uses a for loop to iterate through the list of states until element
-# matches the entry info in the text file. Then clicks the element found.
+        # Find and select the state according to the info in the .txt doc
+        # Uses a for loop to iterate through the list of states until element
+        # matches the entry info in the text file. Then clicks the element found.
         select_box = driver.find_element_by_name("state")
         funct.waitAndClick(driver, var.regV.state_dropdown)
         options = [x for x in select_box.find_elements_by_tag_name("option")]
@@ -125,14 +58,14 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-# Checking that error message appears and registration does not proceed.
+        # Checking that error message appears and registration does not proceed.
         warning = driver.find_element(var.regV.submit_button_error[0], var.regV.submit_button_error[1])
         if funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.duplicatePhoneErrorStub) == True:
             print('PASS - Error warnings found and warning copy is correct')
             print('Warning text displayed is "' + warning.get_attribute("innerText") + '"')
         elif funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.duplicatePhoneErrorStub) == False:
             try:
-                funct.purge(self, self.testemail)
+                funct.purgeSSOemail(self, self.testemail)
                 print('test user purged')
             except:
                 print('no test user found')
@@ -141,23 +74,23 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning(s) copy is incorrect')
         else:
             try:
-                funct.purge(self, self.testemail)
+                funct.purgeSSOemail(self, self.testemail)
                 print('test user purged')
             except:
                 print('no test user found')
             print("E---Error message did not appear or other unexpected behavior. Test Failed.")
             funct.fullshot(driver)
             raise Exception('Unexpected message or behavior.')
-# Deleting test data
+        # Deleting test data
         try:
-                funct.purge(self, self.testemail)
+                funct.purgeSSOemail(self, self.testemail)
                 print('test user purged')
         except:
                 print('no test user found')
         
-# Deleting 2nd test data
+        # Deleting 2nd test data
         try:
-                funct.purge(self, testemail2)
+                funct.purgeSSOemail(self, testemail2)
                 print('E--- 2nd test user created, but purged')
         except:
                 pass
