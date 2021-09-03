@@ -10,10 +10,10 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYlotto(confTest.NYlottoBASE):
 
-# Checks that incorrect email login attempt displays error
     def test_01_loginIncorrectEmailError(self):
         testenv = self.env
         print("\nTESTING " + testenv + " ENVIRONMENT")
+        print("\nChecks that incorrect email login attempt displays error")
         driver = self.driver
         # url is pulled from confTest
         driver.get(self.login_url)
@@ -41,8 +41,6 @@ class NYlotto(confTest.NYlottoBASE):
 
 
     def test_02_loginIncorrectPswError(self):
-        testenv = self.env
-        print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks that incorrect password login attempt displays error")
         testemail = self.testemail
         driver = self.driver
@@ -68,7 +66,6 @@ class NYlotto(confTest.NYlottoBASE):
         warning = driver.find_element(var.loginV.login_button_error[0], var.loginV.login_button_error[1])
         if funct.checkErrorText(driver, var.loginV.login_button_error, var.loginV.badPasswordErrorStub) == True:
             print('PASS - Error warnings found and warning copy is correct')
-            print('Warning text displayed is "' + warning.get_attribute("innerText") + '"')
         elif funct.checkErrorText(driver, var.loginV.login_button_error, var.loginV.badPasswordErrorStub) == False:
             print('FAIL - Warning should say "' + var.loginV.badPasswordErrorStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
             funct.fullshot(driver)
