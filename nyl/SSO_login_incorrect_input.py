@@ -40,10 +40,10 @@ class NYlotto(confTest.NYlottoBASE):
             raise Exception('Error warning(s) copy is incorrect')
 
 
-# Checks that incorrect password login attempt displays error
     def test_02_loginIncorrectPswError(self):
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
+        print("\nChecks that incorrect password login attempt displays error")
         testemail = self.testemail
         driver = self.driver
         print('\n----------\n' + 'Test setup')
