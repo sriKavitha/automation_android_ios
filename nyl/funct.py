@@ -265,6 +265,7 @@ def purgeSSOphone(self, phone):
         waitAndClick(driver, var.adminLoginVar.signin_button)
     except Exception:  # if session persists from before, extend session and continue
         try:
+            time.sleep(2)
             waitAndClick(driver, var.adminLoginVar.extend_button)
             print('Admin Dash Session persisted, login bypassed')
         except:

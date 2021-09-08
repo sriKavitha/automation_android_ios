@@ -236,24 +236,24 @@ class govIdV:
 
 # Drivers license and browser capture method
 # Document capture page
-    dl_start_button = [By.ID, "dcui-start-button"]
+    dl_start_button = [By.XPATH, '//button[@id="dcui-start-button"]']
 # Driver's license front capture page
-    dl_front_capture_button = [By.ID, "capture-input"]
+    dl_front_capture_button = [By.XPATH, '//button[@id="start-capture"]']
 # Driver's license front quality check page
-    dl_front_discard_button = [By.ID, "discard-capture"]
-    dl_front_save_button = [By.ID, "save-capture"]
+    dl_front_discard_button = [By.XPATH, '//button[@id="discard-capture"]']
+    dl_front_save_button = [By.XPATH, '//button[@id="save-capture"]']
 # Driver's license back capture page
-    dl_back_capture_button = [By.ID, "capture-input"]
+    dl_back_capture_button = [By.XPATH, '//button[@id="start-capture"]']
 # Driver's license back quality check page
-    dl_back_discard_button = [By.ID, "discard-capture"]
-    dl_back_save_button = [By.ID, "save-capture"]
+    dl_back_discard_button = [By.XPATH, '//button[@id=["discard-capture"]']
+    dl_back_save_button = [By.XPATH, '//button[@id="save-capture"]']
 # Facial snapshot capture page
-    dl_facial_capture_button = [By.ID, "capture-input"]
+    dl_facial_capture_button = [By.XPATH, '//button[@id="start-capture"]']
 # Facial snapshot quality check page
-    dl_facial_discard_button = [By.CSS_SELECTOR, "#discard-capture"]
-    dl_facial_save_button = [By.CSS_SELECTOR, "#save-capture"]
+    dl_facial_discard_button = [By.XPATH, '//button[@id=["discard-capture"]']
+    dl_facial_save_button = [By.XPATH, '//button[@id="save-capture"]']
 # Document submission page
-    dl_submit_button = [By.ID, "verify-all"]
+    dl_submit_button = [By.XPATH, '//button[@id="verify-all"]']
 
 # Passport and browser capture method
 # Document capture page

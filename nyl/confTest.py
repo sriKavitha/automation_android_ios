@@ -45,9 +45,11 @@ class NYLadminBASE(unittest.TestCase):
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
+        # chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--window-size=1440,900")
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(12)
-        self.driver.maximize_window()
+        # self.driver.maximize_window()
         self.verificationErrors = []
         self.accept_next_alert = True
 
@@ -76,9 +78,11 @@ class NYLservicesBASE(unittest.TestCase):
         self.env = globalVar.env
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
+        # chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--window-size=1440,900")
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(12)
-        self.driver.maximize_window()
+        # self.driver.maximize_window()
         self.verificationErrors = []
         self.accept_next_alert = True
 
@@ -141,9 +145,11 @@ class NYlottoBASE(unittest.TestCase):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--proxy-server={0}".format(self.reg_url))
         chrome_options.add_argument("--incognito")
+        # chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--window-size=1440,900")
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(12)
-        self.driver.maximize_window()
+        # self.driver.maximize_window()
         self.verificationErrors = []
         self.accept_next_alert = True
 

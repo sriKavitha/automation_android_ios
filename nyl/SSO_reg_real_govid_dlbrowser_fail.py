@@ -6,10 +6,10 @@ import unittest, time, re  # unittest is the testing framework, provides module 
 from selenium.webdriver.common.keys import Keys  # Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By  # By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 import var, funct, util, confTest, HtmlTestRunner  # Custom class for NYL
+from selenium.webdriver import ActionChains
 
 # [Documentation - Summary] Tests user workflow of failed
 # registration with OTP pass and fake Driver's License on Browser method
-# For use with Entry Info file version: nyl04082020.txt
 
 # For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
 # Change paths starting on Line 104 for reading images prior to running test
@@ -19,19 +19,24 @@ class NYlotto(confTest.NYlottoBASE):
     # This is the test case method. The test case method should always start with the characters test.
     # The first line inside this method creates a local reference to the driver object created in setUp method.
     def test_regDLBrowserFail(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
+        print("\nChecks failed registration with OTP pass and fake Driver's License on Browser method")
         # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2403
+        print('\n----------\n' + 'Test setup')
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
-            funct.purge(self, self.testemail)
-            print('test user purged')
+            funct.purgeSSOemail(self, self.testemail)
         except:
-            print('no test user found')
+            pass
+        print('----------')
+        testemail = self.testemail
         driver = self.driver
         # The driver.get method will navigate to a page given by the URL.
         # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
         # before returning control to your test or script.
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 
@@ -58,7 +63,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.regV.ss_check)
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, self.testemail)
+        funct.waitAndSend(driver, var.regV.email, testemail)
         funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
         funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
@@ -80,9 +85,19 @@ class NYlotto(confTest.NYlottoBASE):
         # uploading the different images for the gov id verification
         # DLback.jpg, DLface.jpg, DLfront.jpg
         funct.waitAndClick(driver, var.govIdV.dl_start_button)
-        # 6th screen. Upload Front of Drivers's License & Save
-        funct.waitAndSend(driver, var.govIdV.dl_front_capture_button, "/Users/Shared/testing/DLfront.jpg")
+        # 6th screen. Upload Front of Drivers's License
+        funct.waitAndClick(driver, var.govIdV.dl_front_capture_button)
+        time.sleep(2)
+        actions = ActionChains(driver)
+        el = driver.find_element_by_xpath('//p[@class="ng-tns-c70-4"]')  # "Here is how to take the right picture:" text
+        actions.move_to_element(el).click().perform()
+        actions.key_down(Keys.COMMAND).send_keys('f').key_up(Keys.COMMAND).perform()
+        actions.send_keys('DLfront.jpg').send_keys(Keys.ENTER).perform()
+        actions.send_keys(Keys.TAB).perform()
+        actions.send_keys(Keys.TAB).perform()
+        actions.send_keys(Keys.ENTER).perform()
         # 7th screen. Quality check & Save
+        time.sleep(3)
         funct.waitAndClick(driver, var.govIdV.dl_front_save_button)
         # 8th screen. Upload Back of Driver's License
         funct.waitAndSend(driver, var.govIdV.dl_back_capture_button, "/Users/Shared/testing/DLback.jpg")
@@ -103,7 +118,7 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Reached valid registration screen and redirected to callback uri.")
             funct.fullshot(driver)
             try:
-                funct.purge(self, self.testemail)
+                funct.purgeSSOemail(self, testemail)
                 print('test user purged')
             except:
                 print('no test user found')
@@ -111,17 +126,17 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
             funct.fullshot(driver)
             try:
-                funct.purge(self, self.testemail)
+                funct.purgeSSOemail(self, testemail)
                 print('test user purged')
             except:
                 print('no test user found')
         # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
         try:
-            funct.purge(self, self.testemail)
-            print('test user purged')
+            funct.purgeSSOemail(self, testemail)
         except:
-            print('no test user found')
-        print("Test complete!")
+            pass
+        print('----------')
 
 
 # use "report" variable in conftest.py to change report style on runner
