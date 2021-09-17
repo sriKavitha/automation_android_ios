@@ -1,4 +1,5 @@
 NYL README
+#TODO need a new html test reporting library as current one is not maintained
 
 Requirements(python 3.6 or greater):
 - requires up to date credentials file placed in local Users folder. Contact NYL QA lead to receive this file.
