@@ -11,14 +11,18 @@ import HtmlTestRunner                               #Report runner
 
 class NYlotto(confTest.NYlottoBASE):
 
-# Checks First name change in update profile saves and redirects successfully
-    def test_updateDOB(self, testemail='self.testemail'):
-        if testemail == 'self.testemail':
-            testemail = self.testemail
+    def test_updateDOB(self):
+        testemail = self.testemail
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
+        print("\nChecks date of birth change in update profile saves and redirects to OTP")
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2041
+        print('\n----------\n' + 'Test setup')
+        # creates a verified user with valid SSN4
+        funct.createVerifiedUser(self, testemail)
+        print('----------')
 
         driver = self.driver
-
-        funct.createVerifiedUser(self, testemail)
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -42,11 +46,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -61,20 +63,18 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile changes failed to save.')
 
         # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
         try:
-            funct.purge(self, testemail)
-            print('test user purged')
+            funct.purgeSSOemail(self, testemail)
         except:
-            print('no test user found')
-        print("Test complete!")
+            pass
+        print('----------')
 
 
 # use "report" variable in conftest.py to change report style on runner

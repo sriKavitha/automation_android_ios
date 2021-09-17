@@ -14,28 +14,23 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 # custom:gov_id_verification	"-"
 # custom:verified	"N"
 
-# For use with Entry Info file version: nyl04082020.txt
-
 class NYlotto(confTest.NYlottoBASE):
-
-# This is the test case method. The test case method should always start with the characters test.
-# The first line inside this method creates a local reference to the driver object created in setUp method.
+    # replace method arg 'self.testemail' to the email of the user email you want to use
     def test_newUnverified(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
         print(testemail)
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
-                funct.purge(self, testemail)
-                print('test user purged')
+            funct.purgeSSOemail(self, testemail)
         except:
-                print('no test user found')
+            pass
         driver = self.driver
         # The driver.get method will navigate to a page given by the URL.
 
         # before returning control to your test or script.
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 
@@ -72,10 +67,7 @@ class NYlotto(confTest.NYlottoBASE):
         print("Test complete, user created")
 
 
-# use "report" variable in conftest.py to change report style on runner
+# This file is a helper tool for manual testing, no HTML reporting is necessary
+# Boiler plate code to run the test suite
 if __name__ == "__main__":
-    if  confTest.NYlottoBASE.report == "terminal":
-        unittest.main(warnings='ignore')
-    elif confTest.NYlottoBASE.report == "html":
-        unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    
+    unittest.main(warnings='ignore')

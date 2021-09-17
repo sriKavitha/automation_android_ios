@@ -158,10 +158,10 @@ class NYlottoBASE(unittest.TestCase):
         # NOTE: this code for checking for exceptions does NOT work for Safari
         # Python 3.8+ may have this built in. Need to revisit at future date.
         # checking for exceptions or assertion errors, if there are take screenshot
-        for method, error in self._outcome.errors:
-            if error:
-                funct.fullshot(self.driver)
-                funct.generateHAR(self.server, self.driver)
+        # for method, error in self._outcome.errors:
+        #     if error:
+        #         funct.fullshot(self.driver)
+        #         funct.generateHAR(self.server, self.driver)
         # self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 

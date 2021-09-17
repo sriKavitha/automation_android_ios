@@ -51,14 +51,13 @@ class adminDashVar:
                       'category_phone']
     category_email = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[6]/a', 'category_email']
     operator_contains = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'operator_contains']
-    # search_button = [By.CSS_SELECTOR, '#kt_content > div.kt-container.kt-container--fluid.kt-grid__item.kt-grid__item--fluid > div > div > div > div.kt-portlet__body > div:nth-child(1) > div > div > div > div > div > div > div.form-group > button', 'search_button']
     search_button = [By.XPATH, '//button[@class="ml-2 btn btn-wide btn-primary btn-upper"]', 'search_button']
     bulkAction_button = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[2]/div/div/div/div/button', 'bulkAction_button']
-    li_verification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', "li_verification"]
-    li_unverification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', "li_unverification"]
-    li_lock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[3]', "li_lock"]
-    li_unlock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[4]', "li_unlock"]
-    li_delete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[5]', "li_delete"]
+    li_verification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_verification']
+    li_unverification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_unverification']
+    li_lock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[3]', 'li_lock']
+    li_unlock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[4]', 'li_unlock']
+    li_delete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[5]', 'li_delete']
     li_cancelDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_cancelDelete']
     li_permDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_permDelete']
     comment_textarea = [By.XPATH, '//textarea[@id="comment"]', 'comment_textarea']
@@ -161,45 +160,45 @@ class credsSSOWEB:
 
 # Reg page elements
 class regV:
-    fname = [By.NAME, "firstName", "fname"]
-    mname = [By.NAME, "middleName", "mname"]
-    lname = [By.NAME, "lastName", "lname"]
-    suffix_dropdown = [By.NAME, "suffix", "suffix_dropdown"]
-    housenum = [By.NAME, "streetNumber", "housenum"]
-    street = [By.NAME, "street", "street"]
-    add2 = [By.NAME, "addressLine2", "add2"]
-    city = [By.NAME, "city", "city"]
-    state_dropdown = [By.NAME, "state", "state_dropdown"]
-    zip = [By.NAME, "zip", "zip"]
-    phone = [By.NAME, "phone", "phone"]
-    ssn4 = [By.NAME, "ssn4", "ssn4"]
-    ss_check = [By.NAME, "noSsn4", "ss_check"]
-    dob = [By.NAME, "birthdate", "dob"]
-    dob_check = [By.NAME, "isOver18", "dob_check"]
-    email = [By.ID, "sso-email", "email"]
-    password = [By.NAME, "password", "password"]
-    confirmPsw = [By.NAME, "confirmPassword", "confirmPsw"]
-    tos_check = [By.NAME, "acceptedTermsAndConditions", "tos_check"]
-    cnw_check = [By.NAME, "collectnwin", "cnw_check"]
-    nylnews_check = [By.NAME, "newsletter", "nylnews_check"]
-    submit_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/form/div[2]/div[7]/button/span', "submit_button"]
+    fname = [By.NAME, 'firstName', 'fname']
+    mname = [By.NAME, 'middleName', 'mname']
+    lname = [By.NAME, 'lastName', 'lname']
+    suffix_dropdown = [By.NAME, 'suffix', 'suffix_dropdown']
+    housenum = [By.NAME, 'streetNumber', 'housenum']
+    street = [By.NAME, 'street', 'street']
+    add2 = [By.NAME, 'addressLine2', 'add2']
+    city = [By.NAME, 'city', 'city']
+    state_dropdown = [By.NAME, 'state', 'state_dropdown']
+    zip = [By.NAME, 'zip', 'zip']
+    phone = [By.NAME, 'phone', 'phone']
+    ssn4 = [By.NAME, 'ssn4', 'ssn4']
+    ss_check = [By.NAME, 'noSsn4', 'ss_check']
+    dob = [By.NAME, 'birthdate', 'dob']
+    dob_check = [By.NAME, 'isOver18', 'dob_check']
+    email = [By.ID, 'sso-email', 'email']
+    password = [By.NAME, 'password', 'password']
+    confirmPsw = [By.NAME, 'confirmPassword', 'confirmPsw']
+    tos_check = [By.NAME, 'acceptedTermsAndConditions', 'tos_check']
+    cnw_check = [By.NAME, 'collectnwin', 'cnw_check']
+    nylnews_check = [By.NAME, 'newsletter', 'nylnews_check']
+    submit_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/form/div[2]/div[7]/button/span', 'submit_button']
 
 # error variables
-    fname_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(2) > div.is-error.invalid-feedback", "fname_error"]
-    lname_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(4) > div.is-error.invalid-feedback", "lname_error"]
-    housenum_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(6) > div.is-error.invalid-feedback", "housenum_error"]
-    street_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(7) > div.is-error.invalid-feedback", "street_error"]
-    city_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(9) > div.is-error.invalid-feedback", "city_error"]
-    state_dropdown_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > div", "state_dropdown_error"]
-    zip_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(11) > div.is-error.invalid-feedback", "zip_error"]
-    phone_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.has-prepend > div.is-error.invalid-feedback", "phone_error"]
-    dob_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(15) > div.is-error.invalid-feedback", "dob_error"]
-    dob_check_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(16) > div > label", "dob_check_error"]
-    email_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.form-group.has-prepend > div.is-error.invalid-feedback", "email_error"]
-    password_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(3) > div.is-error.invalid-feedback", "password_error"]
-    confirmPsw_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback", "confirmPsw_error"]
-    tos_check_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(5) > div > label", "tos_check_error"]
-    submit_button_error = [By.XPATH, '//p[@class="submit-error"]', "submit_button_error"]
+    fname_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(2) > div.is-error.invalid-feedback', 'fname_error']
+    lname_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(4) > div.is-error.invalid-feedback', 'lname_error']
+    housenum_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(6) > div.is-error.invalid-feedback', 'housenum_error']
+    street_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(7) > div.is-error.invalid-feedback', 'street_error']
+    city_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(9) > div.is-error.invalid-feedback', 'city_error']
+    state_dropdown_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.error > div > div', 'state_dropdown_error']
+    zip_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(11) > div.is-error.invalid-feedback', 'zip_error']
+    phone_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div.form-group.has-prepend > div.is-error.invalid-feedback', 'phone_error']
+    dob_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(15) > div.is-error.invalid-feedback', 'dob_error']
+    dob_check_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(16) > div > label', 'dob_check_error']
+    email_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div.form-group.has-prepend > div.is-error.invalid-feedback', 'email_error']
+    password_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(3) > div.is-error.invalid-feedback', 'password_error']
+    confirmPsw_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(4) > div.is-error.invalid-feedback', 'confirmPsw_error']
+    tos_check_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div:nth-child(2) > div:nth-child(5) > div > label', 'tos_check_error']
+    submit_button_error = [By.XPATH, '//p[@class="submit-error"]', 'submit_button_error']
 
 # error copy
     requiredErrorStub = 'Required'
@@ -217,59 +216,57 @@ class regV:
 # [Documentation - Variables] Objects on OTP pages
 class otpV:
 # otp method selection page
-    text_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[1]/span']
-    call_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[2]/span']
+    text_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[1]/span', 'text_button']
+    call_button = [By.XPATH, '//*[@id="app-container"]/div/div[2]/div/div/div/button[2]/span', 'call_button']
 # otp code entry page
-    otp_input = [By.NAME, "otp"]
-    otp_continue_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(4) > button > span"]
-    retry_call_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(1]"]
-    retry_text_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(2]"]
+    otp_input = [By.NAME, 'otp', 'otp_input']
+    otp_continue_button = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div:nth-child(4) > button > span', 'otp_continue_button']
+    retry_call_button = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(1]', 'retry_call_button']
+    retry_text_button = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div:nth-child(5] > p > button:nth-child(2]', 'retry_text_button']
 
 # [Documentation - Variables] Objects on Gov ID pages
 class govIdV:
 # gov id and upload method selection page
-    gov_id_dropdown = [By.NAME, "govIdType"]
-    id_drivers_license = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(2)"]
-    id_passport = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group > div > select > option:nth-child(3)"]
-    mobile_button = [By.CLASS_NAME, "nyl-btn"]
-    browser_link = [By.CLASS_NAME, "continue-with-browser-link"]
+    gov_id_dropdown = [By.NAME, 'govIdType', 'gov_id_dropdown']
+    id_drivers_license = [By.XPATH, '//option[@value="US Drivers License"]', 'id_drivers_license']
+    id_passport = [By.XPATH, '//option[@value="International Passport"]', 'id_passport']
+    mobile_button = [By.XPATH, '//button[@class="nyl-button"]', 'mobile_button']
+    browser_link = [By.XPATH, '//a[@class="continue-with-browser-link"]', 'browser_link']
 
 # Drivers license and browser capture method
 # Document capture page
-    dl_start_button = [By.XPATH, '//button[@id="dcui-start-button"]']
+    dl_start_button = [By.XPATH, '//button[@id="dcui-start-button"]', 'dl_start_button']
 # Driver's license front capture page
-    dl_front_capture_button = [By.XPATH, '//button[@id="start-capture"]']
+    dl_front_capture_button = [By.XPATH, '//button[@id="start-capture"]', 'dl_front_capture_button']
 # Driver's license front quality check page
-    dl_front_discard_button = [By.XPATH, '//button[@id="discard-capture"]']
-    dl_front_save_button = [By.XPATH, '//button[@id="save-capture"]']
+    dl_front_discard_button = [By.XPATH, '//button[@id="discard-capture"]', 'dl_front_discard_button']
+    dl_front_save_button = [By.XPATH, '//button[@id="save-capture"]', 'dl_front_save_button']
 # Driver's license back capture page
-    dl_back_capture_button = [By.XPATH, '//button[@id="start-capture"]']
+    dl_back_capture_button = [By.XPATH, '//button[@id="start-capture"]', 'dl_back_capture_button']
 # Driver's license back quality check page
-    dl_back_discard_button = [By.XPATH, '//button[@id=["discard-capture"]']
-    dl_back_save_button = [By.XPATH, '//button[@id="save-capture"]']
+    dl_back_discard_button = [By.XPATH, '//button[@id=["discard-capture"]', 'dl_back_discard_button']
+    dl_back_save_button = [By.XPATH, '//button[@id="save-capture"]', 'dl_back_save_button']
 # Facial snapshot capture page
-    dl_facial_capture_button = [By.XPATH, '//button[@id="start-capture"]']
+    dl_facial_capture_button = [By.XPATH, '//button[@id="start-capture"]', 'dl_facial_capture_button']
 # Facial snapshot quality check page
-    dl_facial_discard_button = [By.XPATH, '//button[@id=["discard-capture"]']
-    dl_facial_save_button = [By.XPATH, '//button[@id="save-capture"]']
+    dl_facial_discard_button = [By.XPATH, '//button[@id=["discard-capture"]', 'dl_facial_discard_button']
+    dl_facial_save_button = [By.XPATH, '//button[@id="save-capture"]', 'dl_facial_save_button']
 # Document submission page
-    dl_submit_button = [By.XPATH, '//button[@id="verify-all"]']
+    id_submit_button = [By.XPATH, '//button[@id="verify-all"]', 'id_submit_button']
 
 # Passport and browser capture method
 # Document capture page
-    passport_start_button = [By.ID, "dcui-start-button"]
+    passport_start_button = [By.ID, 'dcui-start-button', 'passport_start_button']
 # Passport front capture page
-    passport_capture_button = [By.ID, "capture-input"]
+    passport_capture_button = [By.ID, 'capture-input', 'passport_capture_button']
 # Passport front quality check page
-    passport_discard_button = [By.ID, "discard-capture"]
-    passport_save_button = [By.ID, "save-capture"]
+    passport_discard_button = [By.ID, 'discard-capture', 'passport_discard_button ']
+    passport_save_button = [By.ID, 'save-capture', 'passport_save_button ']
 # Facial snapshot capture page
-    passport_facial_capture_button = [By.ID, "capture-input"]
+    passport_facial_capture_button = [By.ID, 'capture-input', 'passport_facial_capture_button']
 # Facial snapshot quality check page
-    passport_facial_discard_button = [By.CSS_SELECTOR, "#discard-capture"]
-    passport_facial_save_button = [By.CSS_SELECTOR, "#save-capture"]
-# Document submission page
-    passport_submit_button = [By.ID, "verify-all"]
+    passport_facial_discard_button = [By.CSS_SELECTOR, '#discard-capture', 'passport_facial_discard_button']
+    passport_facial_save_button = [By.CSS_SELECTOR, '#save-capture', 'passport_facial_save_button']
 
 # TODO at a future date with Appium inspection session
 # Drivers license and mobile capture method
@@ -277,15 +274,15 @@ class govIdV:
 
 # [Documentation - Variables] Objects on Login page
 class loginV:
-    email = [By.ID, "sso-email", "email"]
-    password = [By.NAME, "password", "password"]
-    login_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span", "login_button"]
-    forgot_password_link = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p > a", "forgot_password_link"]
+    email = [By.ID, 'sso-email', 'email']
+    password = [By.NAME, 'password', 'password']
+    login_button = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span', 'login_button']
+    forgot_password_link = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div.button-wrap > p > a', 'forgot_password_link']
 
 # error variables
-    email_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.form-group.has-prepend > div.is-error.invalid-feedback", "email_error"]
-    password_error = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div:nth-child(3) > div.is-error.invalid-feedback", "password_error"]
-    login_button_error = [By.XPATH, '//p[@class="submit-error"]', "login_button_error"]
+    email_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div.form-group.has-prepend > div.is-error.invalid-feedback', 'email_error']
+    password_error = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div:nth-child(3) > div.is-error.invalid-feedback', 'password_error']
+    login_button_error = [By.XPATH, '//p[@class="submit-error"]', 'login_button_error']
 
 # error copy
     requiredErrorStub = 'Required'
@@ -296,8 +293,8 @@ class loginV:
 
 # [Documentation - Variables] Objects on Reset Password page
 class resetPswV:
-    email = [By.NAME, "email"]
-    reset_submit_button = [By.CSS_SELECTOR, "#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span"]
+    email = [By.NAME, 'email', 'email']
+    reset_submit_button = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span', 'reset_submit_button']
 
 # [Documentation - Variables] Objects on Update Profile page
 class updateProfV:
@@ -314,7 +311,7 @@ class updateProfV:
     phone = [By.NAME, 'phone', 'phone']
     dob = [By.NAME, 'birthdate', 'birthdate']
     email = [By.ID, 'sso-email', 'email']
-    update_button = [By.CLASS_NAME, 'nyl-btn', 'update_button']
+    update_button = [By.XPATH, '//button[@class="nyl-button"]', 'update_button']
     signout_button = [By.CLASS_NAME, 'sign-out-all-cta', 'signout_button']
 
 # error variables

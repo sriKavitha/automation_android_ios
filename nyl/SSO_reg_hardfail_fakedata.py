@@ -71,9 +71,10 @@ class NYlotto(confTest.NYlottoBASE):
             pass
         print('----------')
 
+
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    if  confTest.NYlottoBASE.report == "terminal":
+    if confTest.NYlottoBASE.report == "terminal":
         unittest.main(warnings='ignore')
     elif confTest.NYlottoBASE.report == "html":
         unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
