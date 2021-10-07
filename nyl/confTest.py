@@ -3,41 +3,125 @@
 from selenium import webdriver  #webdriver module provides all WebDriver implementations
 import warnings
 from browsermobproxy import Server
-import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, util                         #Custom class for NYL
+import unittest  #unittest is the testing framework, provides module for organizing test cases
+import funct
 
-class NYlottoBASE(unittest.TestCase):
-#report can be "html" for testrunner reports or "terminal" for direct terminal feedback
+class globalVar:
+###==============================================================###
+# Global variables - change the variables in this section for
+# all tests in the suite to inherit the assignment
+###==============================================================###
+    # report can be "html" for testrunner reports or "terminal" for direct terminal feedback
     report = 'terminal'
-    #report = 'html'
+    # report = 'html'
 
-# testdata can be "iddw" or "real" to denote which credential files to use in var.py
+    # testdata can be "iddw" or "real" to denote which credential files to use in var.py
     testdata = 'iddw'
     # testdata = 'real'
 
+    # .env can be "dev", "qa", or "stage" to denote which environment and credentials to use
+    env = 'qa'
+
+    testemail = 'qa+ssotest@rosedigital.co'
+
+###==============================================================###
+# NYL Admin Dash
+###==============================================================###
+class NYLadminBASE(unittest.TestCase):
+    testdata = globalVar.testdata
+    report = globalVar.report
 # The setUp is part of initialization, this method will get called before every test function which you
-# are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
+# are going to write in this test case class.
+    def setUp(self):
+        self.env = globalVar.env
+        self.testemail = globalVar.testemail
+
+        if self.env == 'dev':
+            self.admin_url = 'https://admin-dev.nylservices.net/'
+        elif self.env == 'qa':
+            self.admin_url = 'https://admin-qa.nylservices.net/'
+        elif self.env == 'stage':
+            self.admin_url = 'https://admin-stage.nylservices.net/'
+
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--incognito")
+        # chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--window-size=1440,900")
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.implicitly_wait(12)
+        # self.driver.maximize_window()
+        self.verificationErrors = []
+        self.accept_next_alert = True
+
+# The tearDown method will get called after every test method. This is a place to do all cleanup actions.
+    def tearDown(self):
+        # NOTE: this code for checking for exceptions does NOT work for Safari
+        # Python 3.8+ may have this built in. Need to revisit at future date.
+        # checking for exceptions or assertion errors, if there are take screenshot
+        # for method, error in self._outcome.errors:
+        #     if error:
+        #         funct.fullshot(self.driver)
+        #         funct.generateHAR(self.server, self.driver)
+        # # self.driver.quit()
+        self.assertEqual([], self.verificationErrors)
+
+###==============================================================###
+# NYL Services API
+###==============================================================###
+class NYLservicesBASE(unittest.TestCase):
+    testdata = globalVar.testdata
+    report = globalVar.report
+    # The setUp is part of initialization, this method will get called before every test function which you
+    # are going to write in this test case class.
 
     def setUp(self):
-        #.env can be "dev", "qa", or "stage" to denote which environment and credentials to use
-        self.env = 'dev'
+        self.env = globalVar.env
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--incognito")
+        # chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--window-size=1440,900")
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.implicitly_wait(12)
+        # self.driver.maximize_window()
+        self.verificationErrors = []
+        self.accept_next_alert = True
 
-        self.testemail = "qa+ssotest@rosedigital.co"
+    # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
+    def tearDown(self):
+        # NOTE: this code for checking for exceptions does NOT work for Safari
+        # Python 3.8+ may have this built in. Need to revisit at future date.
+        # checking for exceptions or assertion errors, if there are take screenshot
+        # for method, error in self._outcome.errors:
+        #     if error:
+        #         funct.fullshot(self.driver)
+        #         funct.generateHAR(self.server, self.driver)
+        # # self.driver.quit()
+        self.assertEqual([], self.verificationErrors)
+
+# ###==============================================================###
+# # NYL SSO
+# ###==============================================================###
+class NYlottoBASE(unittest.TestCase):
+    report = globalVar.report
+    testdata = globalVar.testdata
+    # The setUp is part of initialization, this method will get called before every test function which you
+    # are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
+
+    def setUp(self):
+        self.env = globalVar.env
+        self.testemail = globalVar.testemail
         if self.env == 'dev':
-            self.url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
+            self.reg_url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
             self.login_url = "https://sso-dev.nylservices.net/login?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
             self.reset_url = "https://sso-dev.nylservices.net/reset-password?clientId=29d5np06tgg87unmhfoa3pkma7"
             self.update_url = "https://sso-dev.nylservices.net/update-profile?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
         elif self.env == 'qa':
-            self.url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
+            self.reg_url = "https://sso-qa.nylservices.net/?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
             self.login_url = "https://sso-qa.nylservices.net/login?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
             self.reset_url = "https://sso-qa.nylservices.net/reset-password?clientId=4a0p01j46oms3j18l90lbtma0o"
             self.update_url = "https://sso-qa.nylservices.net/update-profile?clientId=4a0p01j46oms3j18l90lbtma0o&callbackUri=https://google.com"
         elif self.env == 'stage':
-            self.url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
+            self.reg_url = "https://sso-stage.nylservices.net/?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
             self.login_url = "https://sso-stage.nylservices.net/login?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
             self.reset_url = "https://sso-stage.nylservices.net/reset-password?clientId=6pdeoajlh4ttgktolu3jir8gp6"
             self.update_url = "https://sso-stage.nylservices.net/update-profile?clientId=6pdeoajlh4ttgktolu3jir8gp6&callbackUri=https://google.com"
@@ -57,25 +141,27 @@ class NYlottoBASE(unittest.TestCase):
         #   })
         self.server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy", options={'port': 8090})
         self.server.start()
-        
+
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--proxy-server={0}".format(self.url))
+        chrome_options.add_argument("--proxy-server={0}".format(self.reg_url))
         chrome_options.add_argument("--incognito")
+        # chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--window-size=1440,900")
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(12)
-        self.driver.maximize_window()
+        # self.driver.maximize_window()
         self.verificationErrors = []
         self.accept_next_alert = True
 
-# The tearDown method will get called after every test method. This is a place to do all cleanup actions.
+    # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
         # NOTE: this code for checking for exceptions does NOT work for Safari
         # Python 3.8+ may have this built in. Need to revisit at future date.
         # checking for exceptions or assertion errors, if there are take screenshot
-        for method, error in self._outcome.errors:
-            if error:
-                funct.fullshot(self.driver)
-                funct.generateHAR(self.server, self.driver)
+        # for method, error in self._outcome.errors:
+        #     if error:
+        #         funct.fullshot(self.driver)
+        #         funct.generateHAR(self.server, self.driver)
         # self.driver.quit()
         self.assertEqual([], self.verificationErrors)
 

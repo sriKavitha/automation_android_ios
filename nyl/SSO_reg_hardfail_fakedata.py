@@ -8,17 +8,17 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-# [Documentation - Summary] Tests user workflow of failed
-# registration with fake data
-
 class NYlotto(confTest.NYlottoBASE):
 
-# Checks that user is redirected to Hard Fail screen when fake data is submitted
     def test_regHardFailFakeData(self):
 # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1922
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
+        print("\nChecks that user is redirected to Hard Fail screen when fake data is submitted")
+        testemail = self.testemail
         driver = self.driver
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # putting in acceptable but invalid data
         funct.waitAndSend(driver, var.regV.fname, "Fake")
         funct.waitAndSend(driver, var.regV.lname, "Test")
@@ -32,7 +32,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.ssn4, "1234")
         funct.waitAndSend(driver, var.regV.dob, "01/01/1990")
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, self.testemail)
+        funct.waitAndSend(driver, var.regV.email, testemail)
         funct.waitAndSend(driver, var.regV.password, "Test1234")
         funct.waitAndSend(driver, var.regV.confirmPsw, "Test1234")
         funct.waitAndClick(driver, var.regV.tos_check)
@@ -49,7 +49,7 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Reached successful registration and redirected to callback uri (Google.com)")
             funct.fullshot(driver)
             try:
-                funct.purge(self, self.testemail)
+                funct.purgeSSOemail(self, self.testemail)
                 print('test user purged')
             except:
                 print('no test user found')
@@ -58,21 +58,23 @@ class NYlotto(confTest.NYlottoBASE):
             print("FAIL - Neither Identity verification failed screen nor Registration successful screen reached.")
             funct.fullshot(driver)
             try:
-                funct.purge(self, self.testemail)
+                funct.purgeSSOemail(self, self.testemail)
                 print('test user purged')
             except:
                 print('no test user found')
             raise Exception('Registration redirected incorrectly.')
-# Deleting test data
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
         try:
-            funct.purge(self, self.testemail)
-            print('E-- test user was created but was purged')
+            funct.purgeSSOemail(self, testemail)
         except:
             pass
+        print('----------')
+
 
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    if  confTest.NYlottoBASE.report == "terminal":
+    if confTest.NYlottoBASE.report == "terminal":
         unittest.main(warnings='ignore')
     elif confTest.NYlottoBASE.report == "html":
         unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))

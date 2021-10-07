@@ -8,34 +8,26 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-# [Documentation - Summary] Creates an unverified user that has the following flags:
-# custom:ssn_verification	"N"
-# custom:phone_verification	"N"
-# custom:gov_id_verification	"-"
-# custom:verified	"N"
-
-# For use with Entry Info file version: nyl04082020.txt
-
+# The test case class is inherited from unittest.TestCase.
+# Inheriting from TestCase class is the way to tell unittest module that this is a test case.
 class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_newUnverified(self, testemail='self.testemail'):
-        if testemail == 'self.testemail':
-            testemail = self.testemail
-        print(testemail)
-        # Check for existing test user and wipe it from userpool prior to test execution
-        try:
-                funct.purge(self, testemail)
-                print('test user purged')
-        except:
-                print('no test user found')
+    def test_01_regDupePhone(self):
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2423
+        print("\nChecks for failed registration with duplicate phone in userpool")
+        testemail = self.testemail
+        testemail2 = "qa+ssotest2@rosedigital.co"
         driver = self.driver
-        # The driver.get method will navigate to a page given by the URL.
-
-        # before returning control to your test or script.
-        # url is pulled from confTest
-        driver.get(self.url)
+        print('\n----------\n' + 'Test setup')
+        # creates a verified user with valid SSN4
+        funct.createVerifiedUser(self, testemail)
+        print('----------')
+        # Switch to blank registration page
+        driver.get(self.reg_url)
         # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
 
@@ -58,24 +50,55 @@ class NYlotto(confTest.NYlottoBASE):
                 break
         funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
         funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
-        # Clicks the checkbox for not supplying SSN4 info. Will send user thru ID Verification flow.
-        funct.waitAndClick(driver, var.regV.ss_check)
+        funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
-        funct.waitAndSend(driver, var.regV.email, testemail)
+        funct.waitAndSend(driver, var.regV.email, testemail2)
         funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
         funct.waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-        # 2nd screen. OTP selection screen
-        funct.waitAndClick(driver, var.otpV.text_button)
-        print("Test complete, user created")
-
+        # Checking that error message appears and registration does not proceed.
+        warning = driver.find_element(var.regV.submit_button_error[0], var.regV.submit_button_error[1])
+        if funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.duplicatePhoneErrorStub) == True:
+            print('PASS - Error warnings found and warning copy is correct')
+            print('Warning text displayed is "' + warning.get_attribute("innerText") + '"')
+        elif funct.checkErrorText(driver, var.regV.submit_button_error, var.regV.duplicatePhoneErrorStub) == False:
+            try:
+                funct.purgeSSOemail(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
+            print('FAIL - Warning should say "' + var.regV.duplicatePhoneErrorStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
+            funct.fullshot(driver)
+            raise Exception('Error warning(s) copy is incorrect')
+        else:
+            try:
+                funct.purgeSSOemail(self, self.testemail)
+                print('test user purged')
+            except:
+                print('no test user found')
+            print("E---Error message did not appear or other unexpected behavior. Test Failed.")
+            funct.fullshot(driver)
+            raise Exception('Unexpected message or behavior.')
+        # Deleting test data
+        try:
+                funct.purgeSSOemail(self, self.testemail)
+                print('test user purged')
+        except:
+                print('no test user found')
+        
+        # Deleting 2nd test data
+        try:
+                funct.purgeSSOemail(self, testemail2)
+                print('E--- 2nd test user created, but purged')
+        except:
+                pass
+        print("Test complete!")
 
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    if  confTest.NYlottoBASE.report == "terminal":
+    if confTest.NYlottoBASE.report == "terminal":
         unittest.main(warnings='ignore')
     elif confTest.NYlottoBASE.report == "html":
         unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    

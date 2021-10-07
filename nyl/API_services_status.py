@@ -3,8 +3,8 @@ import warnings
 import unittest, time, re  # unittest is the testing framework, provides module for organizing test cases
 import requests, json           # Requests provides ability to hit API Json provides ability to encode & decode Json files
 import HtmlTestRunner
-import var, funct, confTest     # Custom class for NYL
 
+import var, funct, confTest     # Custom class for NYL
 
 class NYLServices(confTest.NYLservicesBASE):
 
@@ -24,12 +24,18 @@ class NYLServices(confTest.NYLservicesBASE):
         testemailMOB = 'qa+mobile' + ts + '@rosedigital.co'
 
         # Check for existing test SSO user and wipe it from userpool prior to register api call
-        try:
-            funct.purge(self, testemailSSO)
-            print('test user ' + testemailSSO + ' purged \n')
-        except:
-            print('no test user ' + testemailSSO + ' found \n')
-        # Check for existing test Mobile user and wipe it from userpool prior to register api call
+        # Purge with email search on dev and phone search on qa/ stage env
+        if self.env != 'dev':
+            try:
+                funct.purgeSSOphone(self, var.CREDSapi.ssoPhone)
+            except:
+                pass
+        else:
+            try:
+                funct.purgeSSOemail(self, testemailSSO)
+            except:
+                pass
+        # # Check for existing test Mobile user and wipe it from userpool prior to register api call
         try:
             funct.purgeMobile(self, testemailMOB)
             print('test user ' + testemailMOB + ' purged \n')
@@ -76,10 +82,21 @@ class NYLServices(confTest.NYLservicesBASE):
                                          json=sso_register_payload)
         if sso_registerCall.status_code == 200:
             print('POST /sso/register-verify (SSN Registration) Status Code: ' + str(sso_registerCall.status_code))
+            print(sso_registerCall.text)
         else:
             print("ERROR - POST /sso/register-verify (SSN Registration) Status Code: ")
             print(sso_registerCall.status_code)
             print(sso_registerCall.text)
+
+        # [Documentation - detail] Conditional check due to IDDW verification dependency with user verification
+        if '"phoneDuplicate":true' in str(sso_registerCall.text):
+            print('ERROR - Duplicate phone for user and user not created.\nRegistration response = ')
+            print(sso_registerCall.text)
+            raise Exception('Failed user creation. Unable to proceed further. Purge phone number or change user data.')
+        elif '"hardFail":true' in str(sso_registerCall.text):
+            print('ERROR - IDDW Verification failed for user and user not created.\nRegistration response = ')
+            print(sso_registerCall.text)
+            raise Exception('Failed user creation. Unable to proceed further. Change test user data in creds file.')
 
         # [Documentation - detail] grabbing the accessToken and refreshToken from the registration response body for use in later api calls
         registerResponse = []
@@ -93,12 +110,6 @@ class NYLServices(confTest.NYLservicesBASE):
         # print(sso_registerCall.text)
         # print(sso_register_access_token)
         # print(sso_register_refresh_token)
-
-        # [Documentation - detail] Conditional check due to IDDW verification dependency with user verification
-        if '"hardFail":true' in str(sso_registerCall.text):
-            print('ERROR - IDDW Verification failed for user and user not created.\nRegistration response = ')
-            print(sso_registerCall.text)
-            raise Exception('Failed user creation. Unable to proceed further. Change test user data in creds file.')
 
         # POST /sso/refresh-token
         time.sleep(1)
@@ -366,6 +377,7 @@ class NYLServices(confTest.NYLservicesBASE):
         print(infoCall.text)
         print('***WARNING*** \n')
 
+        #TODO update the endpoint test to account for Ticketscan CMS changes from 2021
         # GET /ticket-scan/count (Mobile user)
         time.sleep(1)
         ticketscan_count_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
@@ -445,13 +457,15 @@ class NYLServices(confTest.NYLservicesBASE):
         # TODO GET /sso/email-confirmation-resend
         # TODO POST /sso/verify-jwt
         # TODO PATCH /users
+        # TODO GET /users (Mobile user)
         # TODO All Admin Console endpoints
+        # TODO add timestamps & logging for errors
 
         # Clean up - clear test user from userpool
         # Check for existing test SSO user and wipe it from userpool prior to register api call
+        print('\n\nAPI test complete\n\nTest clean up commencing')
         try:
-            funct.purge(self, testemailSSO)
-            print('test user ' + testemailSSO + ' purged \n')
+            funct.purgeSSOemail(self, testemailSSO)
         except:
             print('no test user ' + testemailSSO + ' found \n')
         # Check for existing test Mobile user and wipe it from userpool prior to register api call
@@ -461,9 +475,10 @@ class NYLServices(confTest.NYLservicesBASE):
         except:
             print('no test user ' + testemailMOB + ' found \n')
 
+
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    if confTest.NYLservicesBASE.report == "terminal":
+    if confTest.NYlottoBASE.report == "terminal":
         unittest.main(warnings='ignore')
-    elif confTest.NYLservicesBASE.report == "html":
+    elif confTest.NYlottoBASE.report == "html":
         unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))

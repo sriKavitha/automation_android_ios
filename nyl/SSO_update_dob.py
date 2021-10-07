@@ -11,23 +11,26 @@ import HtmlTestRunner                               #Report runner
 
 class NYlotto(confTest.NYlottoBASE):
 
-# Checks First name change in update profile saves and redirects successfully
-    def test_updatePhone(self, testemail='self.testemail'):
-        if testemail == 'self.testemail':
-            testemail = self.testemail
+    def test_updateDOB(self):
+        testemail = self.testemail
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
+        print("\nChecks date of birth change in update profile saves and redirects to OTP")
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2041
+        print('\n----------\n' + 'Test setup')
+        # creates a verified user with valid SSN4
+        funct.createVerifiedUser(self, testemail)
+        print('----------')
 
         driver = self.driver
-
-        funct.createVerifiedUser(self, testemail)
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
         # Makes change in field and submits
-        phoneChange = '3472929732'
-        formattedChange = "(" + phoneChange[:3] + ") " + phoneChange[3:6] + "-" + phoneChange[6:]
-        print(formattedChange)
-        funct.clearTextField(driver, var.updateProfV.phone)
-        funct.waitAndSend(driver, var.updateProfV.phone, phoneChange)
+        dobChange = '01011990'
+        formattedChange = dobChange[:2] + "/" + dobChange[2:4] + "/" + dobChange[4:]
+        funct.clearTextField(driver, var.updateProfV.dob)
+        funct.waitAndSend(driver, var.updateProfV.dob, dobChange)
         funct.waitAndClick(driver, var.updateProfV.update_button)
         time.sleep(2)
         # 2nd screen. OTP selection screen
@@ -43,39 +46,35 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
         time.sleep(5)
-        change = driver.find_element(var.updateProfV.phone[0], var.updateProfV.phone[1])
-        if funct.checkValue(driver, var.updateProfV.phone, formattedChange) == True:
-            print('PASS - Profile update change for ' + var.updateProfV.phone[2] + ' successfully saved to user.')
+        change = driver.find_element(var.updateProfV.dob[0], var.updateProfV.dob[1])
+        if funct.checkValue(driver, var.updateProfV.dob, formattedChange) == True:
+            print('PASS - Profile update change for ' + var.updateProfV.dob[2] + ' successfully saved to user.')
             print('Updated text is "' + change.get_attribute("value") + '"')
-        elif funct.checkValue(driver, var.updateProfV.phone, formattedChange) == False:
+        elif funct.checkValue(driver, var.updateProfV.dob, formattedChange) == False:
             print(
-                'FAIL - Updated ' + var.updateProfV.phone[2] + ' field should say "' + formattedChange + '" , but says "' + change.get_attribute(
+                'FAIL - Updated ' + var.updateProfV.dob[2] + ' field should say "' + dobChange + '" , but says "' + change.get_attribute(
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile changes failed to save.')
 
         # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
         try:
-            funct.purge(self, testemail)
-            print('test user purged')
+            funct.purgeSSOemail(self, testemail)
         except:
-            print('no test user found')
-        print("Test complete!")
+            pass
+        print('----------')
 
 
 # use "report" variable in conftest.py to change report style on runner

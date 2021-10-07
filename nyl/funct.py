@@ -1,26 +1,493 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for function file to work
-from browsermobproxy import Server
-from selenium import webdriver
-import unittest, time, re
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver import ActionChains
-import os, json, util, boto3, var
+import json
+import time
+import unittest
 from urllib.parse import urlparse
 
+import boto3
+from browsermobproxy import Server
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
+
+import util
+import var
 
 # [Documentation - Summary] This file creates the functions for
-# use in the automation test suite of NYL SSO
+# use in the automation test suite of NYL
 
-# [Documentation - Function] Checks for existing test user in userpool and deletes the user if found.
-def purge(self, email):
+# [Documentation - Function] Checks for existing test user email in SSO userpool
+# and if found deletes the user through the Admin Dashboard.
+def purgeSSOemail(self, email):
     if self.env == 'dev':
-        userpool='us-east-1_GFTjSQrHQ'
+        self.admin_url = 'https://admin-dev.nylservices.net/'
     elif self.env == 'qa':
-        userpool = 'us-east-1_QZZDGaPyw'
+        self.admin_url = 'https://admin-qa.nylservices.net/'
     elif self.env == 'stage':
-        userpool = 'us-east-1_v3S7DZTfs'
+        self.admin_url = 'https://admin-stage.nylservices.net/'
+    driver = self.driver
+    driver.get(self.admin_url)
+    testemail = email
+    # Instructions for webdriver to read and input user data via the info on the .txt doc.
+    # Credentials are localized to one instance via the var file
+    try:  # try to login
+        waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
+        waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
+        waitAndClick(driver, var.adminLoginVar.signin_button)
+    except Exception:  # if session persists from before, extend session and continue
+        try:
+            time.sleep(2)
+            waitAndClick(driver, var.adminDashVar.extend_button)
+            print('Admin Dash Session persisted, login bypassed')
+        except:
+            pass
+    # Search for test user via Email
+    # TODO due to ongoing Admin Dash work in dev env, this if else is in place,
+    #  will need to update once AD work is complete
+    if self.env == 'dev':
+        waitAndClick(driver, var.adminDashVar.search_input)
+        waitAndSend(driver, var.adminDashVar.search_input, testemail)
+    else:
+        waitAndClick(driver, var.adminDashVar.search_input)
+        waitAndClick(driver, var.adminDashVar.category_email)
+        waitAndClick(driver, var.adminDashVar.operator_contains)
+        waitAndSend(driver, var.adminDashVar.search_input, testemail)
+        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+    try:
+        time.sleep(2)
+        waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(2)
+        waitAndClick(driver, var.adminDashVar.search_button)
+    except:
+        time.sleep(2)
+        try:
+            waitAndClick(driver, var.adminDashVar.search_button)
+        except:
+            waitAndClick(driver, var.adminDashVar.search_button)
+
+    time.sleep(3)
+    # Checks the returned user is the correct user
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if len(rows) == 1:
+        if driver.find_element_by_xpath('//td[@class="ant-table-cell"][4]').text == testemail:  # check that first user returned has the same email address
+            # Clicks checkbox for first user returned
+            waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
+            waitAndClick(driver, var.adminDashVar.bulkAction_button)
+            waitAndClick(driver, var.adminDashVar.li_delete)
+            # Submits comment and mandatory text for completion
+            ts = timeStamp()
+            waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+            # attempt to click the modal "OK" buttons to proceed to next step
+            # different locator for same button depending on new session or extended session
+            try:
+                waitAndClick(driver, var.adminDashVar.modal_ok_button)
+            except:
+                try:
+                    waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                except:
+                    try:
+                        waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.extend_button)
+                        except:
+                            pass
+
+            waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "mark for deletion")
+
+            try:
+                waitAndClick(driver, var.adminDashVar.modal_ok_button)
+            except:
+                try:
+                    waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                except:
+                    try:
+                        waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.extend_button)
+                        except:
+                            pass
+
+            time.sleep(2)
+            try:
+                waitAndClick(driver, var.adminDashVar.modal_ok_button)
+            except:
+                try:
+                    waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                except:
+                    try:
+                        waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.extend_button)
+                        except:
+                            pass
+
+            # # Navigates to Pending Deletion user list to purge user
+            waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
+            time.sleep(2)
+            # Search for test user via Email
+            # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
+            if self.env == 'dev':
+                waitAndClick(driver, var.adminDashVar.search_input)
+                waitAndSend(driver, var.adminDashVar.search_input, testemail)
+            else:
+                waitAndClick(driver, var.adminDashVar.search_input)
+                waitAndClick(driver, var.adminDashVar.category_email)
+                waitAndClick(driver, var.adminDashVar.operator_contains)
+                waitAndSend(driver, var.adminDashVar.search_input, testemail)
+                driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+            time.sleep(2)
+            waitAndClick(driver, var.adminDashVar.search_button)
+            time.sleep(2)
+            waitAndClick(driver, var.adminDashVar.search_button)
+
+            # Checks the returned user is the correct user
+            rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+            if len(rows) == 1:
+                if driver.find_element_by_xpath('//td[@class="ant-table-cell"][4]').text == testemail:  # check that first user returned is has the same email address
+                    # Clicks checkbox for first user returned
+                    waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
+                    waitAndClick(driver, var.adminDashVar.bulkAction_button)
+                    waitAndClick(driver, var.adminDashVar.li_permDelete)
+                    # Submits comment and mandatory text for completion
+                    ts = timeStamp()
+                    waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+                    try:
+                        waitAndClick(driver, var.adminDashVar.modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                        except:
+                            try:
+                                waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                            except:
+                                try:
+                                    waitAndClick(driver, var.adminDashVar.extend_button)
+                                except:
+                                    pass
+
+                    waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "purge")
+
+                    try:
+                        waitAndClick(driver, var.adminDashVar.modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                        except:
+                            try:
+                                waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                            except:
+                                try:
+                                    waitAndClick(driver, var.adminDashVar.extend_button)
+                                except:
+                                    pass
+
+                    time.sleep(2)
+                    try:
+                        waitAndClick(driver, var.adminDashVar.modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                        except:
+                            try:
+                                waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                            except:
+                                try:
+                                    waitAndClick(driver, var.adminDashVar.extend_button)
+                                except:
+                                    pass
+
+                    time.sleep(3)
+                    # Search for test user via Email again to confirm user is gone from system
+                    waitAndClick(driver, var.adminDashVar.search_button)
+                    time.sleep(3)
+                    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+                    if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # search returns no data
+                        print(f'\ntest user {testemail} found and purged')
+                    elif len(rows) >= 1:  # search returns list of users
+                        fullshot(driver)
+                        print(f'\nuser still in Pending Deletion list with {testemail}, check user pool')
+                        raise Exception
+                    else:
+                        print(f'\nunexpected behavior: please check screenshot')
+                        fullshot(driver)
+                        raise Exception
+                else:
+                    print(f'unexpected behavior: please check screenshot')
+                    fullshot(driver)
+                    raise Exception
+            elif len(rows) >= 2:  # more than 1 user was returned in table
+                fullshot(driver)
+                print(f'More than 1 user found in Pending Deletion list, check screenshot')
+                raise Exception
+            elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
+                print(f'no test user {testemail} found')
+                # open new window with execute_script()
+                driver.execute_script("window.open('');")
+                closeWindow(driver, 'New York Lottery - Admin Dashboard')
+                exit()
+            else:
+                print(f'unexpected behavior: please check screenshot')
+                fullshot(driver)
+        else:
+            print(f'\nunexpected behavior: please check screenshot')
+            fullshot(driver)
+    elif len(rows) >= 2:  # more than 1 user was returned in table
+        fullshot(driver)
+        print(f'\nMore than 1 user found in table, check screenshot')
+        raise Exception
+    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
+        print(f'\nno test user {testemail} found')
+        # open new window with execute_script()
+        driver.execute_script("window.open('');")
+        closeWindow(driver, 'New York Lottery - Admin Dashboard')
+    else:
+        print(f'\nunexpected behavior: please check screenshot')
+        fullshot(driver)
+
+# [Documentation - Function] Checks for existing test user phone number in SSO userpool
+# and if found deletes the user through the Admin Dashboard.
+def purgeSSOphone(self, phone):
+    if self.env == 'dev':
+        self.admin_url = 'https://admin-dev.nylservices.net/'
+    elif self.env == 'qa':
+        self.admin_url = 'https://admin-qa.nylservices.net/'
+    elif self.env == 'stage':
+        self.admin_url = 'https://admin-stage.nylservices.net/'
+    driver = self.driver
+    driver.get(self.admin_url)
+    testphone = phone
+    # match the formatiing in the returned users table: +1 (407) 348-7541
+    formatted_phone = '+1 (' + testphone[:3] + ') ' + testphone[3:6] + '-' + testphone[6:]
+    # Instructions for webdriver to read and input user data via the info on the .txt doc.
+    # Credentials are localized to one instance via the var file
+    try:
+        waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
+        waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
+        waitAndClick(driver, var.adminLoginVar.signin_button)
+    except Exception:  # if session persists from before, extend session and continue
+        try:
+            time.sleep(2)
+            waitAndClick(driver, var.adminLoginVar.extend_button)
+            print('Admin Dash Session persisted, login bypassed')
+        except:
+            pass
+    # Search for test user via phone
+    # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
+    if self.env == 'dev':
+        waitAndClick(driver, var.adminDashVar.search_input)
+        waitAndSend(driver, var.adminDashVar.search_input, testphone)
+    else:
+        waitAndClick(driver, var.adminDashVar.search_input)
+        waitAndClick(driver, var.adminDashVar.category_phone)
+        waitAndClick(driver, var.adminDashVar.operator_contains)
+        waitAndSend(driver, var.adminDashVar.search_input, testphone)
+        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+    try:
+        time.sleep(2)
+        waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(2)
+        waitAndClick(driver, var.adminDashVar.search_button)
+    except:
+        time.sleep(2)
+        try:
+            waitAndClick(driver, var.adminDashVar.search_button)
+        except:
+            waitAndClick(driver, var.adminDashVar.search_button)
+
+    time.sleep(3)
+    # Checks the returned user is the correct user
+    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+    if len(rows) == 1:
+        if driver.find_element_by_xpath('//td[@class="ant-table-cell"][6]').text == formatted_phone:  # check that first user returned has the same phone
+            # Clicks checkbox for first user returned
+            waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
+            waitAndClick(driver, var.adminDashVar.bulkAction_button)
+            waitAndClick(driver, var.adminDashVar.li_delete)
+            # Submits comment and mandatory text for completion
+            ts = timeStamp()
+            waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+            # attempt to click the modal "OK" buttons to proceed to next step
+            # different locator for same button depending on new session or extended session
+            try:
+                waitAndClick(driver, var.adminDashVar.modal_ok_button)
+            except:
+                try:
+                    waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                except:
+                    try:
+                        waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.extend_button)
+                        except:
+                            pass
+
+            waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "mark for deletion")
+
+            try:
+                waitAndClick(driver, var.adminDashVar.modal_ok_button)
+            except:
+                try:
+                    waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                except:
+                    try:
+                        waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.extend_button)
+                        except:
+                            pass
+
+            time.sleep(2)
+            try:
+                waitAndClick(driver, var.adminDashVar.modal_ok_button)
+            except:
+                try:
+                    waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                except:
+                    try:
+                        waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.extend_button)
+                        except:
+                            pass
+
+            # # Navigates to Pending Deletion user list to purge user
+            waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
+            time.sleep(2)
+            # Search for test user via Phone number
+            # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
+            if self.env == 'dev':
+                waitAndClick(driver, var.adminDashVar.search_input)
+                waitAndSend(driver, var.adminDashVar.search_input, testphone)
+            else:
+                waitAndClick(driver, var.adminDashVar.search_input)
+                waitAndClick(driver, var.adminDashVar.category_phone)
+                waitAndClick(driver, var.adminDashVar.operator_contains)
+                waitAndSend(driver, var.adminDashVar.search_input, testphone)
+                driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+            time.sleep(2)
+            waitAndClick(driver, var.adminDashVar.search_button)
+            time.sleep(2)
+            waitAndClick(driver, var.adminDashVar.search_button)
+
+            # Checks the returned user is the correct user
+            rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+            if len(rows) == 1:
+                if driver.find_element_by_xpath('//td[@class="ant-table-cell"][6]').text == formatted_phone:  # check that first user returned has the same phone
+                    # Clicks checkbox for first user returned
+                    waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
+                    waitAndClick(driver, var.adminDashVar.bulkAction_button)
+                    waitAndClick(driver, var.adminDashVar.li_permDelete)
+                    # Submits comment and mandatory text for completion
+                    ts = timeStamp()
+                    waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+                    try:
+                        waitAndClick(driver, var.adminDashVar.modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                        except:
+                            try:
+                                waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                            except:
+                                try:
+                                    waitAndClick(driver, var.adminDashVar.extend_button)
+                                except:
+                                    pass
+
+                    waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "purge")
+
+                    try:
+                        waitAndClick(driver, var.adminDashVar.modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                        except:
+                            try:
+                                waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                            except:
+                                try:
+                                    waitAndClick(driver, var.adminDashVar.extend_button)
+                                except:
+                                    pass
+
+                    time.sleep(2)
+                    try:
+                        waitAndClick(driver, var.adminDashVar.modal_ok_button)
+                    except:
+                        try:
+                            waitAndClick(driver, var.adminDashVar.ext2_modal_ok_button)
+                        except:
+                            try:
+                                waitAndClick(driver, var.adminDashVar.ext1_modal_ok_button)
+                            except:
+                                try:
+                                    waitAndClick(driver, var.adminDashVar.extend_button)
+                                except:
+                                    pass
+
+                    time.sleep(3)
+                    # Search for test user via Phone again to confirm user is gone from system
+                    waitAndClick(driver, var.adminDashVar.search_button)
+                    time.sleep(3)
+                    rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
+                    if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # search returns no data
+                        print(f'\ntest user {formatted_phone} found and purged')
+                    elif len(rows) >= 1:  # search returns list of users
+                        fullshot(driver)
+                        print(f'\nuser still in Pending Deletion list with {formatted_phone}, check user pool')
+                        raise Exception
+                    else:
+                        print(f'\nunexpected behavior: please check screenshot')
+                        fullshot(driver)
+                        raise Exception
+                else:
+                    print(f'unexpected behavior: please check screenshot')
+                    fullshot(driver)
+                    raise Exception
+            elif len(rows) >= 2:  # more than 1 user was returned in table
+                fullshot(driver)
+                print(f'More than 1 user found in Pending Deletion list, check screenshot')
+                raise Exception
+            elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
+                print(f'test user {formatted_phone} NOT found on Pending Deletion list')
+                # open new window with execute_script()
+                driver.execute_script("window.open('');")
+                closeWindow(driver, 'New York Lottery - Admin Dashboard')
+                exit()
+            else:
+                print(f'unexpected behavior: please check screenshot')
+                fullshot(driver)
+        else:
+            print(f'\nunexpected behavior: please check screenshot')
+            fullshot(driver)
+    elif len(rows) >= 2:  # more than 1 user was returned in table
+        fullshot(driver)
+        print(f'\nMore than 1 user returned in table, check screenshot')
+        raise Exception
+    elif driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # no user returned in table
+        print(f'\nno test user {formatted_phone} found')
+        # open new window with execute_script()
+        driver.execute_script("window.open('');")
+        closeWindow(driver, 'New York Lottery - Admin Dashboard')
+    else:
+        print(f'\nunexpected behavior: please check screenshot')
+        fullshot(driver)
+
+# [Documentation - Function] Checks for existing test user in Mobile App userpool and deletes the user if found.
+def purgeMobile(self, email):
+    if self.env == 'dev':
+        userpool = 'us-east-1_OSdCjCmwo'
+    elif self.env == 'qa':
+        userpool = 'us-east-1_Fwp84k69u'
+    elif self.env == 'stage':
+        userpool = 'us-east-1_hG2UobNyZ'
     client = boto3.client('cognito-idp')
     # print(userpool)
     testemail = 'email ="' + str(email) + '"'
@@ -32,13 +499,13 @@ def purge(self, email):
         Limit=30,
         Filter=testemail
     )
-    print(response)
+    # print(response)
     testUser = response['Users'][0]['Username']
     response2 = client.admin_delete_user(
         UserPoolId=userpool,
         Username=testUser
     )
-    print(response2)
+    # print(response2)
 
 # [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
 # target should be given plainly, without colons
@@ -80,7 +547,7 @@ def waitUntil(browser, elem):
             a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
             assert(browser.find_element(elem[0], elem[1]))
         except:
-            print("E--" + elem[1] + " elem not found")
+            print("E--" + elem[2] + " elem not found")
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to click on it
@@ -154,12 +621,11 @@ def checkValue(browser, elem, valueExpected):
 def createVerifiedUser(self, email):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
-            purge(self, email)
-            print('test user purged')
+            purgeSSOemail(self, email)
         except:
-            print('no test user found')
+            purgeSSOphone(self, var.credsSSOWEB.phone)
         driver = self.driver
-        driver.get(self.url)
+        driver.get(self.reg_url)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         # Credentials are localized to one instance via the var file
         waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
@@ -180,7 +646,8 @@ def createVerifiedUser(self, email):
         waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
         waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
         waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
-        waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
+        waitAndSend(driver, var.regV.dob, (
+                var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         waitAndClick(driver, var.regV.dob_check)
         waitAndSend(driver, var.regV.email, email)
         waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
@@ -197,7 +664,22 @@ def createVerifiedUser(self, email):
         # Checking that the search field on google.com is present on page.
         if driver.find_elements_by_name("q") != []:
             print('Verified user registration is successful.')
+            # open new window with execute_script()
+            driver.execute_script("window.open('');")
+            closeWindow(driver, 'New York Lottery - Single Sign On')
         else:
             fullshot(driver)
             print('FAIL - User registration redirect screen not reached. Test can not proceed')
             raise Exception('Registration redirected incorrectly')
+
+def closeWindow(driver, title):
+    # return all handles value of open browser window
+    handles = driver.window_handles
+
+    for i in handles:
+        driver.switch_to.window(i)
+
+        # close specified web page
+        if driver.title == title:
+            time.sleep(2)
+            driver.close()

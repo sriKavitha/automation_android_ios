@@ -1,9 +1,6 @@
 # [Documentation - Setup] This section lists all dependencies
 # that are imported for function file to work
-from selenium import webdriver
-import unittest, time, re, var
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
+import time, var
 from selenium.webdriver import ActionChains
 
 # [Documentation - Summary] This file creates the functions for

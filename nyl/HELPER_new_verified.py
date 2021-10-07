@@ -8,21 +8,30 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-class NYlotto(confTest.NYlottoBASE):
+# [Documentation - Summary] Creates a verified user that has the following flags:
+# custom:ssn_verification	"Y"
+# custom:phone_verification	"Y"
+# custom:gov_id_verification	"X"
+# custom:verified	"Y"
 
-# Checks login with correct email & password redirects successfully
-    def test01_loginSuccess(self):
-        # creates a verified user with valid SSN4
-        testemail = self.testemail
+class NYlotto(confTest.NYlottoBASE):
+    # replace method arg 'self.testemail' to the email of the user email you want to use
+    def test_newVerified(self, testemail='self.testemail'):
+        if testemail == 'self.testemail':
+            testemail = self.testemail
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
-            funct.purge(self, testemail)
-            print('test user purged')
+            funct.purgeSSOemail(self, testemail)
         except:
-            print('no test user found')
+            pass
         driver = self.driver
+        # The driver.get method will navigate to a page given by the URL.
+        # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
+        # before returning control to your test or script.
         # url is pulled from confTest
-        driver.get(self.url)
+        driver.get(self.reg_url)
+        # Assertion that the title has Single Sign On in the title.
+        self.assertIn("Single Sign On", driver.title)
 
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         # Credentials are localized to one instance via the var file
@@ -42,17 +51,9 @@ class NYlotto(confTest.NYlottoBASE):
                 element.click()
                 break
         funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
-        # for future use with mobile phone code grabber
-        # if self.env == 'dev':
-        #     funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
-        # elif self.env == 'qa':
-        #     funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
-        # elif self.env == 'stage':
-        #     funct.waitAndSend(driver, var.regV.phone, self.testphone2)
         funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
         funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
-        funct.waitAndSend(driver, var.regV.dob,
-                          (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
+        funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
         funct.waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
@@ -62,52 +63,18 @@ class NYlotto(confTest.NYlottoBASE):
         # 2nd screen. OTP selection screen
         funct.waitAndClick(driver, var.otpV.text_button)
         # 3rd screen. OTP code entry screen
-        # for future use with mobile phone code grabber
-        # if self.env == 'dev':
-        #     funct.waitAndSend(driver, var.otpV.otp_input, "111111")
-        # elif self.env == 'qa':
-        #     funct.waitAndSend(driver, var.otpV.otp_input, "111111")
-        # elif self.env == 'stage':
-        #     # wait for phone code to be received by real device & input into field
-        #     pass
         funct.waitAndSend(driver, var.otpV.otp_input, "111111")
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
         time.sleep(5)
         # 4th screen. Successful registration should redirect to Google.com.
         # Checking that the search field on google.com is present on page.
         if driver.find_elements_by_name("q") != []:
-            print('Initial registration successful.')
+             print("PASS - registration successful and redirected to callback uri, user created")
         else:
             funct.fullshot(driver)
-            print('FAIL - Initial registration redirect screen not reached. Test can not proceed')
-            raise Exception('Registration redirected incorrectly')
+            print("FAIL - Redirect screen not reached, but user created")
 
-        # create new driver instance for login session
-        driver = self.driver
-        # url is pulled from confTest
-        driver.get(self.login_url)
-        # Login attempt
-        funct.waitAndSend(driver, var.loginV.email, testemail)
-        funct.waitAndSend(driver, var.loginV.password, var.credsSSOWEB.password)
-        funct.waitAndClick(driver, var.loginV.login_button)
-        # Successful login should redirect to Google.com.
-        # Checking that the search field on google.com is present on page.
-        if driver.find_elements_by_name("q") != []:
-            print('PASS - login successful and redirected to callback uri')
-        else:
-            funct.fullshot(driver)
-            print('FAIL - Login attempt failed or redirected incorrectly')
-            raise Exception('Unexpected behavior encountered')
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
-
+# This file is a helper tool for manual testing, no HTML reporting is necessary
 # Boiler plate code to run the test suite
 if __name__ == "__main__":
-    # First runner will enable html logs on your current directory, second runner will keep local console logs
-    unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))
-    # unittest.main(warnings='ignore')
+    unittest.main(warnings='ignore')

@@ -1,13 +1,7 @@
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
-import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown                        #Custom class for NYL
+import unittest, time  #unittest is the testing framework, provides module for organizing test cases
 import confTest
-import requests, json
 import var, funct, numpy, PIL, cv2, HtmlTestRunner
-from PIL import ImageGrab, Image
+from PIL import Image
 
 # [Documentation - Summary] uses image detection to click on objects based on the file they look like
 class NYapi(confTest.NYLmobileBASE):
@@ -68,7 +62,7 @@ class NYapi(confTest.NYLmobileBASE):
                     height = int(size['height'])
                     xw = width*0.042
                     yw = height*0.138
-                    funct.coordinateClick(driver, x+xw, y+yw)
+                    funct.coordinateClick(driver, x + xw, y + yw)
                     # print('-----truck found!')
                     # print(counter)
                     # print(pt)
@@ -117,7 +111,7 @@ class NYapi(confTest.NYLmobileBASE):
                     height = int(size['height'])
                     xw = width*0.042
                     yw = height*0.138
-                    funct.coordinateClick(driver, x+xw, y+yw)
+                    funct.coordinateClick(driver, x + xw, y + yw)
             pip5 = driver.find_element_by_xpath(var.NYLgetNumbers.result_5[1]).text        
             pip4 = driver.find_element_by_xpath(var.NYLgetNumbers.result_4[1]).text        
             pip3 = driver.find_element_by_xpath(var.NYLgetNumbers.result_3[1]).text        
@@ -191,7 +185,7 @@ class NYapi(confTest.NYLmobileBASE):
                     height = int(size['height'])
                     xw = width*0.208
                     yw = height*0.038
-                    funct.coordinateClick(driver, x+xw, y+yw)
+                    funct.coordinateClick(driver, x + xw, y + yw)
                     print('-----truck found!')
                     #print(counter)
                     #print(pt)
@@ -233,7 +227,7 @@ class NYapi(confTest.NYLmobileBASE):
                     height = int(size['height'])
                     xw = width*0.208
                     yw = height*0.038
-                    funct.coordinateClick(driver, x+xw, y+yw)
+                    funct.coordinateClick(driver, x + xw, y + yw)
                     break
             pip5 = driver.find_element_by_xpath(var.NYLgetNumbers.result_5[1]).text        
             pip4 = driver.find_element_by_xpath(var.NYLgetNumbers.result_4[1]).text        
@@ -311,7 +305,7 @@ class NYapi(confTest.NYLmobileBASE):
                     height = int(size['height'])
                     xw = width*0.104
                     yw = height*0.006
-                    funct.coordinateClick(driver, x+xw, y+yw)
+                    funct.coordinateClick(driver, x + xw, y + yw)
             pip5 = driver.find_element_by_xpath(var.NYLgetNumbers.result_5[1]).text        
             pip4 = driver.find_element_by_xpath(var.NYLgetNumbers.result_4[1]).text        
             pip3 = driver.find_element_by_xpath(var.NYLgetNumbers.result_3[1]).text        
@@ -346,7 +340,7 @@ class NYapi(confTest.NYLmobileBASE):
                     height = int(size['height'])
                     xw = width*0.104
                     yw = height*0.006
-                    funct.coordinateClick(driver, x+xw, y+yw)
+                    funct.coordinateClick(driver, x + xw, y + yw)
             pip5 = driver.find_element_by_xpath(var.NYLgetNumbers.result_5[1]).text        
             pip4 = driver.find_element_by_xpath(var.NYLgetNumbers.result_4[1]).text        
             pip3 = driver.find_element_by_xpath(var.NYLgetNumbers.result_3[1]).text        

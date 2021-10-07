@@ -11,15 +11,22 @@ import HtmlTestRunner                               #Report runner
 
 class NYlotto(confTest.NYlottoBASE):
 
-# 20201002 Note: System does not currently save the Suffix
-# Checks First name change in update profile saves and redirects successfully
-    def test01_updateFName(self, testemail='self.testemail'):
+    def test_01_updateFName(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
+        testenv = self.env
+        print("TESTING " + testenv + " ENVIRONMENT")
+
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2115
+        print("\nChecks First name change in update profile saves and redirects successfully")
 
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -36,11 +43,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -55,29 +60,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks Last name change in update profile saves and redirects successfully
-    def test02_updateLName(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_02_updateLName(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2117
+        print("\nChecks Last name change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -94,11 +112,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -113,29 +129,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks First name + Last name change in update profile saves and redirects successfully
-    def test03_updateFNameLName(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_03_updateFNameLName(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2377
+        print("\nChecks First name + Last name change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -157,11 +186,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
 
         # Checks the change has been saved to the profile
@@ -182,29 +209,42 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Fields below failed to save changes: ')
             print(failedFlags)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks House Number change in update profile saves and redirects successfully
-    def test04_updateHouse(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_04_updateHouse(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2119
+        print("\nChecks House Number change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -221,11 +261,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -240,29 +278,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks Street Name change in update profile saves and redirects successfully
-    def test05_updateStreet(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_05_updateStreet(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2120
+        print("\nChecks Street Name change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -279,11 +330,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -298,29 +347,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks Apartment change in update profile saves and redirects successfully
-    def test06_updateApt(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_06_updateApt(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2121
+        print("\nChecks Apartment change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -337,11 +399,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -356,29 +416,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks City change in update profile saves and redirects successfully
-    def test07_updateCity(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_07_updateCity(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2122
+        print("\nChecks City change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -390,16 +463,14 @@ class NYlotto(confTest.NYlottoBASE):
         time.sleep(2)
         # check for proper redirect to Google.com
         if driver.find_elements_by_name("q") != []:
-            print('UUpdate profile successfully redirected to Google.')
+            print('Update profile successfully redirected to Google.')
         else:
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -414,29 +485,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks State change in update profile saves and redirects successfully
-    def test08_updateState(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_08_updateState(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2123
+        print("\nChecks State change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -458,11 +542,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -477,29 +559,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks Zip change in update profile saves and redirects successfully
-    def test09_updateZip(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_09_updateZip(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2124
+        print("\nChecks Zip change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -516,11 +611,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
         # Checks the change has been saved to the profile
         driver.get(self.update_url)
@@ -535,29 +628,42 @@ class NYlotto(confTest.NYlottoBASE):
                     "value") + '"!')
             funct.fullshot(driver)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks House + Street + City + Zip Address change in update profile saves and redirects successfully
-    def test10_updateHSCZ(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_10_updateHSCZ(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2128
+        print("\nChecks House + Street + City + Zip Address change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -586,11 +692,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
 
         # Checks the change has been saved to the profile
@@ -611,29 +715,42 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Fields below failed to save changes: ')
             print(failedFlags)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks House + Street + Apt + City + Zip Address change in update profile saves and redirects successfully
-    def test11_updateHSACZ(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_11_updateHSACZ(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2127
+        print("\nChecks House + Street + Apt + City + Zip Address change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -664,11 +781,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
 
         # Checks the change has been saved to the profile
@@ -689,29 +804,42 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Fields below failed to save changes: ')
             print(failedFlags)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks House + Street + City + State + Zip Address change in update profile saves and redirects successfully
-    def test12_updateHSCSZ(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_12_updateHSCSZ(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2378
+        print("\nChecks House + Street + City + State + Zip Address change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -747,11 +875,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
 
         # Checks the change has been saved to the profile
@@ -772,29 +898,42 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Fields below failed to save changes: ')
             print(failedFlags)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
-        # Deleting test data
-        try:
-            funct.purge(self, testemail)
-            print('test user purged')
-        except:
-            print('no test user found')
-        print("Test complete!")
+        driver.quit()
 
-# Checks common use case, Last Name + House + Street + Apt + City + State + Zip Address change in update profile saves and redirects successfully
-    def test13_updateLHSACSZ(self, testemail='self.testemail'):
+        # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            pass
+        print('----------')
+
+    def test_13_updateLHSACSZ(self, testemail='self.testemail'):
         if testemail == 'self.testemail':
             testemail = self.testemail
 
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2397
+        print("\nChecks common use case, Last Name + House + Street + Apt + City + State + Zip Address change in update profile saves and redirects successfully")
+
         driver = self.driver
 
+        print('\n----------\n' + 'Test setup')
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            funct.purgeSSOemail(self, testemail)
+        except:
+            print('no test user found')
+        # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
+        print('----------')
+
         # url is pulled from confTest
         driver.get(self.update_url)
         time.sleep(2)
@@ -836,11 +975,9 @@ class NYlotto(confTest.NYlottoBASE):
             funct.fullshot(driver)
             print('FAIL - Update profile redirect screen not reached. Test can not proceed.')
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
             raise Exception('Update profile redirected incorrectly')
 
         # Checks the change has been saved to the profile
@@ -861,20 +998,22 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Fields below failed to save changes: ')
             print(failedFlags)
             try:
-                funct.purge(self, testemail)
-                print('test user purged')
+                funct.purgeSSOemail(self, testemail)
+                driver.quit()
             except:
-                print('no test user found')
-            print("Test complete!")
+                pass
+                driver.quit()
             raise Exception('Update profile changes failed to save.')
 
+        driver.quit()
+
         # Deleting test data
+        print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
         try:
-            funct.purge(self, testemail)
-            print('test user purged')
+            funct.purgeSSOemail(self, testemail)
         except:
-            print('no test user found')
-        print("Test complete!")
+            pass
+        print('----------')
 
 
 # use "report" variable in conftest.py to change report style on runner
