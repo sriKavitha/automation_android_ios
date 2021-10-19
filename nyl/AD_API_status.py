@@ -217,7 +217,8 @@ class NYLadmin(confTest.NYLadminBASE):
         i = 1
         num_test_users = 11
         while i < num_test_users:
-            testemailSSO = 'qa+sso' + str(i) + '@rosedigital.co'
+            ts = funct.timeStamp()
+            testemailSSO = 'qa+sso' + ts + '@rosedigital.co'
             sso_register_payload = {'clientId': client_id, 'email': testemailSSO, 'password': var.CREDSapi.ssoPW,
                                     'firstName': var.CREDSapi.ssoFName, 'lastName': var.CREDSapi.ssoLName,
                                     'phone': var.CREDSapi.ssoPhone,
@@ -235,16 +236,16 @@ class NYLadmin(confTest.NYLadminBASE):
                 # print(value)
                 registerResponse.append(value)
             sso_register_id_token = registerResponse[9]
-            print(sso_registerCall.text)
-            print(sso_register_id_token)
+            # print(sso_registerCall.text)
+            # print(sso_register_id_token)
             import jwt
             encoded = sso_register_id_token
             decoded = jwt.decode(encoded, options={"verify_signature": False})  # decoding the idToken
             test_user_emails.append(decoded['email'])
             test_user_subs.append(decoded['sub'])
             i += 1
-        print(test_user_emails[0])
-        print(test_user_subs[0])
+        print(test_user_emails)
+        print(test_user_subs)
 
         # TODO GET /admin/users
         admin_ssoUsers_headers = {'Authorization': admin_access_token}
@@ -275,18 +276,27 @@ class NYLadmin(confTest.NYLadminBASE):
         admin_ssoUsersGetCall = requests.get('https://admin-' + self.env + '.nylservices.net/admin/users', params=admin_ssoUsers_params, headers=admin_ssoUsers_headers)
         if admin_ssoUsersGetCall.status_code == 200:
             print(f"GET /admin/users with search terms Status Code: {admin_ssoUsersGetCall.status_code}")
-            print(admin_ssoUsersGetCall.text)
-            print(admin_ssoUsersGetCall.json())
+            # print(admin_ssoUsersGetCall.text)
+            # print(admin_ssoUsersGetCall)
+            # print(repr(admin_ssoUsersGetCall))
+            # print(admin_ssoUsersGetCall.json())
         else:
             print(f"ERROR - GET /admin/users with search terms Status Code: {admin_ssoUsersGetCall.status_code}")
         time.sleep(1)
 
         # TODO GET /admin/users/{user_id}
         # user_id pulled from previous sso register-verify api call
-        admin_ssoUsers_headers = {'Authorization': admin_access_token}
+        # admin_ssoUsers_headers = {'Authorization': admin_access_token}
+        admin_ssoUsers_headers = {'Authorization': admin_access_token, "Accept": "*/*", "Accept-Encoding": "gzip, deflate, br",
+                                  "Connection": "keep-alive",
+                                  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36"}
         admin_ssoUsersGetCall = requests.get(f'https://admin-{self.env}.nylservices.net/admin/users/{test_user_subs[0]}', headers=admin_ssoUsers_headers)
         if admin_ssoUsersGetCall.status_code == 200:
             print(f"GET /admin/users/user_id Status Code: {admin_ssoUsersGetCall.status_code}")
+            print(admin_ssoUsersGetCall.text)
+            print(admin_ssoUsersGetCall)
+            print(repr(admin_ssoUsersGetCall))
+            print(admin_ssoUsersGetCall.json())
         else:
             print(f"ERROR - GET /admin/users/user_id Status Code: {admin_ssoUsersGetCall.status_code}")
         time.sleep(1)

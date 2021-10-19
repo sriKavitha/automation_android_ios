@@ -20,7 +20,7 @@ class globalVar:
     # testdata = 'real'
 
     # .env can be "dev", "qa", or "stage" to denote which environment and credentials to use
-    env = 'qa'
+    env = 'dev'
 
     testemail = 'qa+ssotest@rosedigital.co'
 
