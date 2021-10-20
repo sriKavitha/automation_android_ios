@@ -6,7 +6,7 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, confTest, HtmlTestRunner   #Custom class for NYL
+import var, funct, confTest   #Custom class for NYL
 
 # [Documentation - Summary] Marks user for deletion, then purges user from userpool via email search
 
@@ -25,6 +25,7 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
         funct.waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         funct.waitAndClick(driver, var.adminLoginVar.signin_button)
+        time.sleep(5)
         # Search for test user via Email
         # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
         if self.env == 'dev':
@@ -102,9 +103,9 @@ class NYLadmin(confTest.NYLadminBASE):
         funct.waitAndClick(driver, var.adminDashVar.search_button)
         time.sleep(3)
         if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:
-            print("Test user found and purged")
+            print(f"Test user {testemail} found and purged")
         else:
-            raise Exception("User not purged, try again.")
+            raise Exception(f"User {testemail} not purged, try again.")
 
 # This file is a helper tool for manual testing, no HTML reporting is necessary
 # Boiler plate code to run the test suite
