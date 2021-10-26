@@ -43,17 +43,9 @@ def purgeSSOemail(self, email):
         except:
             pass
     # Search for test user via Email
-    # TODO due to ongoing Admin Dash work in dev env, this if else is in place,
-    #  will need to update once AD work is complete
-    if self.env == 'dev':
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndSend(driver, var.adminDashVar.search_input, testemail)
-    else:
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndClick(driver, var.adminDashVar.category_email)
-        waitAndClick(driver, var.adminDashVar.operator_contains)
-        waitAndSend(driver, var.adminDashVar.search_input, testemail)
-        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+    time.sleep(2)
+    waitAndClick(driver, var.adminDashVar.search_input)
+    waitAndSend(driver, var.adminDashVar.search_input, testemail)
     try:
         time.sleep(2)
         waitAndClick(driver, var.adminDashVar.search_button)
@@ -129,16 +121,8 @@ def purgeSSOemail(self, email):
             waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
             time.sleep(2)
             # Search for test user via Email
-            # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
-            if self.env == 'dev':
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndSend(driver, var.adminDashVar.search_input, testemail)
-            else:
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndClick(driver, var.adminDashVar.category_email)
-                waitAndClick(driver, var.adminDashVar.operator_contains)
-                waitAndSend(driver, var.adminDashVar.search_input, testemail)
-                driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+            waitAndClick(driver, var.adminDashVar.search_input)
+            waitAndSend(driver, var.adminDashVar.search_input, testemail)
             time.sleep(2)
             waitAndClick(driver, var.adminDashVar.search_button)
             time.sleep(2)
@@ -276,16 +260,9 @@ def purgeSSOphone(self, phone):
         except:
             pass
     # Search for test user via phone
-    # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
-    if self.env == 'dev':
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndSend(driver, var.adminDashVar.search_input, testphone)
-    else:
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndClick(driver, var.adminDashVar.category_phone)
-        waitAndClick(driver, var.adminDashVar.operator_contains)
-        waitAndSend(driver, var.adminDashVar.search_input, testphone)
-        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+    time.sleep(2)
+    waitAndClick(driver, var.adminDashVar.search_input)
+    waitAndSend(driver, var.adminDashVar.search_input, testphone)
     try:
         time.sleep(2)
         waitAndClick(driver, var.adminDashVar.search_button)
@@ -361,16 +338,8 @@ def purgeSSOphone(self, phone):
             waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
             time.sleep(2)
             # Search for test user via Phone number
-            # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
-            if self.env == 'dev':
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndSend(driver, var.adminDashVar.search_input, testphone)
-            else:
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndClick(driver, var.adminDashVar.category_phone)
-                waitAndClick(driver, var.adminDashVar.operator_contains)
-                waitAndSend(driver, var.adminDashVar.search_input, testphone)
-                driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+            waitAndClick(driver, var.adminDashVar.search_input)
+            waitAndSend(driver, var.adminDashVar.search_input, testphone)
             time.sleep(2)
             waitAndClick(driver, var.adminDashVar.search_button)
             time.sleep(2)

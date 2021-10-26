@@ -38,11 +38,7 @@ class adminDashVar:
     permanentlyDeleted_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[3]/a/span', 'permanentlyDeleted_link']
     admins_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[4]/a/span', 'admins_link']
     features_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[5]/a/span', 'features_link']
-    # TODO due to ongoing Admin Dash work in dev env, different locators are used for same element, will need to update once AD work is complete
-    if confTest.globalVar.env == 'dev':
-        search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/input', 'search_input']
-    else:
-        search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/input', 'search_input']
+    search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/input', 'search_input']
     category_fname = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'category_fname']
     category_lname = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[3]/a', 'category_lname']
     category_address = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[4]/a', 'category_address']
