@@ -32,6 +32,7 @@ def purgeSSOemail(self, email):
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
     # Credentials are localized to one instance via the var file
     try:  # try to login
+        print('Attempting to login to Admin Dash')
         waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
         waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         waitAndClick(driver, var.adminLoginVar.signin_button)
@@ -39,18 +40,19 @@ def purgeSSOemail(self, email):
         try:
             time.sleep(2)
             waitAndClick(driver, var.adminDashVar.extend_button)
-            print('Admin Dash Session persisted, login bypassed')
+            print('Admin Dash Session persisted & session extended. Login bypassed')
         except:
             pass
+            print('no login or session extension needed')
     # Search for test user via Email
     time.sleep(2)
     waitAndClick(driver, var.adminDashVar.search_input)
     waitAndSend(driver, var.adminDashVar.search_input, testemail)
     try:
-        time.sleep(2)
         waitAndClick(driver, var.adminDashVar.search_button)
-        time.sleep(2)
+        time.sleep(1)
         waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(3)
     except:
         time.sleep(2)
         try:
@@ -123,10 +125,10 @@ def purgeSSOemail(self, email):
             # Search for test user via Email
             waitAndClick(driver, var.adminDashVar.search_input)
             waitAndSend(driver, var.adminDashVar.search_input, testemail)
-            time.sleep(2)
             waitAndClick(driver, var.adminDashVar.search_button)
-            time.sleep(2)
+            time.sleep(1)
             waitAndClick(driver, var.adminDashVar.search_button)
+            time.sleep(3)
 
             # Checks the returned user is the correct user
             rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
@@ -248,7 +250,8 @@ def purgeSSOphone(self, phone):
     formatted_phone = '+1 (' + testphone[:3] + ') ' + testphone[3:6] + '-' + testphone[6:]
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
     # Credentials are localized to one instance via the var file
-    try:
+    try:  #try to login
+        print('Attempting to login to Admin Dash')
         waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
         waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         waitAndClick(driver, var.adminLoginVar.signin_button)
@@ -256,18 +259,19 @@ def purgeSSOphone(self, phone):
         try:
             time.sleep(2)
             waitAndClick(driver, var.adminLoginVar.extend_button)
-            print('Admin Dash Session persisted, login bypassed')
+            print('Admin Dash Session persisted & session extended. Login bypassed')
         except:
             pass
+            print('no login or session extension needed')
     # Search for test user via phone
     time.sleep(2)
     waitAndClick(driver, var.adminDashVar.search_input)
     waitAndSend(driver, var.adminDashVar.search_input, testphone)
     try:
-        time.sleep(2)
         waitAndClick(driver, var.adminDashVar.search_button)
-        time.sleep(2)
+        time.sleep(1)
         waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(3)
     except:
         time.sleep(2)
         try:
@@ -340,10 +344,10 @@ def purgeSSOphone(self, phone):
             # Search for test user via Phone number
             waitAndClick(driver, var.adminDashVar.search_input)
             waitAndSend(driver, var.adminDashVar.search_input, testphone)
-            time.sleep(2)
             waitAndClick(driver, var.adminDashVar.search_button)
-            time.sleep(2)
+            time.sleep(1)
             waitAndClick(driver, var.adminDashVar.search_button)
+            time.sleep(3)
 
             # Checks the returned user is the correct user
             rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
@@ -591,8 +595,13 @@ def createVerifiedUser(self, email):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
             purgeSSOemail(self, email)
+            if self.env != 'dev':
+                try:
+                    purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         except:
-            purgeSSOphone(self, var.credsSSOWEB.phone)
+            pass
         driver = self.driver
         driver.get(self.reg_url)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
