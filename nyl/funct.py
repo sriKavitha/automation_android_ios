@@ -31,20 +31,18 @@ def purgeSSOemail(self, email):
     testemail = email
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
     # Credentials are localized to one instance via the var file
-    try:  # try to login
-        print('Attempting to login to Admin Dash')
+    try:  #try to login
+        waitAndFind(driver, var.adminLoginVar.signin_button)
         waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
         waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         waitAndClick(driver, var.adminLoginVar.signin_button)
     except Exception:  # if session persists from before, extend session and continue
+        time.sleep(2)
         try:
-            time.sleep(2)
+            waitAndFind(driver, var.adminDashVar.extend_button)
             waitAndClick(driver, var.adminDashVar.extend_button)
-            print('Admin Dash Session persisted & session extended. Login bypassed')
         except:
-            pass
-            print('no login or session extension needed')
-    # Search for test user via Email
+            pass    # Search for test user via Email
     time.sleep(2)
     waitAndClick(driver, var.adminDashVar.search_input)
     waitAndSend(driver, var.adminDashVar.search_input, testemail)
@@ -251,18 +249,17 @@ def purgeSSOphone(self, phone):
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
     # Credentials are localized to one instance via the var file
     try:  #try to login
-        print('Attempting to login to Admin Dash')
+        waitAndFind(driver, var.adminLoginVar.signin_button)
         waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
         waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         waitAndClick(driver, var.adminLoginVar.signin_button)
     except Exception:  # if session persists from before, extend session and continue
+        time.sleep(2)
         try:
-            time.sleep(2)
-            waitAndClick(driver, var.adminLoginVar.extend_button)
-            print('Admin Dash Session persisted & session extended. Login bypassed')
+            waitAndFind(driver, var.adminDashVar.extend_button)
+            waitAndClick(driver, var.adminDashVar.extend_button)
         except:
             pass
-            print('no login or session extension needed')
     # Search for test user via phone
     time.sleep(2)
     waitAndClick(driver, var.adminDashVar.search_input)
@@ -521,6 +518,17 @@ def waitUntil(browser, elem):
             assert(browser.find_element(elem[0], elem[1]))
         except:
             print("E--" + elem[2] + " elem not found")
+
+# [Documentation - Function] Webdriver waits for a specified page element with out throwing an error message
+def waitAndFind(browser, elem):
+    a = ActionChains(browser)
+    try:
+        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+        assert(browser.find_element(elem[0], elem[1]))
+    except:
+        time.sleep(2)
+        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+        assert(browser.find_element(elem[0], elem[1]))
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to click on it
