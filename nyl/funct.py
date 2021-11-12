@@ -20,12 +20,8 @@ import var
 # [Documentation - Function] Checks for existing test user email in SSO userpool
 # and if found deletes the user through the Admin Dashboard.
 def purgeSSOemail(self, email):
-    if self.env == 'dev':
-        self.admin_url = 'https://admin-dev.nylservices.net/'
-    elif self.env == 'qa':
-        self.admin_url = 'https://admin-qa.nylservices.net/'
-    elif self.env == 'stage':
-        self.admin_url = 'https://admin-stage.nylservices.net/'
+    self.admin_url = 'https://admin-' + self.env + '.nylservices.net/'
+
     driver = self.driver
     driver.get(self.admin_url)
     testemail = email
@@ -235,12 +231,8 @@ def purgeSSOemail(self, email):
 # [Documentation - Function] Checks for existing test user phone number in SSO userpool
 # and if found deletes the user through the Admin Dashboard.
 def purgeSSOphone(self, phone):
-    if self.env == 'dev':
-        self.admin_url = 'https://admin-dev.nylservices.net/'
-    elif self.env == 'qa':
-        self.admin_url = 'https://admin-qa.nylservices.net/'
-    elif self.env == 'stage':
-        self.admin_url = 'https://admin-stage.nylservices.net/'
+    self.admin_url = 'https://admin-' + self.env + '.nylservices.net/'
+
     driver = self.driver
     driver.get(self.admin_url)
     testphone = phone

@@ -36,24 +36,11 @@ class NYLadminBASE(unittest.TestCase):
         self.env = globalVar.env
         self.testemail = globalVar.testemail
 
-        if self.env == 'dev':
-            self.admin_url = 'https://admin-dev.nylservices.net/'
-            self.pending_del_url = 'https://admin-dev.nylservices.net/pending-deletion'
-            self.perm_del_url = 'https://admin-dev.nylservices.net/purged-users'
-            self.admin_users_url = 'https://admin-dev.nylservices.net/admins'
-            self.features_url = 'https://admin-dev.nylservices.net/features'
-        elif self.env == 'qa':
-            self.admin_url = 'https://admin-qa.nylservices.net/'
-            self.pending_del_url = 'https://admin-qa.nylservices.net/pending-deletion'
-            self.perm_del_url = 'https://admin-qa.nylservices.net/purged-users'
-            self.admin_users_url = 'https://admin-qa.nylservices.net/admins'
-            self.features_url = 'https://admin-qa.nylservices.net/features'
-        elif self.env == 'stage':
-            self.admin_url = 'https://admin-stage.nylservices.net/'
-            self.pending_del_url = 'https://admin-stage.nylservices.net/pending-deletion'
-            self.perm_del_url = 'https://admin-stage.nylservices.net/purged-users'
-            self.admin_users_url = 'https://admin-stage.nylservices.net/admins'
-            self.features_url = 'https://admin-stage.nylservices.net/features'
+        self.admin_url = 'https://admin-' + self.env + '.nylservices.net'
+        self.pending_del_url = 'https://admin-' + self.env + '.nylservices.net/pending-deletion'
+        self.perm_del_url = 'https://admin-' + self.env + '.nylservices.net/purged-users'
+        self.admin_users_url = 'https://admin-' + self.env + '.nylservices.net/admins'
+        self.features_url = 'https://admin-' + self.env + '.nylservices.net/features'
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
