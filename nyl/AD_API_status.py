@@ -171,6 +171,7 @@ class NYLadmin(confTest.NYLadminBASE):
                 if admin_ssoUsersPatchCall1.status_code == 200:
                     test_user_phones.append(tempphone)
                 else:
+
                     print(f'could not update phone number in test user {testemailSSO}')
                     print(f'ERROR - PUT /sso/register-verify (Profile Update) Status Code: {admin_ssoUsersPatchCall1.status_code}')
                     print(f'RESPONSE HEADERS - {admin_ssoUsersPatchCall1.headers}')
@@ -182,6 +183,7 @@ class NYLadmin(confTest.NYLadminBASE):
         print(f'Corresponding test phones: \n {test_user_phones}')
         print('Test setup complete\n----------\n\n')
 
+        error_counter = 0
 
         # GET /admin/login-response
         admin_loginResponse_headers = {"cookie": "_gcl_au="+admin_gcl_cookie}
@@ -189,6 +191,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_loginResponseGetCall.status_code == 200:
             print(f'PASS - GET /admin/login-response Status Code: {admin_loginResponseGetCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/login-response Status Code: {admin_loginResponseGetCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_loginResponseGetCall.headers}')
             print(f'RESPONSE - {admin_loginResponseGetCall.text}\n')
@@ -200,6 +203,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_adminUsersGetCall1.status_code == 200:
             print(f'PASS - GET /admin/admin_users Status Code: {admin_adminUsersGetCall1.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/admin_users Status Code: {admin_adminUsersGetCall1.status_code}')
             print(f'RESPONSE HEADERS - {admin_adminUsersGetCall1.headers}')
             print(f'RESPONSE - {admin_adminUsersGetCall1.text}\n')
@@ -212,6 +216,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_adminUsersGetCall2.status_code == 200:
             print(f'PASS - GET /admin/admin_users with Params Status Code: {admin_adminUsersGetCall2.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/admin_users with Params Status Code: {admin_adminUsersGetCall2.status_code}')
             print(f'RESPONSE HEADERS - {admin_adminUsersGetCall2.headers}')
             print(f'RESPONSE - {admin_adminUsersGetCall2.text}\n')
@@ -224,6 +229,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_adminUsersGetCall3.status_code == 200:
             print(f'PASS - GET /admin/admin_users with search terms (email) Status Code: {admin_adminUsersGetCall3.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/admin_users with search terms (email) Status Code: {admin_adminUsersGetCall3.status_code}')
             print(f'RESPONSE HEADERS - {admin_adminUsersGetCall3.headers}')
             print(f'RESPONSE - {admin_adminUsersGetCall3.text}\n')
@@ -238,6 +244,7 @@ class NYLadmin(confTest.NYLadminBASE):
             print(
                 f'PASS - GET /admin/admin_users with search terms (numbers) Status Code: {admin_adminUsersGetCall4.status_code}')
         else:
+            error_counter += 1
             print(
                 f'\nERROR - GET /admin/admin_users with search terms (numbers) Status Code: {admin_adminUsersGetCall4.status_code}')
             print(f'RESPONSE HEADERS - {admin_adminUsersGetCall4.headers}')
@@ -252,6 +259,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_invitePostCall.status_code == 200:
             print(f'PASS - POST /admin/invite Status Code: {admin_invitePostCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - POST /admin/invite Status Code: {admin_invitePostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_invitePostCall.headers}')
             print(f'RESPONSE - {admin_invitePostCall.text}\n')
@@ -265,6 +273,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_adminUsersPatchCall.status_code == 200:
             print(f'PASS - PATCH /admin/admin_users/admin_user_id Status Code: {admin_adminUsersPatchCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - PATCH /admin/admin_users/admin_user_id Status Code: {admin_adminUsersPatchCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_adminUsersPatchCall.headers}')
             print(f'RESPONSE - {admin_adminUsersPatchCall.text}\n')
@@ -279,6 +288,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_adminUsersStatusPutCall.status_code == 200:
             print(f'PASS - PUT /admin/admin_users/admin_user_id/status Status Code: {admin_adminUsersStatusPutCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - PUT /admin/admin_users/admin_user_id/status Status Code: {admin_adminUsersStatusPutCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_adminUsersStatusPutCall.headers}')
             print(f'RESPONSE - {admin_adminUsersStatusPutCall.text}\n')
@@ -292,6 +302,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_featuresGetCall.status_code == 200:
             print(f'PASS - GET /admin/features Status Code: {admin_featuresGetCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/features Status Code: {admin_featuresGetCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_featuresGetCall.headers}')
             print(f'RESPONSE - {admin_featuresGetCall.text}\n')
@@ -306,6 +317,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ticketscanPutCall.status_code == 200:
             print(f'PASS - PUT /admin/features/ticket-scan Status Code: {admin_ticketscanPutCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - PUT /admin/features/ticket-scan Status Code: {admin_ticketscanPutCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_ticketscanPutCall.headers}')
             print(f'RESPONSE - {admin_ticketscanPutCall.text}\n')
@@ -317,6 +329,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_featuresAuditGetCall.status_code == 200:
             print(f'PASS - GET /admin/features-audit-log Status Code: {admin_featuresAuditGetCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/features-audit-log Status Code: {admin_featuresAuditGetCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_featuresAuditGetCall.headers}')
             print(f'RESPONSE - {admin_featuresAuditGetCall.text}\n')
@@ -329,6 +342,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_featuresAuditPostCall.status_code == 200:
             print(f'PASS - POST /admin/features-audit-log Status Code: {admin_featuresAuditPostCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - POST /admin/features-audit-log Status Code: {admin_featuresAuditPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_featuresAuditPostCall.headers}')
             print(f'RESPONSE - {admin_featuresAuditPostCall.text}\n')
@@ -341,6 +355,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoUsersGetCall1.status_code == 200:
             print(f'PASS - GET /admin/users Status Code: {admin_ssoUsersGetCall1.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/users Status Code: {admin_ssoUsersGetCall1.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoUsersGetCall1.headers}')
             print(f'RESPONSE - {admin_ssoUsersGetCall1.text}\n')
@@ -353,6 +368,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoUsersGetCall2.status_code == 200:
             print(f'PASS - GET /admin/users with params Status Code: {admin_ssoUsersGetCall2.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/users with params Status Code: {admin_ssoUsersGetCall2.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoUsersGetCall2.headers}')
             print(f'RESPONSE - {admin_ssoUsersGetCall2.text}\n')
@@ -366,6 +382,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoUsersGetCall3.status_code == 200:
             print(f'PASS - GET /admin/users with search terms (email) Status Code: {admin_ssoUsersGetCall3.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/users with search terms (email) Status Code: {admin_ssoUsersGetCall3.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoUsersGetCall3.headers}')
             print(f'RESPONSE - {admin_ssoUsersGetCall3.text}\n')
@@ -379,6 +396,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoUsersGetCall3.status_code == 200:
             print(f'PASS - GET /admin/users with search terms (phone) Status Code: {admin_ssoUsersGetCall4.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/users with search terms (phone) Status Code: {admin_ssoUsersGetCall4.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoUsersGetCall4.headers}')
             print(f'RESPONSE - {admin_ssoUsersGetCall4.text}\n')
@@ -396,6 +414,7 @@ class NYLadmin(confTest.NYLadminBASE):
             # print(admin_ssoUsersGetCall4.text)
             # print(user_db_id)
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/users/user_id Status Code: {admin_ssoUsersGetCall4.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoUsersGetCall4.headers}')
             print(f'RESPONSE - {admin_ssoUsersGetCall4.text}\n')
@@ -415,6 +434,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoUsersPatchCall2.status_code == 200:
             print(f'PASS - PATCH /admin/users/user_id Status Code: {admin_ssoUsersPatchCall2.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - PATCH /admin/users/user_id Status Code: {admin_ssoUsersPatchCall2.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoUsersPatchCall2.headers}')
             print(f'RESPONSE - {admin_ssoUsersPatchCall2.text}\n')
@@ -428,6 +448,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_resetPswPostCall.status_code == 200:
             print(f'PASS - POST /admin/users/user_id/reset-password Status Code: {admin_resetPswPostCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - POST /admin/users/user_id/reset-password Status Code: {admin_resetPswPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_resetPswPostCall.headers}')
             print(f'RESPONSE - {admin_resetPswPostCall.text}\n')
@@ -440,6 +461,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_userAuditsGetCall.status_code == 200:
             print(f'PASS - GET /admin/user-audits/user_db_id Status Code: {admin_userAuditsGetCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/user-audits/user_db_id Status Code: {admin_userAuditsGetCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_userAuditsGetCall.headers}')
             print(f'RESPONSE - {admin_userAuditsGetCall.text}\n')
@@ -452,6 +474,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_userAuditsPostCall.status_code == 200:
             print(f'PASS - GET /admin/user-audits/user_db_id Status Code: {admin_userAuditsPostCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/user-audits/user_db_id Status Code: {admin_userAuditsPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_userAuditsPostCall.headers}')
             print(f'RESPONSE - {admin_userAuditsPostCall.text}\n')
@@ -465,6 +488,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_bulkVerifyPostCall.status_code == 200:
             print(f'PASS - POST /admin/pools/user_pool_id/users/_bulk/verify Status Code: {admin_bulkVerifyPostCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - POST /admin/pools/user_pool_id/users/_bulk/verify Status Code: {admin_bulkVerifyPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_bulkVerifyPostCall.headers}')
             print(f'RESPONSE - {admin_bulkVerifyPostCall.text}\n')
@@ -480,6 +504,7 @@ class NYLadmin(confTest.NYLadminBASE):
             print(
                 f'PASS - POST /admin/pools/user_pool_id/users/_bulk/unverify Status Code: {admin_bulkUnverifyPostCall.status_code}')
         else:
+            error_counter += 1
             print(
                 f'\nERROR - POST /admin/pools/user_pool_id/users/_bulk/unverify Status Code: {admin_bulkUnverifyPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_bulkUnverifyPostCall.headers}')
@@ -496,6 +521,7 @@ class NYLadmin(confTest.NYLadminBASE):
             print(
                 f'PASS - POST /admin/pools/user_pool_id/users/_bulk/lock Status Code: {admin_bulkLockPostCall.status_code}')
         else:
+            error_counter += 1
             print(
                 f'\nERROR - POST /admin/pools/user_pool_id/users/_bulk/lock Status Code: {admin_bulkLockPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_bulkLockPostCall.headers}')
@@ -512,6 +538,7 @@ class NYLadmin(confTest.NYLadminBASE):
             print(
                 f'PASS - POST /admin/pools/user_pool_id/users/_bulk/unlock Status Code: {admin_bulkUnlockPostCall.status_code}')
         else:
+            error_counter += 1
             print(
                 f'\nERROR - POST /admin/pools/user_pool_id/users/_bulk/unlock Status Code: {admin_bulkUnlockPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_bulkUnlockPostCall.headers}')
@@ -528,6 +555,7 @@ class NYLadmin(confTest.NYLadminBASE):
             print(
                 f'PASS - POST /admin/pools/user_pool_id/users/_bulk/mark-for-deletion Status Code: {admin_bulkMarkDeletionPostCall1.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - POST /admin/pools/user_pool_id/users/_bulk/mark-for-deletion Status Code: {admin_bulkMarkDeletionPostCall1.status_code}')
             print(f'RESPONSE HEADERS - {admin_bulkMarkDeletionPostCall1.headers}')
             print(f'RESPONSE - {admin_bulkMarkDeletionPostCall1.text}\n')
@@ -543,6 +571,7 @@ class NYLadmin(confTest.NYLadminBASE):
             print(
                 f'PASS - POST /admin/pools/user_pool_id/users/_bulk/cancel-deletion Status Code: {admin_bulkCancelDeletionPostCall.status_code}')
         else:
+            error_counter += 1
             print(
                 f'\nERROR - POST /admin/pools/user_pool_id/users/_bulk/cancel-deletion Status Code: {admin_bulkCancelDeletionPostCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_bulkCancelDeletionPostCall.headers}')
@@ -567,16 +596,18 @@ class NYLadmin(confTest.NYLadminBASE):
                     f'PASS - POST /admin/pools/user_pool_id/users/_bulk/purge Status Code: {admin_bulkPurgePostCall.status_code}')
                 print(admin_bulkPurgePostCall.text)
             else:
+                error_counter += 1
                 print(
                     f'\nERROR - POST /admin/pools/user_pool_id/users/_bulk/purge Status Code: {admin_bulkPurgePostCall.status_code}')
                 print(f'RESPONSE HEADERS - {admin_bulkPurgePostCall.headers}')
                 print(f'RESPONSE - {admin_bulkPurgePostCall.text}\n')
             time.sleep(2)
         else:  #
+            error_counter += 1
             print('\nERROR - POST /admin/pools/{user_pool_id}/users/_bulk/purge test cannot be completed because failed '
                   'to mark test users for deletion in test setup')
             print(f'RESPONSE HEADERS - {admin_bulkMarkDeletionPostCall2.headers}')
-            print(f'RESPONSE - {admin_bulkMarkDeletionPostCall2.text}')
+            print(f'RESPONSE - {admin_bulkMarkDeletionPostCall2.text}\n')
         time.sleep(2)
 
         # GET /admin/purged-users
@@ -592,6 +623,7 @@ class NYLadmin(confTest.NYLadminBASE):
             purged_user_db_id = purged_users_item.get('id')
             # print(purged_user_db_id)
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/purged-users Status Code: {admin_ssoPurgedUsersGetCall1.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoPurgedUsersGetCall1.headers}')
             print(f'RESPONSE - {admin_ssoPurgedUsersGetCall1.text}\n')
@@ -604,6 +636,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoPurgedUsersGetCall2.status_code == 200:
             print(f'PASS - GET /admin/purged-users with params Status Code: {admin_ssoPurgedUsersGetCall2.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/purged-users with params Status Code: {admin_ssoPurgedUsersGetCall2.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoPurgedUsersGetCall2.headers}')
             print(f'RESPONSE - {admin_ssoPurgedUsersGetCall2.text}\n')
@@ -617,6 +650,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoPurgedUsersGetCall3.status_code == 200:
             print(f'PASS - GET /admin/purged-users with search terms (email) Status Code: {admin_ssoPurgedUsersGetCall3.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/purged-users with search terms (email) Status Code: {admin_ssoPurgedUsersGetCall3.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoPurgedUsersGetCall3.headers}')
             print(f'RESPONSE - {admin_ssoPurgedUsersGetCall3.text}\n')
@@ -630,6 +664,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoPurgedUsersGetCall4.status_code == 200:
             print(f'PASS - GET /admin/purged-users with search terms (phone) Status Code: {admin_ssoPurgedUsersGetCall4.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/purged-users with search terms (phone) Status Code: {admin_ssoPurgedUsersGetCall4.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoPurgedUsersGetCall4.headers}')
             print(f'RESPONSE - {admin_ssoPurgedUsersGetCall4.text}\n')
@@ -642,6 +677,7 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_ssoPurgedUsersGetCall5.status_code == 200:
             print(f'PASS - GET /admin/purged-users/user_db_id Status Code: {admin_ssoPurgedUsersGetCall5.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - GET /admin/purged-users/user_db_id Status Code: {admin_ssoPurgedUsersGetCall5.status_code}')
             print(f'RESPONSE HEADERS - {admin_ssoPurgedUsersGetCall5.headers}')
             print(f'RESPONSE - {admin_ssoPurgedUsersGetCall5.text}\n')
@@ -654,12 +690,13 @@ class NYLadmin(confTest.NYLadminBASE):
         if admin_logoutCall.status_code == 200:
             print(f'PASS - POST /admin/logout Status Code: {admin_logoutCall.status_code}')
         else:
+            error_counter += 1
             print(f'\nERROR - POST /admin/logout Status Code: {admin_logoutCall.status_code}')
             print(f'RESPONSE HEADERS - {admin_logoutCall.headers}')
             print(f'RESPONSE - {admin_logoutCall.text}\n')
 
         # Clean up - clear test users from userpool
-        print('\n\nAdmin API test complete\n----------\n\nTest clean up commencing\n')
+        print('\nTest clean up commencing\n')
         for email in test_user_emails:
             try:
                 funct.purgeSSOemail(self, email)
@@ -668,6 +705,12 @@ class NYLadmin(confTest.NYLadminBASE):
                       'and pending deletion lists and remove manually***')
 
         print('\n\nTest clean up finished\n')
+
+        if error_counter >= 1:
+            print('\nAdmin API test complete\n***WARNING***\n'
+                  f'{error_counter} ERRORS found! See above for log details\n***WARNING***\n')
+        else:
+            print('\n*************\nAdmin API test complete\n*************\n')
 
 
 # use "report" variable in conftest.py to change report style on runner
