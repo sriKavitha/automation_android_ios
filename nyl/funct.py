@@ -20,45 +20,33 @@ import var
 # [Documentation - Function] Checks for existing test user email in SSO userpool
 # and if found deletes the user through the Admin Dashboard.
 def purgeSSOemail(self, email):
-    if self.env == 'dev':
-        self.admin_url = 'https://admin-dev.nylservices.net/'
-    elif self.env == 'qa':
-        self.admin_url = 'https://admin-qa.nylservices.net/'
-    elif self.env == 'stage':
-        self.admin_url = 'https://admin-stage.nylservices.net/'
+    self.admin_url = 'https://admin-' + self.env + '.nylservices.net/'
+
     driver = self.driver
     driver.get(self.admin_url)
     testemail = email
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
     # Credentials are localized to one instance via the var file
-    try:  # try to login
+    try:  #try to login
+        waitAndFind(driver, var.adminLoginVar.signin_button)
         waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
         waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         waitAndClick(driver, var.adminLoginVar.signin_button)
     except Exception:  # if session persists from before, extend session and continue
+        time.sleep(2)
         try:
-            time.sleep(2)
+            waitAndFind(driver, var.adminDashVar.extend_button)
             waitAndClick(driver, var.adminDashVar.extend_button)
-            print('Admin Dash Session persisted, login bypassed')
         except:
-            pass
-    # Search for test user via Email
-    # TODO due to ongoing Admin Dash work in dev env, this if else is in place,
-    #  will need to update once AD work is complete
-    if self.env == 'dev':
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndSend(driver, var.adminDashVar.search_input, testemail)
-    else:
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndClick(driver, var.adminDashVar.category_email)
-        waitAndClick(driver, var.adminDashVar.operator_contains)
-        waitAndSend(driver, var.adminDashVar.search_input, testemail)
-        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+            pass    # Search for test user via Email
+    time.sleep(2)
+    waitAndClick(driver, var.adminDashVar.search_input)
+    waitAndSend(driver, var.adminDashVar.search_input, testemail)
     try:
-        time.sleep(2)
         waitAndClick(driver, var.adminDashVar.search_button)
-        time.sleep(2)
+        time.sleep(1)
         waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(3)
     except:
         time.sleep(2)
         try:
@@ -129,20 +117,12 @@ def purgeSSOemail(self, email):
             waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
             time.sleep(2)
             # Search for test user via Email
-            # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
-            if self.env == 'dev':
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndSend(driver, var.adminDashVar.search_input, testemail)
-            else:
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndClick(driver, var.adminDashVar.category_email)
-                waitAndClick(driver, var.adminDashVar.operator_contains)
-                waitAndSend(driver, var.adminDashVar.search_input, testemail)
-                driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
-            time.sleep(2)
+            waitAndClick(driver, var.adminDashVar.search_input)
+            waitAndSend(driver, var.adminDashVar.search_input, testemail)
             waitAndClick(driver, var.adminDashVar.search_button)
-            time.sleep(2)
+            time.sleep(1)
             waitAndClick(driver, var.adminDashVar.search_button)
+            time.sleep(3)
 
             # Checks the returned user is the correct user
             rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
@@ -251,12 +231,8 @@ def purgeSSOemail(self, email):
 # [Documentation - Function] Checks for existing test user phone number in SSO userpool
 # and if found deletes the user through the Admin Dashboard.
 def purgeSSOphone(self, phone):
-    if self.env == 'dev':
-        self.admin_url = 'https://admin-dev.nylservices.net/'
-    elif self.env == 'qa':
-        self.admin_url = 'https://admin-qa.nylservices.net/'
-    elif self.env == 'stage':
-        self.admin_url = 'https://admin-stage.nylservices.net/'
+    self.admin_url = 'https://admin-' + self.env + '.nylservices.net/'
+
     driver = self.driver
     driver.get(self.admin_url)
     testphone = phone
@@ -264,33 +240,27 @@ def purgeSSOphone(self, phone):
     formatted_phone = '+1 (' + testphone[:3] + ') ' + testphone[3:6] + '-' + testphone[6:]
     # Instructions for webdriver to read and input user data via the info on the .txt doc.
     # Credentials are localized to one instance via the var file
-    try:
+    try:  #try to login
+        waitAndFind(driver, var.adminLoginVar.signin_button)
         waitAndSend(driver, var.adminLoginVar.email, var.CREDSadmin.superadmin_username)
         waitAndSend(driver, var.adminLoginVar.password, var.CREDSadmin.superadmin_psw)
         waitAndClick(driver, var.adminLoginVar.signin_button)
     except Exception:  # if session persists from before, extend session and continue
+        time.sleep(2)
         try:
-            time.sleep(2)
-            waitAndClick(driver, var.adminLoginVar.extend_button)
-            print('Admin Dash Session persisted, login bypassed')
+            waitAndFind(driver, var.adminDashVar.extend_button)
+            waitAndClick(driver, var.adminDashVar.extend_button)
         except:
             pass
     # Search for test user via phone
-    # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
-    if self.env == 'dev':
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndSend(driver, var.adminDashVar.search_input, testphone)
-    else:
-        waitAndClick(driver, var.adminDashVar.search_input)
-        waitAndClick(driver, var.adminDashVar.category_phone)
-        waitAndClick(driver, var.adminDashVar.operator_contains)
-        waitAndSend(driver, var.adminDashVar.search_input, testphone)
-        driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
+    time.sleep(2)
+    waitAndClick(driver, var.adminDashVar.search_input)
+    waitAndSend(driver, var.adminDashVar.search_input, testphone)
     try:
-        time.sleep(2)
         waitAndClick(driver, var.adminDashVar.search_button)
-        time.sleep(2)
+        time.sleep(1)
         waitAndClick(driver, var.adminDashVar.search_button)
+        time.sleep(3)
     except:
         time.sleep(2)
         try:
@@ -361,20 +331,12 @@ def purgeSSOphone(self, phone):
             waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
             time.sleep(2)
             # Search for test user via Phone number
-            # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
-            if self.env == 'dev':
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndSend(driver, var.adminDashVar.search_input, testphone)
-            else:
-                waitAndClick(driver, var.adminDashVar.search_input)
-                waitAndClick(driver, var.adminDashVar.category_phone)
-                waitAndClick(driver, var.adminDashVar.operator_contains)
-                waitAndSend(driver, var.adminDashVar.search_input, testphone)
-                driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
-            time.sleep(2)
+            waitAndClick(driver, var.adminDashVar.search_input)
+            waitAndSend(driver, var.adminDashVar.search_input, testphone)
             waitAndClick(driver, var.adminDashVar.search_button)
-            time.sleep(2)
+            time.sleep(1)
             waitAndClick(driver, var.adminDashVar.search_button)
+            time.sleep(3)
 
             # Checks the returned user is the correct user
             rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
@@ -549,6 +511,17 @@ def waitUntil(browser, elem):
         except:
             print("E--" + elem[2] + " elem not found")
 
+# [Documentation - Function] Webdriver waits for a specified page element with out throwing an error message
+def waitAndFind(browser, elem):
+    a = ActionChains(browser)
+    try:
+        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+        assert(browser.find_element(elem[0], elem[1]))
+    except:
+        time.sleep(2)
+        a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
+        assert(browser.find_element(elem[0], elem[1]))
+
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to click on it
 def waitAndClick(browser, elem):
@@ -622,8 +595,13 @@ def createVerifiedUser(self, email):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
             purgeSSOemail(self, email)
+            if self.env != 'dev':
+                try:
+                    purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         except:
-            purgeSSOphone(self, var.credsSSOWEB.phone)
+            pass
         driver = self.driver
         driver.get(self.reg_url)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.

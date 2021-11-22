@@ -15,9 +15,9 @@ class CREDSadmin:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYLadminBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
     elif confTest.NYLadminBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl08022021.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     superadmin_username = funct.getCredential(entry_info, 'admin-super-un')
@@ -38,11 +38,7 @@ class adminDashVar:
     permanentlyDeleted_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[3]/a/span', 'permanentlyDeleted_link']
     admins_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[4]/a/span', 'admins_link']
     features_link = [By.XPATH, '//*[@id="kt_aside_menu"]/ul/li[5]/a/span', 'features_link']
-    # TODO due to ongoing Admin Dash work in dev env, different locators are used for same element, will need to update once AD work is complete
-    if confTest.globalVar.env == 'dev':
-        search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/input', 'search_input']
-    else:
-        search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/input', 'search_input']
+    search_input = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/input', 'search_input']
     category_fname = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'category_fname']
     category_lname = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[3]/a', 'category_lname']
     category_address = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[4]/a', 'category_address']
@@ -86,9 +82,9 @@ class CREDSapi:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYLservicesBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
     elif confTest.NYLservicesBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl08022021.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
 
@@ -126,6 +122,12 @@ class CREDSapi:
     devFCMtoken = funct.getCredential(entry_info, 'mobile-fcm-token-dev')
     qaFCMtoken = funct.getCredential(entry_info, 'mobile-fcm-token-qa')
     stageFCMtoken = funct.getCredential(entry_info, 'mobile-fcm-token-stage')
+    devSSOuserpool = funct.getCredential(entry_info, 'sso-userpool-id-dev')
+    qaSSOuserpool = funct.getCredential(entry_info, 'sso-userpool-id-qa')
+    stageSSOuserpool = funct.getCredential(entry_info, 'sso-userpool-id-stage')
+    devADMINtestuser = funct.getCredential(entry_info, 'admin-test-user-dev')
+    qaADMINtestuser = funct.getCredential(entry_info, 'admin-test-user-qa')
+    stageADMINtestuser = funct.getCredential(entry_info, 'admin-test-user-stage')
 
 ###==============================================================###
 # NYL SSO
@@ -139,9 +141,9 @@ class credsSSOWEB:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYlottoBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
     elif confTest.NYlottoBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl08022021.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'sso-first-name')
@@ -288,7 +290,7 @@ class loginV:
     requiredErrorStub = 'Required'
     emailErrorStub = 'Invalid email address'
     loginErrorStub = 'There is a problem with the data you entered, please try again.'
-    badEmailErrorStub = 'Your email address and password do not match.'
+    badEmailErrorStub = 'The username and password combination did not match. Users with accounts on the NY Lottery Winning Numbers app will need to register a new account.'
     badPasswordErrorStub = 'Your email address and password do not match.'
 
 # [Documentation - Variables] Objects on Reset Password page
