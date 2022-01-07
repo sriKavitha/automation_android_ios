@@ -12,6 +12,7 @@ class NYlotto(confTest.NYlottoBASE):
 
 
     def test_01_loginSuccess(self):
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2407
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks login with correct email & password redirects successfully")
