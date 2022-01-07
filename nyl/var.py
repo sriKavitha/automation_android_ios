@@ -290,7 +290,7 @@ class loginV:
     requiredErrorStub = 'Required'
     emailErrorStub = 'Invalid email address'
     loginErrorStub = 'There is a problem with the data you entered, please try again.'
-    badEmailErrorStub = 'The username and password combination did not match. Users with accounts on the NY Lottery Winning Numbers app will need to register a new account.'
+    badEmailErrorStub = 'The username and password combination did not match. Users with accounts on the Official NY Lottery Winning Numbers app will need to register a new account.'
     badPasswordErrorStub = 'Your email address and password do not match.'
 
 # [Documentation - Variables] Objects on Reset Password page
