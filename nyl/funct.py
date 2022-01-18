@@ -601,7 +601,11 @@ def createVerifiedUser(self, email):
                 except:
                     pass
         except:
-            pass
+            if self.env != 'dev':
+                try:
+                    purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         driver = self.driver
         driver.get(self.reg_url)
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
@@ -649,6 +653,78 @@ def createVerifiedUser(self, email):
             fullshot(driver)
             print('FAIL - User registration redirect screen not reached. Test can not proceed')
             raise Exception('Registration redirected incorrectly')
+
+# [Documentation - Function] Creates an UNverified user that has the following flags:
+# # custom:ssn_verification	"N"
+# # custom:phone_verification	"N"
+# # custom:gov_id_verification	"-"
+# # custom:verified	"N"
+def createUnverifiedUser(self, email):
+        # Check for existing test user and wipe it from userpool prior to test execution
+        try:
+            purgeSSOemail(self, email)
+            if self.env != 'dev':
+                try:
+                    purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
+        except:
+            if self.env != 'dev':
+                try:
+                    purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
+        driver = self.driver
+        driver.get(self.reg_url)
+        # Instructions for webdriver to read and input user data via the info on the .txt doc.
+        # Credentials are localized to one instance via the var file
+        waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
+        waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
+        waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
+        waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
+        waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
+        # Find and select the state according to the info in the .txt doc
+        # Uses a for loop to iterate through the list of states until element
+        # matches the entry info in the text file. Then clicks the element found.
+        select_box = driver.find_element_by_name("state")
+        waitAndClick(driver, var.regV.state_dropdown)
+        options = [x for x in select_box.find_elements_by_tag_name("option")]
+        for element in options:
+            if element.text in var.credsSSOWEB.state:
+                element.click()
+                break
+        waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
+        waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+        waitAndClick(driver, var.regV.ss_check)         # selects Gov id check box
+        waitAndSend(driver, var.regV.dob, (
+                var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
+        waitAndClick(driver, var.regV.dob_check)
+        waitAndSend(driver, var.regV.email, email)
+        waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
+        waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
+        waitAndClick(driver, var.regV.tos_check)
+        waitAndClick(driver, var.regV.submit_button)
+        # 2nd screen. OTP selection screen
+        waitAndClick(driver, var.otpV.text_button)
+        # 3rd screen. OTP code entry screen. Submits bad OTP code to fail phone verification
+        time.sleep(7)
+        waitAndSend(driver, var.otpV.otp_input, "987654")
+        waitAndClick(driver, var.otpV.otp_continue_button)
+        # 4th screen. Unsuccessful registration should redirect to "Sorry, identity cannot be verified" screen.
+        time.sleep(5)
+        if driver.find_elements_by_class_name("migration-failed-body") != []:
+            print(f"Unverified user account {email} successfully created.")
+            return True
+        elif driver.find_elements_by_name("q") != []:
+            print("Reached successful registration. Attempting to create unverified user again")
+            return False
+        elif "Confirm your details" in driver.find_element_by_tag_name('body').text:
+            print("Neither Identity verification failed screen nor Registration successful screen reached.")
+            return False
+        else:
+            print("Unexpected screen reached when attempting to create unverified user. See screenshot.")
+            fullshot(driver)
+            return False
 
 def closeWindow(driver, title):
     # return all handles value of open browser window
