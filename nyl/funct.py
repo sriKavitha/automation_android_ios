@@ -577,6 +577,16 @@ def checkErrorText(browser, elemWarning, elemWarningStub):
     else:
         return False
 
+def verifyErrorText(browser, elemWarning, elemWarningStub):
+    warning = browser.find_element(elemWarning[0], elemWarning[1])
+    if warning.get_attribute("innerText") == elemWarningStub:
+        pass
+    else:
+        print('FAIL - Warning should say "' + elemWarningStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
+        raise Exception('Error warning(s) copy is incorrect')
+
+
+
 
 # [Documentation - Function] Checks the actual value in the field against the expected value
 def checkValue(browser, elem, valueExpected):

@@ -159,6 +159,10 @@ class credsSSOWEB:
     dob_date = funct.getCredential(entry_info, 'sso-dob-date')
     dob_year = funct.getCredential(entry_info, 'sso-dob-year')
     password = funct.getCredential(entry_info, 'sso-test-password')
+    imapEmail = funct.getCredential(entry_info, 'imap-email')
+    imapPW = funct.getCredential(entry_info, 'imap-pw')
+    tempPW = funct.getCredential(entry_info, 'temp-pw')
+
 
 # Reg page elements
 class regV:
@@ -292,11 +296,28 @@ class loginV:
     loginErrorStub = 'There is a problem with the data you entered, please try again.'
     badEmailErrorStub = 'The username and password combination did not match. Users with accounts on the NY Lottery Winning Numbers app will need to register a new account.'
     badPasswordErrorStub = 'Your email address and password do not match.'
-
-# [Documentation - Variables] Objects on Reset Password page
+    # [Documentation - Variables] Objects on Reset Password page
 class resetPswV:
     email = [By.NAME, 'email', 'email']
     reset_submit_button = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span', 'reset_submit_button']
+    error1 = [By.XPATH, '//*[@class="is-error invalid-feedback"]', 'error_message1']
+    error2 = [By.XPATH, '//*[@class="submit-error"]', 'error_message2']
+    success = [By.XPATH, '//*[@class="alert alert-success mt-5"]', 'success_message1']
+    resetError = [By.XPATH, '//*[@class="submit-error"]', 'error_message3']
+    newPwField = [By.XPATH, '//*[@name="password"]', 'confirmPwField']
+    confirmPwField = [By.XPATH, '//*[@name="confirmPassword"]', 'confirmPwField']
+    resetPwButton = [By.XPATH, '//*[@class="nyl-button"]', 'resetPwButton']
+    matchError = [By.XPATH, '//*[@class="is-error invalid-feedback"]', 'passwordMatchError']
+    google = [By.XPATH, '//*[@title="Search"]', 'proofOfGoogle']
+    
+    
+    
+
+#error copy
+    error1Stub = 'Invalid email address'
+    error2Stub = 'All inputs must be valid in order to submit the form.'
+    resetErrorStub = "All inputs must be valid in order to submit the form."
+    matchErrorStub = "Your password must follow the password guidelines."
 
 # [Documentation - Variables] Objects on Update Profile page
 class updateProfV:
