@@ -15,6 +15,7 @@ class NYlotto(confTest.NYlottoBASE):
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
     def test_01_regDupePhone(self):
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1920
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2423
