@@ -15,9 +15,9 @@ class CREDSadmin:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYLadminBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYLadminBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     superadmin_username = funct.getCredential(entry_info, 'admin-super-un')
@@ -82,9 +82,9 @@ class CREDSapi:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYLservicesBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYLservicesBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
 
@@ -141,9 +141,9 @@ class credsSSOWEB:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYlottoBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYlottoBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'sso-first-name')
@@ -159,6 +159,10 @@ class credsSSOWEB:
     dob_date = funct.getCredential(entry_info, 'sso-dob-date')
     dob_year = funct.getCredential(entry_info, 'sso-dob-year')
     password = funct.getCredential(entry_info, 'sso-test-password')
+    imapEmail = funct.getCredential(entry_info, 'imap-email')
+    imapPW = funct.getCredential(entry_info, 'imap-pw')
+    tempPW = funct.getCredential(entry_info, 'temp-pw')
+
 
 # Reg page elements
 class regV:
@@ -292,11 +296,28 @@ class loginV:
     loginErrorStub = 'There is a problem with the data you entered, please try again.'
     badEmailErrorStub = 'The username and password combination did not match. Users with accounts on the NY Lottery Winning Numbers app will need to register a new account.'
     badPasswordErrorStub = 'Your email address and password do not match.'
-
-# [Documentation - Variables] Objects on Reset Password page
+    # [Documentation - Variables] Objects on Reset Password page
 class resetPswV:
     email = [By.NAME, 'email', 'email']
     reset_submit_button = [By.CSS_SELECTOR, '#app-container > div > div.container__content > div > div > form > div > div.button-wrap > button > span', 'reset_submit_button']
+    error1 = [By.XPATH, '//*[@class="is-error invalid-feedback"]', 'error_message1']
+    error2 = [By.XPATH, '//*[@class="submit-error"]', 'error_message2']
+    success = [By.XPATH, '//*[@class="alert alert-success mt-5"]', 'success_message1']
+    resetError = [By.XPATH, '//*[@class="submit-error"]', 'error_message3']
+    newPwField = [By.XPATH, '//*[@name="password"]', 'confirmPwField']
+    confirmPwField = [By.XPATH, '//*[@name="confirmPassword"]', 'confirmPwField']
+    resetPwButton = [By.XPATH, '//*[@class="nyl-button"]', 'resetPwButton']
+    matchError = [By.XPATH, '//*[@class="is-error invalid-feedback"]', 'passwordMatchError']
+    google = [By.XPATH, '//*[@title="Search"]', 'proofOfGoogle']
+    
+    
+    
+
+#error copy
+    error1Stub = 'Invalid email address'
+    error2Stub = 'All inputs must be valid in order to submit the form.'
+    resetErrorStub = "All inputs must be valid in order to submit the form."
+    matchErrorStub = "Your password must follow the password guidelines."
 
 # [Documentation - Variables] Objects on Update Profile page
 class updateProfV:
