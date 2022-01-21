@@ -15,9 +15,9 @@ class CREDSadmin:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYLadminBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYLadminBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     superadmin_username = funct.getCredential(entry_info, 'admin-super-un')
@@ -82,9 +82,9 @@ class CREDSapi:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYLservicesBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYLservicesBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
 
@@ -141,9 +141,9 @@ class credsSSOWEB:
     # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
     # opens specific local creds file with user data according to confTest variable
     if confTest.NYlottoBASE.testdata == 'iddw':
-        notepadfile = open('/Users/Shared/testing/andrewpii20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYlottoBASE.testdata == 'real':
-        notepadfile = open('/Users/Shared/testing/nyl20211109.txt', 'r')
+        notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'sso-first-name')

@@ -21,14 +21,14 @@ class NYlotto(confTest.NYlottoBASE):
     def test_01_forgotPassword(self):
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
-        print("\nChecks login with correct email & password redirects successfully")
+        print("\nChecks password reset functionality")
         testemail = self.testemail
         #set term that emails will be filtered by
         subjectFilter = "NYL SSO Password Reset Request"
         oldUrl = self.returnEmailLink(var.credsSSOWEB.imapEmail,var.credsSSOWEB.imapPW, "NYL SSO Password Reset Request")
         driver = self.driver
         # creates a verified user with valid SSN4
-        #funct.createVerifiedUser(self, testemail)
+        funct.createVerifiedUser(self, testemail)
         print('\n----------\n' + 'Test setup')
         driver.get(self.login_url)
         funct.waitAndClick(driver, var.loginV.forgot_password_link)
@@ -47,9 +47,9 @@ class NYlotto(confTest.NYlottoBASE):
         # print(newUrl)
         #checks to make sure new confirm pw email has been received 
         while oldUrl == newUrl:
-            print(str(oldUrl))
-            print('equals') 
-            print(str(newUrl))
+            # print(str(oldUrl))
+            # print('equals') 
+            # print(str(newUrl))
             time.sleep(3)
             newUrl = self.returnEmailLink(var.credsSSOWEB.imapEmail,var.credsSSOWEB.imapPW, subjectFilter)
         #print(newUrl)
@@ -79,7 +79,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.loginV.login_button)
         funct.waitAndFind(driver, var.resetPswV.google)
 
-        print("Test complete, cleaning up!")
+        print("Test completed successfully, cleaning up!")
 
         #puts pw back to original pw, and makes sure it works
         oldUrl = self.returnEmailLink(var.credsSSOWEB.imapEmail,var.credsSSOWEB.imapPW, "NYL SSO Password Reset Request")
@@ -91,9 +91,9 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndFind(driver, var.resetPswV.success)
         newUrl = self.returnEmailLink(var.credsSSOWEB.imapEmail,var.credsSSOWEB.imapPW, "NYL SSO Password Reset Request")
         while oldUrl == newUrl:
-            print(str(oldUrl))
-            print('equals') 
-            print(str(newUrl))
+            # print(str(oldUrl))
+            # print('equals') 
+            # print(str(newUrl))
             time.sleep(3)
             newUrl = self.returnEmailLink(var.credsSSOWEB.imapEmail,var.credsSSOWEB.imapPW, "NYL SSO Password Reset Request")
 
