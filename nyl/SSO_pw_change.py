@@ -77,7 +77,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.clearTextField(driver, var.loginV.password)
         funct.waitAndSend(driver, var.loginV.password, var.credsSSOWEB.tempPW)
         funct.waitAndClick(driver, var.loginV.login_button)
-        funct.waitAndFind(driver, var.resetPswV.google)
+        funct.verifyRedirect(driver, testemail, var.resetPswV.google)
 
         print("Test completed successfully, cleaning up!")
 

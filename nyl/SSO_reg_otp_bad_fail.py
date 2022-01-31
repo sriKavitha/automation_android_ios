@@ -70,6 +70,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
         funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
         funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
+        funct.waitAndClick(driver, var.regV.ss_check)         
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
@@ -81,36 +82,10 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndClick(driver, var.otpV.text_button)
         # 3rd screen. OTP code entry screen
         funct.waitAndSend(driver, var.otpV.otp_input, "987654")     # incorrect code
-        time.sleep(15)
+        time.sleep(10)
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
         # checking redirects to "Sorry, identity cannot be verified" screen.
-        time.sleep(5)
-        if driver.find_elements_by_class_name("migration-failed-body") != []:
-            print(f"PASS - Correctly redirected to 'Identity verification failed' screen.")
-        elif driver.find_elements_by_name("q") != []:
-            print("FAIL - Identity verification failed screen NOT reached. Registration succeeded where it was supposed to fail.")
-            funct.fullshot(driver)
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                print('no test user found')
-            raise Exception('Identity verification failed screen NOT reached.')
-        elif "Confirm your details" in driver.find_element_by_tag_name('body').text:
-            print("FAIL - Identity verification failed screen NOT reached. Redirected to Confirm Details screen")
-            funct.fullshot(driver)
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                print('no test user found')
-            raise Exception("Identity verification failed screen NOT reached.")
-        else:
-            print("Unexpected screen reached when attempting to submit bad otp. See screenshot.")
-            funct.fullshot(driver)
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                print('no test user found')
-            raise Exception("Identity verification failed screen NOT reached.")
+        funct.verifyRedirect(driver, testemail, var.identityVerFailedV.failed_body)
 
         # Deleting test data
         print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')

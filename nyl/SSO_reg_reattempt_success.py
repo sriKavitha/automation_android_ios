@@ -31,6 +31,7 @@ class NYlotto(confTest.NYlottoBASE):
             if funct.createUnverifiedUser(self, testemail) == True:
                 break
             elif i == 2:
+                funct.purgeSSOemail(self, testemail)
                 raise Exception(f'Failed to make unverified user. Check screenshot or error msg. Aborting test.')
         print('----------')
         # switch to login page
@@ -39,7 +40,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.loginV.email, testemail)
         funct.waitAndSend(driver, var.loginV.password, var.credsSSOWEB.password)
         funct.waitAndClick(driver, var.loginV.login_button)
-        time.sleep(3)
+        funct.waitUntil(driver, var.regV.fname)
         # Redirects to the verification screen, supply SSN and continue
         funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
         # Clicks Confirm Details button
@@ -53,16 +54,7 @@ class NYlotto(confTest.NYlottoBASE):
         time.sleep(5)
         # Successful registration should redirect to Google.com.
         # Checking that the search field on google.com is present on page.
-        if driver.find_elements_by_name("q") != []:
-             print("PASS - Reattempting registration was successful and redirected to callback uri")
-        else:
-            funct.fullshot(driver)
-            print("FAIL - Redirect screen not reached.")
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                pass
-            raise Exception('Reattempting registration redirected incorrectly.')
+        funct.verifyRedirect(driver, testemail, var.resetPswV.google)
 
         # Deleting test data
         print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
