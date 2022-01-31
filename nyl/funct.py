@@ -503,13 +503,16 @@ def waitUntil(browser, elem):
     try:
         a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
         assert(browser.find_element(elem[0], elem[1]))
+        return True
     except:
         time.sleep(2)
         try:
             a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
             assert(browser.find_element(elem[0], elem[1]))
+            return True
         except:
             print("E--" + elem[2] + " elem not found")
+            return False
 
 # [Documentation - Function] Webdriver waits for a specified page element with out throwing an error message
 def waitAndFind(browser, elem):
@@ -747,3 +750,18 @@ def closeWindow(driver, title):
         if driver.title == title:
             time.sleep(2)
             driver.close()
+
+# [Documentation - Function] Asserts whether an expected elem on a redirected screen is found.
+def verifyRedirect(driver, email, elem):
+    verification = waitUntil(driver, elem)
+    if verification == True:
+        print(f"\nPASS - Redirected successfully.\n")
+    elif verification == False:
+            print(f"\nFAIL - Redirect screen not reached.\n")
+            fullshot(driver)
+            purgeSSOemail(driver, email)
+            raise Exception('Redirected incorrectly. Check screenshot.')
+    else:
+        fullshot(driver)
+        purgeSSOemail(driver, email)
+        raise Exception('Unexpected behavior. Check screenshot.')
