@@ -294,7 +294,7 @@ class loginV:
     requiredErrorStub = 'Required'
     emailErrorStub = 'Invalid email address'
     loginErrorStub = 'There is a problem with the data you entered, please try again.'
-    badEmailErrorStub = 'The username and password combination did not match. Users with accounts on the NY Lottery Winning Numbers app will need to register a new account.'
+    badEmailErrorStub = 'The username and password combination did not match. Users with accounts on the Official NY Lottery Winning Numbers app will need to register a new account.'
     badPasswordErrorStub = 'Your email address and password do not match.'
     # [Documentation - Variables] Objects on Reset Password page
 class resetPswV:
@@ -358,3 +358,11 @@ class updateProfV:
     phoneErrorStub = 'Invalid phone number'
     dobErrorStub = 'Please enter a valid birth date'
     updateErrorStub = 'All inputs must be valid in order to submit the form.'
+
+# [Documentation - Variables] Objects on Confirm Details page
+class confirmDetailsV:
+    submit_button = [By.XPATH, '//button[@class="nyl-button"]', 'submit_button']
+
+# [Documentation - Variables] Objects on Identity Verification Failed page
+class identityVerFailedV:
+    failed_body = [By.XPATH, '//div[@class="migration-failed-body"]', 'failed_body']

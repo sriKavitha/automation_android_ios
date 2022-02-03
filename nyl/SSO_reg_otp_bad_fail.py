@@ -6,32 +6,41 @@ import unittest, time, re       #unittest is the testing framework, provides mod
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
 from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
+import var, funct, util, confTest    #Custom class for NYL
+import HtmlTestRunner
 
-# [Documentation - Summary] Tests user workflow of successful
-# registration with valid SSN4 and OTP pass
+# [Documentation - Summary] Tests user workflow of failed
+# registration with submitting incorrect OTP
 
+# The test case ex is inherited from unittest.TestCase.
+# Inheriting from TestCase class is the way to tell unittest module that this is a test case.
 class NYlotto(confTest.NYlottoBASE):
 
 # This is the test case method. The test case method should always start with the characters test.
 # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_regSSNSuccess(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2400
+    def test_regBadOTPFail(self):
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1925
+        testemail = self.testemail
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
-        testemail = self.testemail
-        print("\nChecks successful registration with SSN4 and OTP pass on Browser method")
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2400
+
         print('\n----------\n' + 'Test setup')
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+            funct.purgeSSOemail(self, testemail)
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         except:
-            print('no test user found')
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         print('----------')
+
         driver = self.driver
         # The driver.get method will navigate to a page given by the URL.
         # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
@@ -61,6 +70,7 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
         funct.waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
         funct.waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
+        funct.waitAndClick(driver, var.regV.ss_check)         
         funct.waitAndSend(driver, var.regV.dob, (var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
         funct.waitAndClick(driver, var.regV.dob_check)
         funct.waitAndSend(driver, var.regV.email, testemail)
@@ -71,21 +81,11 @@ class NYlotto(confTest.NYlottoBASE):
         # 2nd screen. OTP selection screen
         funct.waitAndClick(driver, var.otpV.text_button)
         # 3rd screen. OTP code entry screen
-        funct.waitAndSend(driver, var.otpV.otp_input, "111111")
+        funct.waitAndSend(driver, var.otpV.otp_input, "987654")     # incorrect code
+        time.sleep(10)
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(5)
-        # 4th screen. Successful registration should redirect to Google.com.
-        # Checking that the search field on google.com is present on page.
-        if driver.find_elements_by_name("q") != []:
-             print("PASS - registration successful and redirected to callback uri")
-        else:
-            funct.fullshot(driver)
-            print("FAIL - Redirect screen not reached.")
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                pass
-            raise Exception('Registration redirected incorrectly.')
+        # checking redirects to "Sorry, identity cannot be verified" screen.
+        funct.verifyRedirect(driver, testemail, var.identityVerFailedV.failed_body)
 
         # Deleting test data
         print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
@@ -97,7 +97,7 @@ class NYlotto(confTest.NYlottoBASE):
 
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
-    if confTest.NYlottoBASE.report == 'terminal':
+    if  confTest.NYlottoBASE.report == "terminal":
         unittest.main(warnings='ignore')
-    elif confTest.NYlottoBASE.report == 'html':
+    elif confTest.NYlottoBASE.report == "html":
         unittest.main(warnings='ignore', testRunner=HtmlTestRunner.HTMLTestRunner(output='<html_report_dir>'))

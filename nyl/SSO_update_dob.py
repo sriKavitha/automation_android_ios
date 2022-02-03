@@ -12,6 +12,7 @@ import HtmlTestRunner                               #Report runner
 class NYlotto(confTest.NYlottoBASE):
 
     def test_updateDOB(self):
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2041
         testemail = self.testemail
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
