@@ -85,7 +85,7 @@ class NYlotto(confTest.NYlottoBASE):
         time.sleep(10)
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
         # checking redirects to "Sorry, identity cannot be verified" screen.
-        funct.verifyRedirect(driver, testemail, var.identityVerFailedV.failed_body)
+        funct.verifyRedirect(self, driver, testemail, var.identityVerFailedV.failed_body)
 
         # Deleting test data
         print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
