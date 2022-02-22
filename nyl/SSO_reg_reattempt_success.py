@@ -62,6 +62,7 @@ class NYlotto(confTest.NYlottoBASE):
             funct.purgeSSOemail(self, testemail)
         except:
             pass
+        funct.closeWindow(driver, 'New York Lottery - Admin Dashboard')
         print('----------')
 
 # use "report" variable in conftest.py to change report style on runner
