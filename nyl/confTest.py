@@ -13,7 +13,7 @@ class globalVar:
 ###==============================================================###
     # report can be "html" for testrunner reports or "terminal" for direct terminal feedback
     report = 'terminal'
-    # report = 'html'
+    # report = "html"
 
     # testdata can be "iddw" or "real" to denote which credential files to use in var.py
     testdata = 'iddw'
@@ -23,6 +23,9 @@ class globalVar:
     env = 'qa'
 
     testemail = 'qa+ssotest@rosedigital.co'
+
+    # tester's actual mobile number needed for govid registration flows
+    testermobile = '0000000000'
 
 ###==============================================================###
 # NYL Admin Dash
@@ -109,6 +112,7 @@ class NYlottoBASE(unittest.TestCase):
     def setUp(self):
         self.env = globalVar.env
         self.testemail = globalVar.testemail
+        self.testermobile = globalVar.testermobile
         if self.env == 'dev':
             self.reg_url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
             self.login_url = "https://sso-dev.nylservices.net/login?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
