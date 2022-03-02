@@ -652,10 +652,9 @@ def createVerifiedUser(self, email):
         # 2nd screen. OTP selection screen
         waitAndClick(driver, var.otpV.text_button)
         # 3rd screen. OTP code entry screen
-        waitAndSend(driver, var.otpV.otp_input, "111111")
-        time.sleep(10)
-        waitAndClick(driver, var.otpV.otp_continue_button)
         time.sleep(5)
+        waitAndSend(driver, var.otpV.otp_input, "111111")
+        waitAndClick(driver, var.otpV.otp_continue_button)
         # 4th screen. Successful registration should redirect to Google.com.
         # Checking that the search field on google.com is present on page.
         if driver.find_elements_by_name("q") != []:
