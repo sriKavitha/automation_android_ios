@@ -54,7 +54,7 @@ class NYlotto(confTest.NYlottoBASE):
         time.sleep(5)
         # Successful registration should redirect to Google.com.
         # Checking that the search field on google.com is present on page.
-        funct.verifyRedirect(driver, testemail, var.resetPswV.google)
+        funct.verifyRedirect(self, driver, testemail, var.resetPswV.google)
 
         # Deleting test data
         print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
@@ -62,6 +62,7 @@ class NYlotto(confTest.NYlottoBASE):
             funct.purgeSSOemail(self, testemail)
         except:
             pass
+        funct.closeWindow(driver, 'New York Lottery - Admin Dashboard')
         print('----------')
 
 # use "report" variable in conftest.py to change report style on runner

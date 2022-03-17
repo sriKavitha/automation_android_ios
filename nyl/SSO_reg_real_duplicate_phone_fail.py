@@ -95,6 +95,7 @@ class NYlotto(confTest.NYlottoBASE):
                 print('E--- 2nd test user created, but purged')
         except:
                 pass
+        funct.closeWindow(driver, 'New York Lottery - Admin Dashboard')
         print("Test complete!")
 
 # use "report" variable in conftest.py to change report style on runner

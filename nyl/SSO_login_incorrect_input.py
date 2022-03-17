@@ -39,6 +39,7 @@ class NYlotto(confTest.NYlottoBASE):
             print('FAIL - Warning should say "' + var.loginV.badEmailErrorStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
             funct.fullshot(driver)
             raise Exception('Error warning(s) copy is incorrect')
+        funct.closeWindow(driver, 'New York Lottery - Admin Dashboard')
 
 
     def test_02_loginIncorrectPswError(self):
@@ -78,6 +79,7 @@ class NYlotto(confTest.NYlottoBASE):
             funct.purgeSSOemail(self, testemail)
         except:
             pass
+        funct.closeWindow(driver, 'New York Lottery - Admin Dashboard')
         print('----------')
 
 # use "report" variable in conftest.py to change report style on runner

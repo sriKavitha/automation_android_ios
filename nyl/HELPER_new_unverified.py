@@ -23,8 +23,17 @@ class NYlotto(confTest.NYlottoBASE):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
             funct.purgeSSOemail(self, testemail)
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         except:
-            pass
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         driver = self.driver
         # The driver.get method will navigate to a page given by the URL.
 

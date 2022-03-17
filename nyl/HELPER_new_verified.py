@@ -22,8 +22,17 @@ class NYlotto(confTest.NYlottoBASE):
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
             funct.purgeSSOemail(self, testemail)
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         except:
-            pass
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         driver = self.driver
         # The driver.get method will navigate to a page given by the URL.
         # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
@@ -63,9 +72,9 @@ class NYlotto(confTest.NYlottoBASE):
         # 2nd screen. OTP selection screen
         funct.waitAndClick(driver, var.otpV.text_button)
         # 3rd screen. OTP code entry screen
+        time.sleep(5)
         funct.waitAndSend(driver, var.otpV.otp_input, "111111")
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(5)
         # 4th screen. Successful registration should redirect to Google.com.
         # Checking that the search field on google.com is present on page.
         if driver.find_elements_by_name("q") != []:

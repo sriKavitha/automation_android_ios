@@ -8,40 +8,47 @@ from selenium.webdriver.common.by import By  # By class provides method for find
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import UnexpectedAlertPresentException, ElementNotVisibleException,ElementNotSelectableException,ElementNotInteractableException,NoSuchElementException
-import var, funct, util, confTest, HtmlTestRunner  # Custom class for NYL
+import HtmlTestRunner   # Test report
+import var, funct, confTest   # Custom class for NYL
 
 # [Documentation - Summary] Tests user workflow of failed
-# registration with OTP pass and fake Driver's License on Browser method
-
-# For use with Image file versions: DLback.jpg, DLface.jpg, DLfront.jpg
+# registration with OTP pass and fake Driver's License on MOBILE flow
+# Prior to running test, image files need to be saved and available on local machine
+# Images needed are -
+# front of drivers' license in landscape orientation (nyl/Images/DLfront.jpg)
+# image in landscape orientation (nyl/Images/Random-landscape.jpg)
+# image in portrait orientation (nyl/Images/Random-portrait.jpg)
 
 class NYlotto(confTest.NYlottoBASE):
 
-    # This is the test case method. The test case method should always start with the characters test.
-    # The first line inside this method creates a local reference to the driver object created in setUp method.
-    def test_regDLBrowserFail(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2403
+    def test_regDLMobileFail(self):
+        tester_mobile = self.testermobile
+        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2415
         testemail = self.testemail
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
-        print("\nChecks failed registration with OTP pass and fake Driver's License on Browser method")
+        print("\nChecks failed registration with OTP pass and fake Driver's License images on Mobile method")
         print('\n----------\n' + 'Test setup')
         # Check for existing test user and wipe it from userpool prior to test execution
         try:
             funct.purgeSSOemail(self, testemail)
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         except:
-            pass
+            if self.env != 'dev':
+                try:
+                    funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+                except:
+                    pass
         print('----------')
 
         driver = self.driver
-        # The driver.get method will navigate to a page given by the URL.
-        # WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired)
-        # before returning control to your test or script.
-        # url is pulled from confTest
         driver.get(self.reg_url)
         # Assertion that the title has Single Sign On in the title.
         self.assertIn("Single Sign On", driver.title)
-
         # Instructions for webdriver to read and input user data via the info on the .txt doc.
         # Credentials are localized to one instance via the var file
         funct.waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
@@ -73,23 +80,26 @@ class NYlotto(confTest.NYlottoBASE):
         # 2nd screen. OTP selection screen
         funct.waitAndClick(driver, var.otpV.text_button)
         # 3rd screen. OTP code entry screen
+        time.sleep(5)
         funct.waitAndSend(driver, var.otpV.otp_input, "111111")
         funct.waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(5)
         # 4th screen. Gov ID document capture selection screen
-        # Choosing US Drivers License and Continue on Browser
+        # Choosing US Drivers License and Continue on Mobile
         funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
         funct.waitAndClick(driver, var.govIdV.id_drivers_license)
-        # funct.waitAndClick(driver, var.govIdV.gov_id_dropdown)
-        funct.waitAndClick(driver, var.govIdV.browser_link)
-        time.sleep(5)
-        # 5th screen. Initiate document capture process
-        funct.waitAndClick(driver, var.govIdV.dl_start_button)
+        funct.waitAndClick(driver, var.govIdV.mobile_button)
+        #5th screen. Submits tester mobile number for SMS link to continue verification process
+        funct.waitAndSend(driver, var.govIdV.mobile_input, tester_mobile)
+        funct.waitAndClick(driver, var.govIdV.continue_mobile_btn)
 
         # alert for tester to interact with screen after
         try:
-            driver.execute_script('alert("Test will pause for max of 5 minutes while tester uploads DLfront.jpg, DLback.jpg, DLface.jpg for gov id verification. '
-                                  'STOP interacting with browser once last image is SAVED. '
+            driver.execute_script('alert("Test will pause for max of 15 minutes while tester uploads '
+                                  'front of drivers license, back of drivers license, and '
+                                  'image of face for gov id verification.'
+                                  'Tester should submit the docs in 2 rounds in order to get '
+                                  'a hard fail and final redirect screen.'
+                                  'STOP interacting with test once all images have been SUBMITTED on the second round. '
                                   'This message will self-destruct in 5,4,3,2,1.");')
         except UnexpectedAlertPresentException:
             pass
@@ -97,36 +107,13 @@ class NYlotto(confTest.NYlottoBASE):
         time.sleep(15)
         driver.switch_to.alert.accept()  # alert closed
 
-        # wait for Submit button appears on summary screen
+        # wait for Failed Identity message to appear on summary screen
         ignore_list = [ElementNotVisibleException, ElementNotSelectableException, ElementNotInteractableException, NoSuchElementException]
-        wait = WebDriverWait(driver, timeout=300, poll_frequency=10, ignored_exceptions=ignore_list)
-        wait.until(EC.element_to_be_clickable((By.XPATH, var.govIdV.id_submit_button[1])))
-
-       # Submission screen - Automation will resume here, do NOT click the Submit button
-        funct.waitAndClick(driver, var.govIdV.id_submit_button)
-        time.sleep(15)
-        # Last screen. Submission screen should show error message for an expected failure of identity verification.
-        if "Sorry, we were unable to verify your information." in driver.page_source:
-            print("PASS - ID Verification Failed message is expected and received!")
-        # Successful registration would redirect to Google.com. Checking that the search field on google.com is present on page.
-        elif driver.find_elements_by_name("q") != []:
-            print("FAIL - Reached valid registration screen and redirected to callback uri.")
-            funct.fullshot(driver)
-            print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                pass
-            raise Exception('Unexpected behavior: please check screenshot')
-        else:
-            print("FAIL - Neither Identity verification error message reached nor Registration success screen reached (or text is incorrect/needs to be updated)")
-            funct.fullshot(driver)
-            print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
-            try:
-                funct.purgeSSOemail(self, testemail)
-            except:
-                pass
-            raise Exception('Unexpected behavior: please check screenshot')
+        wait = WebDriverWait(driver, timeout=900, poll_frequency=10, ignored_exceptions=ignore_list)
+        wait.until(EC.element_to_be_clickable((By.XPATH, var.identityVerFailedV.failed_body[1])))
+        # Last screen. Failed registration would redirect to screen with message
+        # "Sorry, your identity could not be verified."
+        funct.verifyRedirect(self, driver, testemail, var.identityVerFailedV.failed_body)
 
         # Deleting test data
         print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')

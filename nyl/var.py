@@ -56,6 +56,7 @@ class adminDashVar:
     li_delete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[5]', 'li_delete']
     li_cancelDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_cancelDelete']
     li_permDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_permDelete']
+    view_button = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr[1]/td[10]/a/button', 'view_button']
     comment_textarea = [By.XPATH, '//textarea[@id="comment"]', 'comment_textarea']
     comment_phrase_textarea = [By.XPATH, '//input[@id="phrase"]', 'comment_phrase_textarea']
     modal_ok_button = [By.XPATH, '//button[@class="ant-btn ant-btn-primary"]', 'modal_ok_button']
@@ -71,6 +72,13 @@ class adminDashVar:
     pendingDeleteUser_checkbox = [By.XPATH, '(//input[@type="checkbox"])[1]', 'pendingDeleteUser_checkbox']
     no_data_msg = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td/div/p', 'no_data_msg']
     extend_button = [By.XPATH, '//button[@class="ant-btn ant-btn-primary"]', 'extend_button']
+
+class adminEditVar:
+    edit_button = [By.XPATH, '//*[@id="local_data"]/div/button/u', 'edit_button']
+    phone_input = [By.XPATH, '//*[@id="phone"]', 'phone_input']
+    back_button = [By.XPATH, '//button[@class="btn btn-primary"]', 'back_button']
+    cancel_button = [By.XPATH, '//*[@id="local_data"]/form/div[12]/div/button[1]', 'cancel_button']
+    save_button = [By.XPATH, '//button[@type="submit"]', 'save_button']
 ###==============================================================###
 # NYL Services API
 ###==============================================================###
@@ -237,11 +245,13 @@ class govIdV:
     id_drivers_license = [By.XPATH, '//option[@value="US Drivers License"]', 'id_drivers_license']
     id_passport = [By.XPATH, '//option[@value="International Passport"]', 'id_passport']
     mobile_button = [By.XPATH, '//button[@class="nyl-button"]', 'mobile_button']
+    mobile_input = [By.ID, 'intlTelephone', 'mobile_input']
+    continue_mobile_btn = [By.ID, 'async-continue', 'continue_mobile_btn']
     browser_link = [By.XPATH, '//a[@class="continue-with-browser-link"]', 'browser_link']
 
 # Drivers license and browser capture method
 # Document capture page
-    dl_start_button = [By.XPATH, '//button[@id="dcui-start-button"]', 'dl_start_button']
+    dl_start_button = [By.ID, 'dcui-start-button', 'dl_start_button']
 # Driver's license front capture page
     dl_front_capture_button = [By.XPATH, '//button[@id="start-capture"]', 'dl_front_capture_button']
 # Driver's license front quality check page
@@ -309,7 +319,7 @@ class resetPswV:
     resetPwButton = [By.XPATH, '//*[@class="nyl-button"]', 'resetPwButton']
     matchError = [By.XPATH, '//*[@class="is-error invalid-feedback"]', 'passwordMatchError']
     google = [By.XPATH, '//*[@title="Search"]', 'proofOfGoogle']
-    
+    gSearchButton = [By.XPATH, '(//input[@value="Google Search"])[2]', 'gSearchButton']
     
     
 

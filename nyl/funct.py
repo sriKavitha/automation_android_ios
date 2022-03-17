@@ -505,7 +505,7 @@ def waitUntil(browser, elem):
         assert(browser.find_element(elem[0], elem[1]))
         return True
     except:
-        time.sleep(2)
+        time.sleep(5)
         try:
             a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
             assert(browser.find_element(elem[0], elem[1]))
@@ -652,9 +652,9 @@ def createVerifiedUser(self, email):
         # 2nd screen. OTP selection screen
         waitAndClick(driver, var.otpV.text_button)
         # 3rd screen. OTP code entry screen
+        time.sleep(5)
         waitAndSend(driver, var.otpV.otp_input, "111111")
         waitAndClick(driver, var.otpV.otp_continue_button)
-        time.sleep(5)
         # 4th screen. Successful registration should redirect to Google.com.
         # Checking that the search field on google.com is present on page.
         if driver.find_elements_by_name("q") != []:
@@ -752,16 +752,16 @@ def closeWindow(driver, title):
             driver.close()
 
 # [Documentation - Function] Asserts whether an expected elem on a redirected screen is found.
-def verifyRedirect(driver, email, elem):
-    verification = waitUntil(driver, elem)
+def verifyRedirect(self, browser, email, elem):
+    verification = waitUntil(browser, elem)
     if verification == True:
         print(f"\nPASS - Redirected successfully.\n")
     elif verification == False:
             print(f"\nFAIL - Redirect screen not reached.\n")
-            fullshot(driver)
-            purgeSSOemail(driver, email)
+            fullshot(browser)
+            purgeSSOemail(self, email)
             raise Exception('Redirected incorrectly. Check screenshot.')
     else:
-        fullshot(driver)
-        purgeSSOemail(driver, email)
+        fullshot(browser)
+        purgeSSOemail(self, email)
         raise Exception('Unexpected behavior. Check screenshot.')
