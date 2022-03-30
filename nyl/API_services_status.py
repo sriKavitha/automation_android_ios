@@ -196,16 +196,16 @@ class NYLServices(confTest.NYLservicesBASE):
                 print(f'RESPONSE HEADERS - {handleGovidCall.headers}')
                 print(f'RESPONSE - {handleGovidCall.text}\n')
 
-        # GET /users
+        # GET /users (SSO User)
         time.sleep(1)
-        users_headers = {'Authorization': sso_register_access_token}
-        usersGetCall = requests.get(f'https://api-{self.env}.nylservices.net/users', headers=users_headers)
-        if usersGetCall.status_code == 200:
-            print(f'PASS - GET /users Status Code: {usersGetCall.status_code}')
+        sso_users_headers = {'Authorization': sso_register_access_token}
+        ssoUsersGetCall = requests.get(f'https://api-{self.env}.nylservices.net/users', headers=sso_users_headers)
+        if ssoUsersGetCall.status_code == 200:
+            print(f'PASS - GET /users (SSO User) Status Code: {ssoUsersGetCall.status_code}')
         else:
-            print(f'\nERROR - GET /users Status Code: {usersGetCall.status_code}')
-            print(f'RESPONSE HEADERS - {usersGetCall.headers}')
-            print(f'RESPONSE - {usersGetCall.text}\n')
+            print(f'\nERROR - GET /users (SSO User) Status Code: {ssoUsersGetCall.status_code}')
+            print(f'RESPONSE HEADERS - {ssoUsersGetCall.headers}')
+            print(f'RESPONSE - {ssoUsersGetCall.text}\n')
 
         # POST /sso/login (SSO user)
         time.sleep(1)
@@ -375,7 +375,6 @@ class NYLServices(confTest.NYLservicesBASE):
         print(infoCall.text)
         print('***WARNING*** \n')
 
-        #TODO update the endpoint test to account for Ticketscan CMS changes from 2021
         # GET /ticket-scan/count (Mobile user)
         time.sleep(1)
         ticketscan_count_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
@@ -398,6 +397,29 @@ class NYLServices(confTest.NYLservicesBASE):
             print(f'\nERROR - POST /ticket-scan/inquiry Status Code: {ticketscanInquiryCall.status_code}')
             print(f'RESPONSE HEADERS - {ticketscanInquiryCall.headers}')
             print(f'RESPONSE - {ticketscanInquiryCall.text}\n')
+
+        # GET /ticket-scan/count-cms (Mobile user)
+        time.sleep(1)
+        ticketscan_count_cms_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
+        ticketscanCountCmsCall = requests.get(f'https://api-{self.env}.nylservices.net/ticket-scan/count-cms', headers=ticketscan_count_cms_headers)
+        if ticketscanCountCmsCall.status_code == 200:
+            print(f'PASS - GET /ticket-scan/count-cms Status Code: {ticketscanCountCmsCall.status_code}')
+        else:
+            print(f'\nERROR - GET /ticket-scan/count-cms Status Code: {ticketscanCountCmsCall.status_code}')
+            print(f'RESPONSE HEADERS - {ticketscanCountCmsCall.headers}')
+            print(f'RESPONSE - {ticketscanCountCmsCall.text}\n')
+
+        # POST /ticket-scan/inquiry-cms (Mobile user)
+        time.sleep(1)
+        ticketscan_inquiry_cms_payload = {"barcodeData": "87600275207207466326295006"}
+        ticketscan_inquiry_cms_headers = {'Authorization': mobile_register_access_token, 'x-api-key': m_x_api_key}
+        ticketscanInquiryCmsCall = requests.post(f'https://api-{self.env}.nylservices.net/ticket-scan/inquiry', headers=ticketscan_inquiry_cms_headers, json=ticketscan_inquiry_cms_payload)
+        if ticketscanInquiryCmsCall.status_code == 200:
+            print(f'PASS - POST /ticket-scan/inquiry-cms Status Code: {ticketscanInquiryCmsCall.status_code}')
+        else:
+            print(f'\nERROR - POST /ticket-scan/inquiry-cms Status Code: {ticketscanInquiryCmsCall.status_code}')
+            print(f'RESPONSE HEADERS - {ticketscanInquiryCmsCall.headers}')
+            print(f'RESPONSE - {ticketscanInquiryCmsCall.text}\n')
 
         # GET /games/all/draws
         time.sleep(1)
@@ -455,8 +477,6 @@ class NYLServices(confTest.NYLservicesBASE):
         # TODO POST /sso/verify-jwt
         # TODO PATCH /users
         # TODO GET /users (Mobile user)
-        # TODO All Admin Console endpoints
-        # TODO add timestamps & logging for errors
 
         # Clean up - clear test user from userpool
         # Check for existing test SSO user and wipe it from userpool prior to register api call
