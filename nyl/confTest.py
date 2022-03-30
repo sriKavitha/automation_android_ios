@@ -27,6 +27,9 @@ class globalVar:
     # tester's actual mobile number needed for govid registration flows
     testermobile = '0000000000'
 
+    # secondary phone # for manipulating in test cases https://fakenumber.org/
+    tempphone = '2025550113'
+
 ###==============================================================###
 # NYL Admin Dash
 ###==============================================================###
@@ -113,6 +116,7 @@ class NYlottoBASE(unittest.TestCase):
         self.env = globalVar.env
         self.testemail = globalVar.testemail
         self.testermobile = globalVar.testermobile
+        self.tempphone = globalVar.tempphone
         if self.env == 'dev':
             self.reg_url = "https://sso-dev.nylservices.net/?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"
             self.login_url = "https://sso-dev.nylservices.net/login?clientId=29d5np06tgg87unmhfoa3pkma7&callbackUri=https://google.com"

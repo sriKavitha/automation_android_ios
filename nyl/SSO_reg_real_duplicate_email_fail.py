@@ -20,16 +20,17 @@ class NYlotto(confTest.NYlottoBASE):
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks for failed registration with duplicate email in userpool")
         testemail = self.testemail
-
-        tempphone = '3472929732'
+        tempphone = self.tempphone
         formatted_tempphone = '(' + tempphone[:3] + ') ' + tempphone[3:6] + '-' + tempphone[6:]
 
         driver = self.driver
         print('\n----------\n' + 'Test setup')
+        # find and purge temp phone if in userpool
+        funct.purgeSSOphone(self, tempphone)
         # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)
         # edits the created user to a different phone number. so the system will only check the dupe email response
-        self.admin_url = 'https://admin-' + self.env + '.nylservices.net/'
+        self.admin_url = f'https://admin-{self.env}.nylservices.net/'
         driver.get(self.admin_url)
         try:  # try to login
             funct.waitAndFind(driver, var.adminLoginVar.signin_button)
