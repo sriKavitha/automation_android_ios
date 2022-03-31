@@ -28,15 +28,15 @@ class NYlotto(confTest.NYlottoBASE):
         driver.get(self.update_url)
         time.sleep(2)
         # Makes change in field and submits
-        phoneChange = '3472929732'
+        phoneChange = self.tempphone
         formattedChange = "(" + phoneChange[:3] + ") " + phoneChange[3:6] + "-" + phoneChange[6:]
         # print(formattedChange)
         funct.clearTextField(driver, var.updateProfV.phone)
         funct.waitAndSend(driver, var.updateProfV.phone, phoneChange)
         funct.waitAndClick(driver, var.updateProfV.update_button)
         time.sleep(5)
-        body = driver.find_element_by_xpath('/html/body').text
-        if "Sorry, we cannot verify your identity." in body:  # IDW returned a fail on PII check
+
+        if funct.waitUntil(driver, var.identityVerFailedV.failed_body) == True:  # IDW returned a fail on PII check
             print("PASS - ID Verification Failed message is expected and received!")
             print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
             funct.purgeSSOemail(self, testemail)
@@ -49,7 +49,7 @@ class NYlotto(confTest.NYlottoBASE):
             funct.waitAndClick(driver, var.otpV.otp_continue_button)
             time.sleep(5)
             # check for proper redirects
-            if driver.find_elements_by_name("q") != []:  #IDW returned a pass on PII check
+            if funct.waitUntil(driver, var.resetPswV.gSearchButton) == True:  #IDW returned a pass on PII check
                 print('PASS - Update profile successfully redirected to Google.')
                 # Checks the change has been saved to the profile
                 driver.get(self.update_url)
@@ -82,6 +82,7 @@ class NYlotto(confTest.NYlottoBASE):
             print('\n----------\n' + 'Test complete!\n\nTest clean up commencing')
             try:
                 funct.purgeSSOemail(self, testemail)
+                funct.purgeSSOphone(self, phoneChange)
             except:
                 pass
             funct.closeWindow(driver, 'New York Lottery - Admin Dashboard')
