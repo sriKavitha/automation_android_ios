@@ -3,13 +3,14 @@ NYL README
 
 Requirements(python 3.6 or greater):
 - requires up to date credentials file placed in local Users folder. Contact NYL QA lead to receive this file.
-  Test Data Version: andrewpii20211109.txt
-  Real Data Version: nyl20211109.txt
+  Test Data Version: andrewpii1212022.txt
+  Real Data Version: nyl1212022.txt
 
 - the following python modules are required to run this script, in order to install them see directions below:
 pip install selenium
 pip install unittest
 pip install html-testRunner
+pip install PyJWT
 
 - additional requirement steps are detailed on the following Confluence Docs
 https://rosedigital.atlassian.net/wiki/spaces/RDKB/pages/782630975/NYL+-+Purge+Tool+-+Readme
