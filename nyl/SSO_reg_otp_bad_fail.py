@@ -1,25 +1,21 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest    #Custom class for NYL
 import HtmlTestRunner
 
-# [Documentation - Summary] Tests user workflow of failed
-# registration with submitting incorrect OTP
 
-# The test case ex is inherited from unittest.TestCase.
-# Inheriting from TestCase class is the way to tell unittest module that this is a test case.
+
 class NYlotto(confTest.NYlottoBASE):
 
-# This is the test case method. The test case method should always start with the characters test.
-# The first line inside this method creates a local reference to the driver object created in setUp method.
     def test_regBadOTPFail(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1925
+        """Tests user workflow of failed registration with submitting incorrect OTP
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1925
+        Checks that existing user does not exist in SSO userpool then
+        attempts to register with the test data in the credentials file.
+        Inputs a bad OTP and verifies that the registration fails and redirects correctly.
+        :return:
+        """
+
         testemail = self.testemail
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")

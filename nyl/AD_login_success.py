@@ -1,12 +1,12 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
 import unittest, time  #unittest is the testing framework, provides module for organizing test cases
 import var, funct, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYLadmin(confTest.NYLadminBASE):
 
-# Checks login with correct email & password redirects successfully
     def test_loginSuccess(self):
+        """Tests that logging into the Admin Dashboard is successful
+        :return:
+        """
         driver = self.driver
         # url is pulled from confTest
         driver.get(self.admin_url)

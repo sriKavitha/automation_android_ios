@@ -48,15 +48,16 @@ class adminDashVar:
     category_email = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[6]/a', 'category_email']
     operator_contains = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div[1]/div/div[1]/div/div[3]/span/ul/li[2]/a', 'operator_contains']
     search_button = [By.XPATH, '//button[@class="ml-2 btn btn-wide btn-primary btn-upper"]', 'search_button']
-    bulkAction_button = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[2]/div/div/div/div/button', 'bulkAction_button']
-    li_verification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_verification']
-    li_unverification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_unverification']
-    li_lock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[3]', 'li_lock']
-    li_unlock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[4]', 'li_unlock']
-    li_delete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[5]', 'li_delete']
-    li_cancelDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_cancelDelete']
-    li_permDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_permDelete']
-    view_button = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr[1]/td[10]/a/button', 'view_button']
+    # TODO verify bulk action button references are all removed
+    # bulkAction_button = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[2]/div[2]/div/div/div/div/button', 'bulkAction_button']
+    # li_verification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_verification']
+    # li_unverification = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_unverification']
+    # li_lock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[3]', 'li_lock']
+    # li_unlock = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[4]', 'li_unlock']
+    # li_delete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[5]', 'li_delete']
+    # li_cancelDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[1]', 'li_cancelDelete']
+    # li_permDelete = [By.XPATH, '//ul[@class="ant-dropdown-menu ant-dropdown-menu-light ant-dropdown-menu-root ant-dropdown-menu-vertical"]/li[2]', 'li_permDelete']
+    view_edit_button = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr[1]/td[10]/a/button', 'view_edit_button'] # first row view/edit button
     comment_textarea = [By.XPATH, '//textarea[@id="comment"]', 'comment_textarea']
     comment_phrase_textarea = [By.XPATH, '//input[@id="phrase"]', 'comment_phrase_textarea']
     modal_ok_button = [By.XPATH, '//button[@class="ant-btn ant-btn-primary"]', 'modal_ok_button']
@@ -73,12 +74,38 @@ class adminDashVar:
     no_data_msg = [By.XPATH, '//*[@id="local_data"]/div/div/div/div/div/div/table/tbody/tr/td/div/p', 'no_data_msg']
     extend_button = [By.XPATH, '//button[@class="ant-btn ant-btn-primary"]', 'extend_button']
 
-class adminEditVar:
+# Users - Users Details view
+class adminUsersVar:
+    user_details_tab = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[1]/div[1]/ul/li[1]/a',
+                        'user_details_tab']
+    user_status_tab = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[1]/div[1]/ul/li[2]/a', 'user_status_tab']
+    audit_trail_tab = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[1]/div[1]/ul/li[3]/a', 'audit_trail_tab']
+    # Users Details view
     edit_button = [By.XPATH, '//*[@id="local_data"]/div/button/u', 'edit_button']
     phone_input = [By.XPATH, '//*[@id="phone"]', 'phone_input']
     back_button = [By.XPATH, '//button[@class="btn btn-primary"]', 'back_button']
     cancel_button = [By.XPATH, '//*[@id="local_data"]/form/div[12]/div/button[1]', 'cancel_button']
     save_button = [By.XPATH, '//button[@type="submit"]', 'save_button']
+    # User Status view
+    verification_button = [By.XPATH, '(//button[@type="button"])[1]', 'verification_button']
+    reset_password_button = [By.XPATH, '(//button[@type="button"])[2]', 'reset_password_button']
+    lock_user_button = [By.XPATH, '(//button[@type="button"])[3]', 'lock_user_button']
+    delete_button = [By.XPATH, '(//button[@type="button"])[4]', 'delete_button']
+
+# Pending Deletion - User Details view
+class adminPendingDeletionVar:
+    user_details_tab = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[1]/div[1]/ul/li[1]/a',
+                        'user_details_tab']
+    user_status_tab = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[1]/div[1]/ul/li[2]/a', 'user_status_tab']
+    audit_trail_tab = [By.XPATH, '//*[@id="kt_content"]/div[2]/div/div/div/div[1]/div[1]/ul/li[3]/a', 'audit_trail_tab']
+    # User Details view
+    back_button = [By.XPATH, '//button[@class="btn btn-primary"]', 'back_button']
+    # User Status view
+    verification_button = [By.XPATH, '(//button[@type="button"])[1]', 'verification_button']
+    reset_password_button = [By.XPATH, '(//button[@type="button"])[2]', 'reset_password_button']
+    lock_user_button = [By.XPATH, '(//button[@type="button"])[3]', 'lock_user_button']
+    cancel_deletion_button = [By.XPATH, '(//button[@type="button"])[4]', 'cancel_deletion_button']
+    permanently_delete_button = [By.XPATH, '(//button[@type="button"])[5]', 'permanently_delete_button']
 ###==============================================================###
 # NYL Services API
 ###==============================================================###

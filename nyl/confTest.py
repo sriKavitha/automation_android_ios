@@ -7,10 +7,10 @@ import unittest  #unittest is the testing framework, provides module for organiz
 import funct
 
 class globalVar:
-###==============================================================###
-# Global variables - change the variables in this section for
-# all tests in the suite to inherit the assignment
-###==============================================================###
+    """
+    Global variables - change the variables in this section for
+    all tests in the suite to inherit the assignment
+    """
     # report can be "html" for testrunner reports or "terminal" for direct terminal feedback
     report = 'terminal'
     # report = "html"
@@ -33,9 +33,14 @@ class globalVar:
 class NYLadminBASE(unittest.TestCase):
     testdata = globalVar.testdata
     report = globalVar.report
-# The setUp is part of initialization, this method will get called before every test function which you
-# are going to write in this test case class.
+
     def setUp(self):
+        """The setUp is part of initialization, this method will get called before every test function which you
+        are going to write in the test case class.
+
+        Here you are creating the instance of Chrome WebDriver with specific test configurations needed for
+        testing Admin Dashboard web application.
+        """
         self.env = globalVar.env
         self.testemail = globalVar.testemail
 
@@ -55,8 +60,8 @@ class NYLadminBASE(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
 
-# The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
+        """The tearDown method will get called after every test method. This is a place to do all cleanup actions."""
         # NOTE: this code for checking for exceptions does NOT work for Safari
         # Python 3.8+ may have this built in. Need to revisit at future date.
         # checking for exceptions or assertion errors, if there are take screenshot
@@ -73,10 +78,14 @@ class NYLadminBASE(unittest.TestCase):
 class NYLservicesBASE(unittest.TestCase):
     testdata = globalVar.testdata
     report = globalVar.report
-    # The setUp is part of initialization, this method will get called before every test function which you
-    # are going to write in this test case class.
 
     def setUp(self):
+        """The setUp is part of initialization, this method will get called before every test function which you
+        are going to write in the test case class.
+
+        Here you are creating the instance of Chrome WebDriver with specific test configurations needed for
+        testing Nylservices API.
+        """
         self.env = globalVar.env
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
@@ -88,8 +97,8 @@ class NYLservicesBASE(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
 
-    # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
+        """The tearDown method will get called after every test method. This is a place to do all cleanup actions."""
         # NOTE: this code for checking for exceptions does NOT work for Safari
         # Python 3.8+ may have this built in. Need to revisit at future date.
         # checking for exceptions or assertion errors, if there are take screenshot
@@ -106,10 +115,14 @@ class NYLservicesBASE(unittest.TestCase):
 class NYlottoBASE(unittest.TestCase):
     report = globalVar.report
     testdata = globalVar.testdata
-    # The setUp is part of initialization, this method will get called before every test function which you
-    # are going to write in this test case class. Here you are creating the instance of Chrome WebDriver.
 
     def setUp(self):
+        """The setUp is part of initialization, this method will get called before every test function which you
+        are going to write in the test case class.
+
+        Here you are creating the instance of Chrome WebDriver with specific test configurations needed for
+        testing SSO web application.
+        """
         self.env = globalVar.env
         self.testemail = globalVar.testemail
         self.testermobile = globalVar.testermobile
@@ -151,13 +164,13 @@ class NYlottoBASE(unittest.TestCase):
         # chrome_options.add_argument("--window-size=1366,768")
         chrome_options.add_argument("--window-size=1440,900")
         self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.implicitly_wait(12)
+        self.driver.implicitly_wait(20)
         # self.driver.maximize_window()
         self.verificationErrors = []
         self.accept_next_alert = True
 
-    # The tearDown method will get called after every test method. This is a place to do all cleanup actions.
     def tearDown(self):
+        """The tearDown method will get called after every test method. This is a place to do all cleanup actions."""
         # NOTE: this code for checking for exceptions does NOT work for Safari
         # Python 3.8+ may have this built in. Need to revisit at future date.
         # checking for exceptions or assertion errors, if there are take screenshot

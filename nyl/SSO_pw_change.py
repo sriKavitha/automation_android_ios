@@ -1,11 +1,4 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 import imaplib
 import email
@@ -16,9 +9,15 @@ import sys
 class NYlotto(confTest.NYlottoBASE):
 
 
-  
-
     def test_01_forgotPassword(self):
+        """Verifies that  user can reset password and login with new password.
+
+        Jira ticket - https://rosedigital.atlassian.net/browse/NYL-2408
+
+        Submits a forgot password request, opens the subsequent email, changes password.
+        Verifies new password works with a login attempt.
+        :return:
+        """
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks password reset functionality")

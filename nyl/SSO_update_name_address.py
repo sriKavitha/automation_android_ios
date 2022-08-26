@@ -1,23 +1,26 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest                   #Custom class for NYL
 import HtmlTestRunner                               #Report runner
 
 class NYlotto(confTest.NYlottoBASE):
+    """ Tests updating individual fields on Update Profile page, exept for phone and date of birth"""
 
     def test_01_updateFName(self, testemail='self.testemail'):
+        f"""Tests updating user first name via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2115
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2115
         print("\nChecks First name change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -78,10 +81,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_02_updateLName(self, testemail='self.testemail'):
+        """Tests updating user last name via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2117
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2117
         print("\nChecks Last name change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -147,10 +159,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_03_updateFNameLName(self, testemail='self.testemail'):
+        """Tests updating user first name and last name via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2377
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2377
         print("\nChecks First name + Last name change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -227,10 +248,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_04_updateHouse(self, testemail='self.testemail'):
+        """Tests updating user House number via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2119
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2119
         print("\nChecks House Number change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -296,10 +326,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_05_updateStreet(self, testemail='self.testemail'):
+        """Tests updating user Street via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2120
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2120
         print("\nChecks Street Name change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -365,10 +404,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_06_updateApt(self, testemail='self.testemail'):
+        """Tests updating user Apt via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2121
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2121
         print("\nChecks Apartment change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -434,10 +482,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_07_updateCity(self, testemail='self.testemail'):
+        """Tests updating user City via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2122
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2122
         print("\nChecks City change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -503,10 +560,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_08_updateState(self, testemail='self.testemail'):
+        """Tests updating user State via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2123
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2123
         print("\nChecks State change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -577,10 +643,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_09_updateZip(self, testemail='self.testemail'):
+        """Tests updating user Zip via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2124
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2124
         print("\nChecks Zip change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -646,10 +721,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_10_updateHSCZ(self, testemail='self.testemail'):
+        """Tests updating user House + Street + City + Zip via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2128
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2128
         print("\nChecks House + Street + City + Zip Address change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -733,10 +817,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_11_updateHSACZ(self, testemail='self.testemail'):
+        """Tests updating user House + Street + Apt + City + Zip via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2127
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2127
         print("\nChecks House + Street + Apt + City + Zip Address change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -822,10 +915,19 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_12_updateHSCSZ(self, testemail='self.testemail'):
+        """Tests updating user House + Street + City + State + Zip via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2378
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2378
         print("\nChecks House + Street + City + State + Zip Address change in update profile saves and redirects successfully")
 
         driver = self.driver
@@ -916,11 +1018,21 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_13_updateLHSACSZ(self, testemail='self.testemail'):
+        """Tests updating user Last Name + House + Street + Apt + City + State + Zip via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2397
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
         if testemail == 'self.testemail':
             testemail = self.testemail
 
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2397
-        print("\nChecks common use case, Last Name + House + Street + Apt + City + State + Zip Address change in update profile saves and redirects successfully")
+        print("\nChecks common use case, Last Name + House + Street + Apt + City + State + Zip Address change in "
+              "update profile saves and redirects successfully")
 
         driver = self.driver
 
