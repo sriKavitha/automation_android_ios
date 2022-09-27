@@ -10,10 +10,9 @@ import SSO_reg_real_duplicate_email_fail
 import SSO_reg_real_duplicate_phone_fail
 import SSO_reg_real_ss_success
 import SSO_reg_reattempt_success
-# TODO refactor update profile tests so this suite can run with them without running out of system memory
-# import SSO_update_dob
-# import SSO_update_name_address
-# import SSO_update_phone
+import SSO_update_dob
+import SSO_update_name_address
+import SSO_update_phone
 
 
 # #SSO Critical Testrunner
@@ -32,9 +31,9 @@ suite.addTests(loader.loadTestsFromModule(SSO_reg_real_duplicate_email_fail))
 suite.addTests(loader.loadTestsFromModule(SSO_reg_real_duplicate_phone_fail))
 suite.addTests(loader.loadTestsFromModule(SSO_reg_real_ss_success))
 suite.addTests(loader.loadTestsFromModule(SSO_reg_reattempt_success))
-# suite.addTests(loader.loadTestsFromModule(SSO_update_dob))
-# suite.addTests(loader.loadTestsFromModule(SSO_update_name_address))
-# suite.addTests(loader.loadTestsFromModule(SSO_update_phone))
+suite.addTests(loader.loadTestsFromModule(SSO_update_dob))
+suite.addTests(loader.loadTestsFromModule(SSO_update_name_address))
+suite.addTests(loader.loadTestsFromModule(SSO_update_phone))
 
 # initialize a runner, pass it your suite and run it
 runner = unittest.TextTestRunner(verbosity=3)
