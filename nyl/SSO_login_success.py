@@ -1,18 +1,18 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYlotto(confTest.NYlottoBASE):
 
 
     def test_01_loginSuccess(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2407
+        """Checks that a user can login in successfully
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2407
+
+        Creates a verified user via the registration page, navigates to the login page and attempts login.
+        :return:
+        """
+
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks login with correct email & password redirects successfully")

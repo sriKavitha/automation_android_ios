@@ -1,5 +1,3 @@
-from selenium import webdriver  # webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re  # unittest is the testing framework, provides module for organizing test cases
 import requests     # Requests provides ability to hit API
 from random import randint
@@ -12,10 +10,9 @@ import var, funct, confTest     # Custom class for NYL
 class NYLadmin(confTest.NYLadminBASE):
 
     def test_adminApiStatusCode(self):
-        # [Documentation - Summary] Checks that response status code 200 is returned
-        # for Admin Dash API endpoints with proper payloads in requests
-        # For use with Creds file version: nyl08022021.txt
-
+        """Checks that response status code 200 is returned for Admin Dash API endpoints with proper payloads in requests
+        Valid data is pulled from credential file
+        """
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
 

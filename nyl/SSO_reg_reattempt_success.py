@@ -1,22 +1,23 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYlotto(confTest.NYlottoBASE):
 
 
     def test_01_regReattempt(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2370
-        # Registers user with empty SSN4 & gov ID check box checked and bad OTP entered.
-        # Exits registration process with unverified account.
-        # User should be able to login and retry verification.
-        # Successful verification should result in redirect to callback Uri and successful registration.
+        """Tests reattempting verification after a failed registration
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2370
+
+        Registers user with empty SSN4 & gov ID check box checked and bad OTP entered.
+        Exits registration process with unverified account.
+        User should be able to login and retry verification.
+        Successful verification should result in redirect to callback Uri and successful registration.
+
+        :param self: Webdriver instance
+        :return:
+        """
+
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks reattempting registration with SSN4 & correct OTP code redirects successfully to callback Uri")

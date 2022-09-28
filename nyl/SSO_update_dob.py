@@ -11,13 +11,23 @@ import HtmlTestRunner                               #Report runner
 
 class NYlotto(confTest.NYlottoBASE):
 
-    def test_updateDOB(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2041
-        testemail = self.testemail
+    def test_updateDOB(self, testemail='self.testemail'):
+        """Tests updating user Date of Birth via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2041
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits update and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :param testemail: email of the user being updated, default is the email in conftest.py
+        :return: None
+        """
+        if testemail == 'self.testemail':
+            testemail = self.testemail
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks date of birth change in update profile saves and redirects to OTP")
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2041
+
         print('\n----------\n' + 'Test setup')
         # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)

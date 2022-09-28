@@ -1,21 +1,18 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-# The test case class is inherited from unittest.TestCase.
-# Inheriting from TestCase class is the way to tell unittest module that this is a test case.
 class NYlotto(confTest.NYlottoBASE):
 
-# This is the test case method. The test case method should always start with the characters test.
-# The first line inside this method creates a local reference to the driver object created in setUp method.
     def test_01_regDupeEmail(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1923
+        """Tests that a User cannot register with a duplicate Phone.
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1923
+        Creates a new verified user with testemail. Opens a new page and attempts to register again
+        with the same email and a different phone number(tempphone).
+        :return:
+        """
+
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks for failed registration with duplicate email in userpool")
@@ -65,12 +62,12 @@ class NYlotto(confTest.NYlottoBASE):
         if len(rows) == 1:
             if driver.find_element_by_xpath(
                 '//td[@class="ant-table-cell"][4]').text == testemail:  # check that first user returned has the same email address
-                funct.waitAndClick(driver, var.adminDashVar.view_button)    # Clicks the View/Edit link
-                funct.waitAndClick(driver, var.adminEditVar.edit_button)    # Clicks the Edit info button
+                funct.waitAndClick(driver, var.adminDashVar.view_edit_button)    # Clicks the View/Edit link
+                funct.waitAndClick(driver, var.adminUsersVar.edit_button)    # Clicks the Edit info button
                 # funct.clearTextField(driver, var.adminDashVar.phone_input)
                 driver.find_element_by_xpath('//*[@id="phone"]').send_keys("" + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
-                funct.waitAndSend(driver, var.adminEditVar.phone_input, formatted_tempphone)
-                funct.waitAndClick(driver, var.adminEditVar.save_button)
+                funct.waitAndSend(driver, var.adminUsersVar.phone_input, formatted_tempphone)
+                funct.waitAndClick(driver, var.adminUsersVar.save_button)
                 # attempt to click the modal "OK" buttons to proceed to next step
                 # different locator for same button depending on new session or extended session
                 try:

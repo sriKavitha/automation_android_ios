@@ -1,20 +1,21 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 
-# [Documentation - Summary] Tests frontend and backend validation of date of birth field
-# on 20200609 Hotfix of Register-verify schema regex
 
 class NYlotto(confTest.NYlottoBASE):
+    """Tests frontend and backend validation of date of birth field
+    on 20200609 Hotfix of Register-verify schema regex
+
+    Does not need to run in critical SSO tests, only during an extensive regression.
+
+    """
 
     def test_01_regBirthMonth(self):
+        """Tests months 1-12 can be used for registration
+        :param self: Webdriver instance
+        :return: None
+        """
         print("Testing on " + self.env + " environment")
         print("\nCheck valid birth months can proceed in registration")
         i = 1
@@ -96,6 +97,10 @@ class NYlotto(confTest.NYlottoBASE):
 
 
     def test_02_regBirthDate(self):
+        """Tests dates 1-31 can be used for registration
+        :param self: Webdriver instance
+        :return: None
+        """
         print("Testing on " + self.env + " environment")
         print("\nCheck valid birth dates can proceed in registration")
         i = 1
@@ -183,6 +188,10 @@ class NYlotto(confTest.NYlottoBASE):
 
 
     def test_03_regBirthYear(self):
+        """Tests decades from 1900 - 2010 can be used for registration
+        :param self: Webdriver instance
+        :return: None
+        """
         print("Testing on " + self.env + " environment")
         print("\nCheck valid birth years can proceed in registration")
         i = 1900
@@ -270,6 +279,10 @@ class NYlotto(confTest.NYlottoBASE):
 
 
     def test_04_regInvalidDOB(self):
+        """Tests invalid birthdates cannot be submitted
+        :param self: Webdriver instance
+        :return: None
+        """
         print("Testing on " + self.env + " environment")
         print("\nCheck invalid dates of birth cannot proceed with registration")
         testemail = "qa+ssotest@rosedigital.co"

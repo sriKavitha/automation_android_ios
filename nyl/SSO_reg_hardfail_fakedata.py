@@ -1,17 +1,17 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYlotto(confTest.NYlottoBASE):
 
     def test_regHardFailFakeData(self):
-# Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1922
+        """Tests the user flow when User with fake data attempts to register.
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-1922
+        Opens the registration page and submits bad information.
+        The test checks that the failure redirects to the correct page.
+        :return:
+        """
+
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks that user is redirected to Hard Fail screen when fake data is submitted")
@@ -26,7 +26,9 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.street, "First Street")
         funct.waitAndSend(driver, var.regV.city, "Anytown")
         funct.waitAndClick(driver, var.regV.state_dropdown)
-        driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > div:nth-child(1) > div:nth-child(10) > div > select > option:nth-child(2)").click()
+        driver.find_element_by_css_selector("#app-container > div > div.container__content > div > div > form > "
+                                            "div:nth-child(1) > div:nth-child(10) > div > select > option:nth-child("
+                                            "2)").click()
         funct.waitAndSend(driver, var.regV.zip, "11223")
         funct.waitAndSend(driver, var.regV.phone, "5559876543")
         funct.waitAndSend(driver, var.regV.ssn4, "1234")

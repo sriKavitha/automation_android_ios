@@ -1,16 +1,18 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYLadmin(confTest.NYLadminBASE):
 
     def test_deleteEmailSuccess(self):
+        """Verifies that an Admin Dash super user can purge an SSO user via Admin Dash with the SSO user email
+
+        Creates a verified SSO user in the userpool. Logs in the Admin Dashboard with an Admin superuser.
+        Searches for the SSO user with email address, selects the user detail tab, chooses to delete user
+        and enters appropriate comment. Proceeds to find SSO user in purged user list, selects user detail tab and
+        purges the SSO user from the user database.
+        :return:
+        """
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         testemail = self.testemail
@@ -64,10 +66,10 @@ class NYLadmin(confTest.NYLadminBASE):
         if len(rows) == 1:
             if driver.find_element_by_xpath(
                     '//td[@class="ant-table-cell"][4]').text == testemail:  # check that first user returned has the same email address
-                # Clicks checkbox for first user returned
-                funct.waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
-                funct.waitAndClick(driver, var.adminDashVar.bulkAction_button)
-                funct.waitAndClick(driver, var.adminDashVar.li_delete)
+                # Clicks view/edit button for first user returned, navigates to detail page and clicks delete
+                funct.waitAndClick(driver, var.adminDashVar.view_edit_button)
+                funct.waitAndClick(driver, var.adminUsersVar.user_status_tab)
+                funct.waitAndClick(driver, var.adminUsersVar.delete_button)
                 # Submits comment and mandatory text for completion
                 ts = funct.timeStamp
                 funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
@@ -87,7 +89,7 @@ class NYLadmin(confTest.NYLadminBASE):
                             except:
                                 pass
 
-                funct.funct.waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "mark for deletion")
+                funct.waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "mark for deletion")
 
                 try:
                     funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
@@ -122,33 +124,25 @@ class NYLadmin(confTest.NYLadminBASE):
                 funct.waitAndClick(driver, var.adminDashVar.pendingDeletion_link)
                 time.sleep(2)
                 # Search for test user via Email
-                # TODO due to ongoing Admin Dash work in dev env, this if else is in place, will need to update once AD work is complete
-                if self.env == 'dev':
-                    funct.waitAndClick(driver, var.adminDashVar.search_input)
-                    funct.funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
-                else:
-                    funct.waitAndClick(driver, var.adminDashVar.search_input)
-                    funct.waitAndClick(driver, var.adminDashVar.category_email)
-                    funct.waitAndClick(driver, var.adminDashVar.operator_contains)
-                    funct.funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
-                    driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
-                time.sleep(2)
+                funct.waitAndClick(driver, var.adminDashVar.search_input)
+                funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
                 funct.waitAndClick(driver, var.adminDashVar.search_button)
-                time.sleep(2)
+                time.sleep(1)
                 funct.waitAndClick(driver, var.adminDashVar.search_button)
+                time.sleep(3)
 
                 # Checks the returned user is the correct user
                 rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
                 if len(rows) == 1:
                     if driver.find_element_by_xpath(
                             '//td[@class="ant-table-cell"][4]').text == testemail:  # check that first user returned is has the same email address
-                        # Clicks checkbox for first user returned
-                        funct.waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
-                        funct.waitAndClick(driver, var.adminDashVar.bulkAction_button)
-                        funct.waitAndClick(driver, var.adminDashVar.li_permDelete)
+                        # Clicks view/edit button for first user returned, navigates to detail page and clicks delete
+                        funct.waitAndClick(driver, var.adminDashVar.view_edit_button)
+                        funct.waitAndClick(driver, var.adminPendingDeletionVar.user_status_tab)
+                        funct.waitAndClick(driver, var.adminPendingDeletionVar.permanently_delete_button)
                         # Submits comment and mandatory text for completion
                         ts = funct.timeStamp()
-                        funct.funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+                        funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
                         try:
                             funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
                         except:
@@ -163,7 +157,7 @@ class NYLadmin(confTest.NYLadminBASE):
                                     except:
                                         pass
 
-                        funct.funct.waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "purge")
+                        funct.waitAndSend(driver, var.adminDashVar.comment_phrase_textarea, "purge")
 
                         try:
                             funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
@@ -196,7 +190,21 @@ class NYLadmin(confTest.NYLadminBASE):
 
                         time.sleep(3)
                         # Search for test user via Email again to confirm user is gone from system
-                        funct.waitAndClick(driver, var.adminDashVar.search_button)
+                        funct.waitAndClick(driver, var.adminDashVar.users_link)
+                        funct.waitAndClick(driver, var.adminDashVar.search_input)
+                        funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
+                        try:
+                            funct.waitAndClick(driver, var.adminDashVar.search_button)
+                            time.sleep(1)
+                            funct.waitAndClick(driver, var.adminDashVar.search_button)
+                            time.sleep(3)
+                        except:
+                            time.sleep(2)
+                            try:
+                                funct.waitAndClick(driver, var.adminDashVar.search_button)
+                            except:
+                                funct.waitAndClick(driver, var.adminDashVar.search_button)
+
                         time.sleep(3)
                         rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
                         if driver.find_elements_by_xpath(

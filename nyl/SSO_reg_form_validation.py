@@ -1,16 +1,16 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYlotto(confTest.NYlottoBASE):
+    """
+    Checks that the registration page has expected error messages wtih invalid data submission
+    """
 
     def test_01_regSubmitError(self):
+        """Checks main error is present when empty form is submitted
+        :return:
+        """
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks main error appears when empty form is submitted")
@@ -29,6 +29,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_02_regSubmitErrorCopy(self):
+        """Checks main error copy is correct when empty form is submitted
+        :return:
+        """
         print("\nChecks main error copy")
         driver = self.driver
         # url is pulled from confTest
@@ -46,6 +49,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_03_regRequiredErrors(self):
+        """Checks error when mandatory fields are left empty
+        :return:
+        """
         print("\nChecks mandatory field errors are found")
         driver = self.driver
         # url is pulled from confTest
@@ -74,6 +80,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_04_regRequiredErrorsCopy(self):
+        """Checks text copy is correct when mandatory fields are left empty
+        :return:
+        """
         print("\nChecks mandatory field error copy")
         driver = self.driver
         # url is pulled from confTest
@@ -102,6 +111,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_05_regUnacceptedLetterErrors(self):
+        """Checks invalid letter input error and text copy is correct
+        :return:
+        """
         print("\nChecks that certain fields do not take letters")
         driver = self.driver
         # url is pulled from confTest
@@ -131,6 +143,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_06_regUnacceptedSymbolsErrors(self):
+        """Checks invalid symbols input error and text copy is correct
+        :return:
+        """
         print("\nChecks that certain fields do not take symbols")
         driver = self.driver
         # url is pulled from confTest
@@ -161,6 +176,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_07_regUnacceptedNumbersErrors(self):
+        """Checks invalid number input error and text copy is correct
+        :return:
+        """
         print("\nChecks that certain fields do not take numbers")
         driver = self.driver
         # url is pulled from confTest
@@ -190,6 +208,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_08_regInvalidFormatZipcode(self):
+        """Checks invalid zipcode input error and text copy is correct
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting invalid data in zip code field")
         driver = self.driver
         # url is pulled from confTest
@@ -207,6 +228,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_09_regInvalidFormatPhone(self):
+        """Checks invalid phone input error and text copy is correct
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting invalid data in phone field")
         driver = self.driver
         # url is pulled from confTest
@@ -224,6 +248,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_10_regInvalidFormatDOB(self):
+        """Checks invalid date of birth input error and text copy is correct
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting invalid data in DOB field")
         driver = self.driver
         # url is pulled from confTest
@@ -241,6 +268,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_11_regInvalidFormatEmail(self):
+        """Checks invalid email input error and text copy is correct
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting invalid data in email field")
         driver = self.driver
         # url is pulled from confTest
@@ -258,6 +288,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_12_regInvalidFormatPswNumbers(self):
+        """Checks for error is when password format does not follow rules
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting only numbers in password field")
         driver = self.driver
         # url is pulled from confTest
@@ -275,6 +308,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_13_regInvalidFormatPswLetters(self):
+        """Checks for error is when password format does not follow rules
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting only letters in password field")
         driver = self.driver
         # url is pulled from confTest
@@ -292,6 +328,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_14_regInvalidFormatPswSymbols(self):
+        """Checks for error is when password format does not follow rules
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting special characters in password field")
         driver = self.driver
         # url is pulled from confTest
@@ -312,6 +351,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_15_regMismatchedPsw(self):
+        """Checks for error is when passwords do not match
+        :return:
+        """
         print("\nChecks for appearance of error messages when inputting mismatched passwords")
         driver = self.driver
         # url is pulled from confTest
@@ -331,6 +373,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_16_regUnderage(self):
+        """Checks for error is when underage birthdate is entered
+        :return:
+        """
         print("\nChecks for appearance of error messages when underage Date of Birth is inputted")
         driver = self.driver
         # url is pulled from confTest
@@ -349,6 +394,9 @@ class NYlotto(confTest.NYlottoBASE):
         print('----------')
 
     def test_17_regChkbxErrors(self):
+        """Checks error when mandatory checkboxes are not checked
+        :return:
+        """
         print("\nChecks for appearance of error messages when mandatory checkboxes are not checked")
         driver = self.driver
         # url is pulled from confTest

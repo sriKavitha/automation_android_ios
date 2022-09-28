@@ -1,16 +1,14 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
 class NYlotto(confTest.NYlottoBASE):
-
+    """
+    Checks that the login page has expected error messages wtih invalid data submission
+    """
     def test_01_loginError(self):
+        """Checks main error appears when empty form is submitted and text copy is correct
+        :return:
+        """
         testenv = self.env
         print("\nTESTING " + testenv + " ENVIRONMENT")
         print("\nChecks main error appears when empty form is submitted and text copy is correct")
@@ -36,6 +34,9 @@ class NYlotto(confTest.NYlottoBASE):
         funct.closeWindow(driver, 'New York Lottery - Single Sign On')
 
     def test_02_loginRequiredErrors(self):
+        """Checks mandatory field errors are found and text copy is correct
+        :return:
+        """
         print("\nChecks mandatory field errors are found and text copy is correct")
         driver = self.driver
         # url is pulled from confTest
@@ -74,6 +75,9 @@ class NYlotto(confTest.NYlottoBASE):
         funct.closeWindow(driver, 'New York Lottery - Single Sign On')
 
     def test_03_loginIncompleteEmailError(self):
+        """Checks missing email login attempt error and text copy is correct
+        :return:
+        """
         print("\nChecks missing email login attempt error and text copy is correct")
         driver = self.driver
         # url is pulled from confTest
@@ -99,6 +103,9 @@ class NYlotto(confTest.NYlottoBASE):
         funct.closeWindow(driver, 'New York Lottery - Single Sign On')
 
     def test_04_loginIncompletePswError(self):
+        """Checks missing password login attempt error and text copy is correct
+        :return:
+        """
         print("\nChecks missing password login attempt error and text copy is correct")
         testemail = self.testemail
         driver = self.driver
@@ -125,6 +132,9 @@ class NYlotto(confTest.NYlottoBASE):
         funct.closeWindow(driver, 'New York Lottery - Single Sign On')
 
     def test_05_loginInvalidEmailError(self):
+        """Checks invalid email input error and text copy is correct
+        :return:
+        """
         print("\nChecks that invalid email input displays error and text copy is correct")
         driver = self.driver
         # url is pulled from confTest

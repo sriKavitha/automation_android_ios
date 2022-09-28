@@ -1,5 +1,3 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for function file to work
 import json
 import time
 import unittest
@@ -14,12 +12,14 @@ from selenium.webdriver.common.keys import Keys
 import util
 import var
 
-# [Documentation - Summary] This file creates the functions for
-# use in the automation test suite of NYL
 
-# [Documentation - Function] Checks for existing test user email in SSO userpool
-# and if found deletes the user through the Admin Dashboard.
 def purgeSSOemail(self, email):
+    """Checks for existing test user email in SSO userpool
+    and if found deletes the user through the Admin Dashboard.
+    :param self: webdriver instance
+    :param email: string of the email that is being removed from SSO User database
+    :returns: True if executed without exception
+    """
     self.admin_url = 'https://admin-' + self.env + '.nylservices.net/'
 
     driver = self.driver
@@ -59,10 +59,10 @@ def purgeSSOemail(self, email):
     rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
     if len(rows) == 1:
         if driver.find_element_by_xpath('//td[@class="ant-table-cell"][4]').text == testemail:  # check that first user returned has the same email address
-            # Clicks checkbox for first user returned
-            waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
-            waitAndClick(driver, var.adminDashVar.bulkAction_button)
-            waitAndClick(driver, var.adminDashVar.li_delete)
+            # Clicks view/edit button for first user returned, navigates to detail page and clicks delete
+            waitAndClick(driver, var.adminDashVar.view_edit_button)
+            waitAndClick(driver, var.adminUsersVar.user_status_tab)
+            waitAndClick(driver, var.adminUsersVar.delete_button)
             # Submits comment and mandatory text for completion
             ts = timeStamp()
             waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
@@ -128,10 +128,10 @@ def purgeSSOemail(self, email):
             rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
             if len(rows) == 1:
                 if driver.find_element_by_xpath('//td[@class="ant-table-cell"][4]').text == testemail:  # check that first user returned is has the same email address
-                    # Clicks checkbox for first user returned
-                    waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
-                    waitAndClick(driver, var.adminDashVar.bulkAction_button)
-                    waitAndClick(driver, var.adminDashVar.li_permDelete)
+                    # Clicks view/edit button for first user returned, navigates to detail page and clicks delete
+                    waitAndClick(driver, var.adminDashVar.view_edit_button)
+                    waitAndClick(driver, var.adminPendingDeletionVar.user_status_tab)
+                    waitAndClick(driver, var.adminPendingDeletionVar.permanently_delete_button)
                     # Submits comment and mandatory text for completion
                     ts = timeStamp()
                     waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
@@ -182,7 +182,21 @@ def purgeSSOemail(self, email):
 
                     time.sleep(3)
                     # Search for test user via Email again to confirm user is gone from system
-                    waitAndClick(driver, var.adminDashVar.search_button)
+                    waitAndClick(driver, var.adminDashVar.users_link)
+                    waitAndClick(driver, var.adminDashVar.search_input)
+                    waitAndSend(driver, var.adminDashVar.search_input, testemail)
+                    try:
+                        waitAndClick(driver, var.adminDashVar.search_button)
+                        time.sleep(1)
+                        waitAndClick(driver, var.adminDashVar.search_button)
+                        time.sleep(3)
+                    except:
+                        time.sleep(2)
+                        try:
+                            waitAndClick(driver, var.adminDashVar.search_button)
+                        except:
+                            waitAndClick(driver, var.adminDashVar.search_button)
+
                     time.sleep(3)
                     rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
                     if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # search returns no data
@@ -228,9 +242,14 @@ def purgeSSOemail(self, email):
         print(f'\nunexpected behavior: please check screenshot')
         fullshot(driver)
 
-# [Documentation - Function] Checks for existing test user phone number in SSO userpool
-# and if found deletes the user through the Admin Dashboard.
 def purgeSSOphone(self, phone):
+    """Checks for existing test user phone in SSO userpool
+    and if found deletes the user through the Admin Dashboard.
+    :param self: webdriver instance
+    :param phone: 10 digit phone number that is being removed from SSO User database
+    type phone: str
+    :returns: True if executed without exception
+    """
     self.admin_url = 'https://admin-' + self.env + '.nylservices.net/'
 
     driver = self.driver
@@ -273,10 +292,14 @@ def purgeSSOphone(self, phone):
     rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
     if len(rows) == 1:
         if driver.find_element_by_xpath('//td[@class="ant-table-cell"][6]').text == formatted_phone:  # check that first user returned has the same phone
-            # Clicks checkbox for first user returned
-            waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
-            waitAndClick(driver, var.adminDashVar.bulkAction_button)
-            waitAndClick(driver, var.adminDashVar.li_delete)
+            # Clicks view/edit button for first user returned
+            # TODO remove bulk action button deletion
+            # waitAndClick(driver, var.adminDashVar.searchedUser_checkbox)
+            # waitAndClick(driver, var.adminDashVar.bulkAction_button)
+            # waitAndClick(driver, var.adminDashVar.li_delete)
+            waitAndClick(driver, var.adminDashVar.view_edit_button)
+            waitAndClick(driver, var.adminUsersVar.user_status_tab)
+            waitAndClick(driver, var.adminUsersVar.delete_button)
             # Submits comment and mandatory text for completion
             ts = timeStamp()
             waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
@@ -342,10 +365,14 @@ def purgeSSOphone(self, phone):
             rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
             if len(rows) == 1:
                 if driver.find_element_by_xpath('//td[@class="ant-table-cell"][6]').text == formatted_phone:  # check that first user returned has the same phone
-                    # Clicks checkbox for first user returned
-                    waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
-                    waitAndClick(driver, var.adminDashVar.bulkAction_button)
-                    waitAndClick(driver, var.adminDashVar.li_permDelete)
+                    # Clicks view/edit button for first user returned
+                    # TODO remove bulk action button deletion
+                    # waitAndClick(driver, var.adminDashVar.pendingDeleteUser_checkbox)
+                    # waitAndClick(driver, var.adminDashVar.bulkAction_button)
+                    # waitAndClick(driver, var.adminDashVar.li_permDelete)
+                    waitAndClick(driver, var.adminDashVar.view_edit_button)
+                    waitAndClick(driver, var.adminPendingDeletionVar.user_status_tab)
+                    waitAndClick(driver, var.adminPendingDeletionVar.permanently_delete_button)
                     # Submits comment and mandatory text for completion
                     ts = timeStamp()
                     waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
@@ -396,7 +423,21 @@ def purgeSSOphone(self, phone):
 
                     time.sleep(3)
                     # Search for test user via Phone again to confirm user is gone from system
-                    waitAndClick(driver, var.adminDashVar.search_button)
+                    waitAndClick(driver, var.adminDashVar.users_link)
+                    waitAndClick(driver, var.adminDashVar.search_input)
+                    waitAndSend(driver, var.adminDashVar.search_input, testphone)
+                    try:
+                        waitAndClick(driver, var.adminDashVar.search_button)
+                        time.sleep(1)
+                        waitAndClick(driver, var.adminDashVar.search_button)
+                        time.sleep(3)
+                    except:
+                        time.sleep(2)
+                        try:
+                            waitAndClick(driver, var.adminDashVar.search_button)
+                        except:
+                            waitAndClick(driver, var.adminDashVar.search_button)
+
                     time.sleep(3)
                     rows = driver.find_elements_by_xpath('//tr[@class="ant-table-row ant-table-row-level-0"]')
                     if driver.find_elements_by_xpath(var.adminDashVar.no_data_msg[1]) != []:  # search returns no data
@@ -441,9 +482,17 @@ def purgeSSOphone(self, phone):
     else:
         print(f'\nunexpected behavior: please check screenshot')
         fullshot(driver)
+    return True
 
 # [Documentation - Function] Checks for existing test user in Mobile App userpool and deletes the user if found.
 def purgeMobile(self, email):
+    """Checks for existing test user email in Mobile App userpool
+    and if found deletes the user through the AWS tool.
+    :param self: webdriver instance
+    :param email: email that is being removed from SSO User database
+    type email: str
+    :returns: True if executed without exception
+    """
     if self.env == 'dev':
         userpool = 'us-east-1_OSdCjCmwo'
     elif self.env == 'qa':
@@ -468,17 +517,26 @@ def purgeMobile(self, email):
         Username=testUser
     )
     # print(response2)
+    return True
 
-# [Documentation - Function] uses a filtering method to more easily get and maintain credentials from the credential page (which is now localized to one instance via the var page)
-# target should be given plainly, without colons
 def getCredential(list, target):
+    """Uses a filtering method to more easily get and maintain credentials from the credential page
+    (which is now localized to one instance via the var page). The target should be given plainly, without colons.
+    :param list: list of the lines of text in the credentials file
+    :param target: credential that is being pulled from the txt file
+    :returns: string of the target credential
+    """
     targ = str(target + ': ')
     credential = [item for item in list if item.startswith(targ)][0]
     cred = credential.replace(targ, '')
     return cred
 
-# [Documentation - Function] starts a browsermob proxy and generates a har file of current page
 def generateHAR(server, driver):
+    """starts a browsermob proxy and generates a har file of current page
+    :param server: proxy server
+    :param driver: webdriver instance
+    :returns: har file of network activity
+    """
     hurl = str(driver.current_url)
     server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy",  options={'port': 8090})
     server.start()
@@ -497,8 +555,12 @@ def generateHAR(server, driver):
         json.dump(proxy.har, har_file)
     proxy.close()
 
-# [Documentation - Function] Webdriver uses actionchains to  wait for a specified page element
 def waitUntil(browser, elem):
+    """Webdriver uses actionchains to  wait for a specified page element
+    :param browser: Webdriver instance
+    :param elem: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    """
     a = ActionChains(browser)
     try:
         a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
@@ -514,8 +576,12 @@ def waitUntil(browser, elem):
             print("E--" + elem[2] + " elem not found")
             return False
 
-# [Documentation - Function] Webdriver waits for a specified page element with out throwing an error message
 def waitAndFind(browser, elem):
+    """Webdriver uses actionchains to  wait for a specified page element without throwing an error message
+    :param browser: Webdriver instance
+    :param elem: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    """
     a = ActionChains(browser)
     try:
         a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
@@ -525,30 +591,51 @@ def waitAndFind(browser, elem):
         a.move_to_element(browser.find_element(elem[0], elem[1])).perform()
         assert(browser.find_element(elem[0], elem[1]))
 
-# [Documentation - Function] Webdriver waits for a specified page element
-# to appear and then proceeds to click on it
 def waitAndClick(browser, elem):
+    """Webdriver uses actionchains to  wait for a specified page element to appear and then proceeds to click on it
+    :param browser: Webdriver instance
+    :param elem: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    """
     waitUntil(browser, elem)
     browser.find_element(elem[0], elem[1]).click()
 
 # [Documentation - Function] Webdriver waits for a specified page element
 # to appear and then proceeds to send keys to it
 def waitAndSend(browser, elem, keys):
+    """Webdriver uses actionchains to  wait for a specified page element to appear and then proceeds to click on it
+    :param browser: Webdriver instance
+    :param elem: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    :param keys: keys or combination of keys that would be entered via keyboard
+    """
     waitUntil(browser, elem)
     browser.find_element(elem[0], elem[1]).send_keys(keys)
 
 def clearTextField(browser, elem):
+    """Searches for the elem and clears all the field
+    :param browser: Webdriver instance
+    :param elem: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    """
     waitUntil(browser, elem)
     browser.find_element(elem[0], elem[1]).clear()
 
-# [Documentation - Function] Function that grabs UTC time and converts to human readable format
 def timeStamp():
+    """Function that grabs UTC time and converts to human readable format
+    :returns: string of the timestamp
+    """
     ts = time.gmtime()
     times = time.strftime("%Y-%m-%d_%H-%M-%S", ts)
     return times
 
-# [Documentation - Function] Function that checks the text of a given element against a given stub
 def checkText(browser, elem, stub):
+    """Checks the text of a given element against a given stub
+    :param browser: Webdriver instance
+    :param elem: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    :param stub: the spec text that is verified against
+    """
     waitUntil(browser, elem)
     el = browser.find_element(elem[0], elem[1])
     if el.text == stub:
@@ -559,21 +646,35 @@ def checkText(browser, elem, stub):
 
 # [Documentation - Function] Function that calls the script to grab full page UTC timestamped screenshot
 def fullshot(browser):
+    """Calls the script to grab full page UTC timestamped screenshot
+    :param browser: Webdriver instance
+    """
     browser.set_window_position(0, 0)
     browser.maximize_window()
     timestamp = timeStamp() + '.png'
     util.fullpage_screenshot(browser, timestamp)
 
-# [Documentation - Function] Checks that an error exists
+
 def checkError(browser, elemWarning):
+    """"Checks that an error exists
+    :param browser: Webdriver instance
+    :param elemWarning: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    """
     try:
         browser.find_element(elemWarning[0], elemWarning[1])
         return True
     except:
         return False
 
-# [Documentation - Function] Checks the actual warning text against the reported warning copy
 def checkErrorText(browser, elemWarning, elemWarningStub):
+    """Checks the actual warning text against the reported warning copy and returns a True/False
+    :param browser: Webdriver instance
+    :param elemWarning: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    :param elemWarningStub: the spec text that is verified against
+    :returns: True when error message matches and False when not
+    """
     warning = browser.find_element(elemWarning[0], elemWarning[1])
     if warning.get_attribute("innerText") == elemWarningStub:
         return True
@@ -581,6 +682,12 @@ def checkErrorText(browser, elemWarning, elemWarningStub):
         return False
 
 def verifyErrorText(browser, elemWarning, elemWarningStub):
+    """Checks the actual warning text against the reported warning copy and raises an exception if it does not match
+    :param browser: Webdriver instance
+    :param elemWarning: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    :param elemWarningStub: the spec text that is verified against
+    """
     warning = browser.find_element(elemWarning[0], elemWarning[1])
     if warning.get_attribute("innerText") == elemWarningStub:
         pass
@@ -588,158 +695,173 @@ def verifyErrorText(browser, elemWarning, elemWarningStub):
         print('FAIL - Warning should say "' + elemWarningStub + '" , but says "' + warning.get_attribute("innerText") + '"!')
         raise Exception('Error warning(s) copy is incorrect')
 
-
-
-
-# [Documentation - Function] Checks the actual value in the field against the expected value
 def checkValue(browser, elem, valueExpected):
+    """Checks the actual value in the field against the expected value
+    :param browser: Webdriver instance
+    :param elemWarning: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    :param valueExpected: the value attribute of the element
+    """
     warning = browser.find_element(elem[0], elem[1])
     if warning.get_attribute("value") == valueExpected:
         return True
     else:
         return False
 
-# [Documentation - Function] Creates a verified user that has the following flags:
-# # custom:ssn_verification	"Y"
-# # custom:phone_verification	"Y"
-# # custom:gov_id_verification	"X"
-# # custom:verified	"Y"
 def createVerifiedUser(self, email):
-        # Check for existing test user and wipe it from userpool prior to test execution
-        try:
-            purgeSSOemail(self, email)
-            if self.env != 'dev':
-                try:
-                    purgeSSOphone(self, var.credsSSOWEB.phone)
-                except:
-                    pass
-        except:
-            if self.env != 'dev':
-                try:
-                    purgeSSOphone(self, var.credsSSOWEB.phone)
-                except:
-                    pass
-        driver = self.driver
-        driver.get(self.reg_url)
-        # Instructions for webdriver to read and input user data via the info on the .txt doc.
-        # Credentials are localized to one instance via the var file
-        waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
-        waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
-        waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
-        waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
-        waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
-        # Find and select the state according to the info in the .txt doc
-        # Uses a for loop to iterate through the list of states until element
-        # matches the entry info in the text file. Then clicks the element found.
-        select_box = driver.find_element_by_name("state")
-        waitAndClick(driver, var.regV.state_dropdown)
-        options = [x for x in select_box.find_elements_by_tag_name("option")]
-        for element in options:
-            if element.text in var.credsSSOWEB.state:
-                element.click()
-                break
-        waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
-        waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
-        waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
-        waitAndSend(driver, var.regV.dob, (
-                var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
-        waitAndClick(driver, var.regV.dob_check)
-        waitAndSend(driver, var.regV.email, email)
-        waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
-        waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
-        waitAndClick(driver, var.regV.tos_check)
-        waitAndClick(driver, var.regV.submit_button)
-        # 2nd screen. OTP selection screen
-        waitAndClick(driver, var.otpV.text_button)
-        # 3rd screen. OTP code entry screen
-        time.sleep(5)
-        waitAndSend(driver, var.otpV.otp_input, "111111")
-        waitAndClick(driver, var.otpV.otp_continue_button)
-        # 4th screen. Successful registration should redirect to Google.com.
-        # Checking that the search field on google.com is present on page.
-        if driver.find_elements_by_name("q") != []:
-            print('Verified user registration is successful.')
-            # open new window with execute_script()
-            driver.execute_script("window.open('');")
-            closeWindow(driver, 'New York Lottery - Single Sign On')
-        else:
-            fullshot(driver)
-            print('FAIL - User registration redirect screen not reached. Test can not proceed')
-            raise Exception('Registration redirected incorrectly')
+    """
+    Creates a verified user via submission of SSN4 and OTP. User has the following flags:
+    custom:ssn_verification	"Y"
+    custom:phone_verification	"Y"
+    custom:gov_id_verification	"X"
+    custom:verified	"Y"
+    :param self: Webdriver instance
+    :param email: email address of the new user
+    """
+    # Check for existing test user and wipe it from userpool prior to test execution
+    try:
+        purgeSSOemail(self, email)
+        if self.env != 'dev':
+            try:
+                purgeSSOphone(self, var.credsSSOWEB.phone)
+            except:
+                pass
+    except:
+        if self.env != 'dev':
+            try:
+                purgeSSOphone(self, var.credsSSOWEB.phone)
+            except:
+                pass
+    driver = self.driver
+    driver.get(self.reg_url)
+    # Instructions for webdriver to read and input user data via the info on the .txt doc.
+    # Credentials are localized to one instance via the var file
+    waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
+    waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
+    waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
+    waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
+    waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
+    # Find and select the state according to the info in the .txt doc
+    # Uses a for loop to iterate through the list of states until element
+    # matches the entry info in the text file. Then clicks the element found.
+    select_box = driver.find_element_by_name("state")
+    waitAndClick(driver, var.regV.state_dropdown)
+    options = [x for x in select_box.find_elements_by_tag_name("option")]
+    for element in options:
+        if element.text in var.credsSSOWEB.state:
+            element.click()
+            break
+    waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
+    waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+    waitAndSend(driver, var.regV.ssn4, var.credsSSOWEB.ssn4)
+    waitAndSend(driver, var.regV.dob, (
+            var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
+    waitAndClick(driver, var.regV.dob_check)
+    waitAndSend(driver, var.regV.email, email)
+    waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
+    waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
+    waitAndClick(driver, var.regV.tos_check)
+    waitAndClick(driver, var.regV.submit_button)
+    # 2nd screen. OTP selection screen
+    waitAndClick(driver, var.otpV.text_button)
+    # 3rd screen. OTP code entry screen
+    time.sleep(5)
+    waitAndSend(driver, var.otpV.otp_input, "111111")
+    waitAndClick(driver, var.otpV.otp_continue_button)
+    # 4th screen. Successful registration should redirect to Google.com.
+    # Checking that the search field on google.com is present on page.
+    if driver.find_elements_by_name("q") != []:
+        print('Verified user registration is successful.')
+        # open new window with execute_script()
+        driver.execute_script("window.open('');")
+        closeWindow(driver, 'New York Lottery - Single Sign On')
+    else:
+        fullshot(driver)
+        print('FAIL - User registration redirect screen not reached. Test can not proceed')
+        raise Exception('Registration redirected incorrectly')
 
-# [Documentation - Function] Creates an UNverified user that has the following flags:
-# # custom:ssn_verification	"N"
-# # custom:phone_verification	"N"
-# # custom:gov_id_verification	"-"
-# # custom:verified	"N"
 def createUnverifiedUser(self, email):
-        # Check for existing test user and wipe it from userpool prior to test execution
-        try:
-            purgeSSOemail(self, email)
-            if self.env != 'dev':
-                try:
-                    purgeSSOphone(self, var.credsSSOWEB.phone)
-                except:
-                    pass
-        except:
-            if self.env != 'dev':
-                try:
-                    purgeSSOphone(self, var.credsSSOWEB.phone)
-                except:
-                    pass
-        driver = self.driver
-        driver.get(self.reg_url)
-        # Instructions for webdriver to read and input user data via the info on the .txt doc.
-        # Credentials are localized to one instance via the var file
-        waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
-        waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
-        waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
-        waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
-        waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
-        # Find and select the state according to the info in the .txt doc
-        # Uses a for loop to iterate through the list of states until element
-        # matches the entry info in the text file. Then clicks the element found.
-        select_box = driver.find_element_by_name("state")
-        waitAndClick(driver, var.regV.state_dropdown)
-        options = [x for x in select_box.find_elements_by_tag_name("option")]
-        for element in options:
-            if element.text in var.credsSSOWEB.state:
-                element.click()
-                break
-        waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
-        waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
-        waitAndClick(driver, var.regV.ss_check)         # selects Gov id check box
-        waitAndSend(driver, var.regV.dob, (
-                var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
-        waitAndClick(driver, var.regV.dob_check)
-        waitAndSend(driver, var.regV.email, email)
-        waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
-        waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
-        waitAndClick(driver, var.regV.tos_check)
-        waitAndClick(driver, var.regV.submit_button)
-        # 2nd screen. OTP selection screen
-        waitAndClick(driver, var.otpV.text_button)
-        # 3rd screen. OTP code entry screen. Submits bad OTP code to fail phone verification
-        time.sleep(7)
-        waitAndSend(driver, var.otpV.otp_input, "987654")
-        waitAndClick(driver, var.otpV.otp_continue_button)
-        # 4th screen. Unsuccessful registration should redirect to "Sorry, identity cannot be verified" screen.
-        time.sleep(5)
-        if driver.find_elements_by_class_name("migration-failed-body") != []:
-            print(f"Unverified user account {email} successfully created.")
-            return True
-        elif driver.find_elements_by_name("q") != []:
-            print("Reached successful registration. Attempting to create unverified user again")
-            return False
-        elif "Confirm your details" in driver.find_element_by_tag_name('body').text:
-            print("Neither Identity verification failed screen nor Registration successful screen reached.")
-            return False
-        else:
-            print("Unexpected screen reached when attempting to create unverified user. See screenshot.")
-            fullshot(driver)
-            return False
+    """
+    Creates a UNverified user via selecting govid verification process, failing OTP and skippiing image upload.
+    User has the following flags:
+    custom:ssn_verification	"N"
+    custom:phone_verification	"N"
+    custom:gov_id_verification	"-"
+    custom:verified	"N"
+    :param self: Webdriver instance
+    :param email: email address of the new user
+    """
+    # Check for existing test user and wipe it from userpool prior to test execution
+    try:
+        purgeSSOemail(self, email)
+        if self.env != 'dev':
+            try:
+                purgeSSOphone(self, var.credsSSOWEB.phone)
+            except:
+                pass
+    except:
+        if self.env != 'dev':
+            try:
+                purgeSSOphone(self, var.credsSSOWEB.phone)
+            except:
+                pass
+    driver = self.driver
+    driver.get(self.reg_url)
+    # Instructions for webdriver to read and input user data via the info on the .txt doc.
+    # Credentials are localized to one instance via the var file
+    waitAndSend(driver, var.regV.fname, var.credsSSOWEB.fname)
+    waitAndSend(driver, var.regV.lname, var.credsSSOWEB.lname)
+    waitAndSend(driver, var.regV.housenum, var.credsSSOWEB.housenum)
+    waitAndSend(driver, var.regV.street, var.credsSSOWEB.street)
+    waitAndSend(driver, var.regV.city, var.credsSSOWEB.city)
+    # Find and select the state according to the info in the .txt doc
+    # Uses a for loop to iterate through the list of states until element
+    # matches the entry info in the text file. Then clicks the element found.
+    select_box = driver.find_element_by_name("state")
+    waitAndClick(driver, var.regV.state_dropdown)
+    options = [x for x in select_box.find_elements_by_tag_name("option")]
+    for element in options:
+        if element.text in var.credsSSOWEB.state:
+            element.click()
+            break
+    waitAndSend(driver, var.regV.zip, var.credsSSOWEB.zip)
+    waitAndSend(driver, var.regV.phone, var.credsSSOWEB.phone)
+    waitAndClick(driver, var.regV.ss_check)         # selects Gov id check box
+    waitAndSend(driver, var.regV.dob, (
+            var.credsSSOWEB.dob_month + var.credsSSOWEB.dob_date + var.credsSSOWEB.dob_year))
+    waitAndClick(driver, var.regV.dob_check)
+    waitAndSend(driver, var.regV.email, email)
+    waitAndSend(driver, var.regV.password, var.credsSSOWEB.password)
+    waitAndSend(driver, var.regV.confirmPsw, var.credsSSOWEB.password)
+    waitAndClick(driver, var.regV.tos_check)
+    waitAndClick(driver, var.regV.submit_button)
+    # 2nd screen. OTP selection screen
+    waitAndClick(driver, var.otpV.text_button)
+    # 3rd screen. OTP code entry screen. Submits bad OTP code to fail phone verification
+    time.sleep(7)
+    waitAndSend(driver, var.otpV.otp_input, "987654")
+    waitAndClick(driver, var.otpV.otp_continue_button)
+    # 4th screen. Unsuccessful registration should redirect to "Sorry, identity cannot be verified" screen.
+    time.sleep(5)
+    if driver.find_elements_by_class_name("migration-failed-body") != []:
+        print(f"Unverified user account {email} successfully created.")
+        return True
+    elif driver.find_elements_by_name("q") != []:
+        print("Reached successful registration. Attempting to create unverified user again")
+        return False
+    elif "Confirm your details" in driver.find_element_by_tag_name('body').text:
+        print("Neither Identity verification failed screen nor Registration successful screen reached.")
+        return False
+    else:
+        print("Unexpected screen reached when attempting to create unverified user. See screenshot.")
+        fullshot(driver)
+        return False
 
 def closeWindow(driver, title):
+    """ Checks all open tabs in the window and closes the tab with the passed in title
+    :param driver: Webdriver instance
+    :param title: the title of the webpage that is meant to be closed
+    """
     # return all handles value of open browser window
     handles = driver.window_handles
 
@@ -751,8 +873,14 @@ def closeWindow(driver, title):
             time.sleep(2)
             driver.close()
 
-# [Documentation - Function] Asserts whether an expected elem on a redirected screen is found.
 def verifyRedirect(self, browser, email, elem):
+    """ Asserts whether an expected elem on a redirected screen is found.
+    :param self: Selenium instance
+    :param browser: Webdriver instance
+    :param email: email of the user that is under test, passed to purge function to clean up test
+    :param elem: an element found on the redirected page,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    """
     verification = waitUntil(browser, elem)
     if verification == True:
         print(f"\nPASS - Redirected successfully.\n")

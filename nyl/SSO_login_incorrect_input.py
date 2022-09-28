@@ -11,7 +11,13 @@ import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 class NYlotto(confTest.NYlottoBASE):
 
     def test_01_loginIncorrectEmailError(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2930
+        """Tests error messages are present for incorrect email when logging in.
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2930
+
+        :return:
+        """
+
         testenv = self.env
         print("\nTESTING " + testenv + " ENVIRONMENT")
         print("\nChecks that incorrect email login attempt displays error")
@@ -43,7 +49,14 @@ class NYlotto(confTest.NYlottoBASE):
 
 
     def test_02_loginIncorrectPswError(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2549
+        """Tests error messages are present for incorrect password when logging in.
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2549
+
+        Creates a verified user, navigates to login page and submits incorrect password.
+        :return:
+        """
+
         print("\nChecks that incorrect password login attempt displays error")
         testemail = self.testemail
         driver = self.driver

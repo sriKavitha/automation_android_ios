@@ -1,23 +1,25 @@
-# [Documentation - Setup] This section lists all dependencies
-# that are imported for this test file to work
-from selenium import webdriver  #webdriver module provides all WebDriver implementations
-import warnings
-import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-from selenium.webdriver.common.keys import Keys     #Keys class provide keys in the keyboard like RETURN, F1, ALT, etc.
-from selenium.webdriver.common.by import By         #By class provides method for finding the page elements by NAME, ID, XPATH, etc.
-from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
-import var, funct, util, confTest                   #Custom class for NYL
+import unittest, time
+import var, funct, confTest                   #Custom class for NYL
 import HtmlTestRunner                               #Report runner
 
 class NYlotto(confTest.NYlottoBASE):
 
-    def test_updatePhone(self):
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2040
-        testemail = self.testemail
+    def test_updatePhone(self, testemail='self.testemail'):
+        """ Tests updating user phone number via Update Profile page
+
+        Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2040
+
+        Creates a verified SSO user via SSN4 submission, navigates to the Update Profile page,
+        submits new phone # and checks for correct frontend updates and redirects
+        :param self: Webdriver instance
+        :return: None
+        """
+        if testemail == 'self.testemail':
+            testemail = self.testemail
         testenv = self.env
         print("TESTING " + testenv + " ENVIRONMENT")
         print("\nChecks phone change in update profile redirects per IDW pii check")
-        # Jira test ticket - https://rosedigital.atlassian.net/browse/NYL-2040
+
         print('\n----------\n' + 'Test setup')
         # creates a verified user with valid SSN4
         funct.createVerifiedUser(self, testemail)

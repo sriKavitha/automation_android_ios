@@ -1,5 +1,3 @@
-from selenium import webdriver  # webdriver module provides all WebDriver implementations
-import warnings
 import unittest, time, re  # unittest is the testing framework, provides module for organizing test cases
 import requests, json           # Requests provides ability to hit API Json provides ability to encode & decode Json files
 import HtmlTestRunner
@@ -9,9 +7,14 @@ import var, funct, confTest     # Custom class for NYL
 class NYLServices(confTest.NYLservicesBASE):
 
     def test_apiStatusCode(self):
-        # [Documentation - Summary] Checks that response status code 200 is returned
-        # for Nylservices APIs with proper payloads in requests
-        # For use with Creds file version: api01122021.txt
+        """Checks that response status code 200 is returned for Nylservices APIs with proper payloads in requests
+
+        All proper headers and payloads with valid information (pulled from the credentials file) is
+        submitted in the requests to the API
+
+        :return:
+        """
+
 
         # time.sleep() added between calls so tests do not hit AWS Batch API limits
 
