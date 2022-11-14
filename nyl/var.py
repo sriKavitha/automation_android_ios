@@ -403,3 +403,22 @@ class confirmDetailsV:
 # [Documentation - Variables] Objects on Identity Verification Failed page
 class identityVerFailedV:
     failed_body = [By.XPATH, '//div[@class="migration-failed-body"]', 'failed_body']
+class loginAWS:
+        aws_acctId = [By.CSS_SELECTOR, '.textinput #account', 'account_Id']
+        aws_email = [By.ID, 'username', 'aws_email']
+        aws_password = [By.CSS_SELECTOR, '.textinput #password', 'aws_password']
+        aws_signin_button = [By.ID, 'signin_button', 'login_button']
+        aws_forgot_password_link = [By.CSS_SELECTOR, '#link_root_account_signin #root_account_signin',
+                       'forgot_password_link']
+
+        # error variables
+        aws_account_Id_error = [By.CSS_SELECTOR, '#input_account label[for=\'account\']', 'aws_accountId_error']
+        aws_email_error = [By.CSS_SELECTOR, '.textinput.error label[for=\'username\']', 'aws_email_error']
+        aws_password_error = [By.CSS_SELECTOR, '.textinput.error label[for=\'password\']', 'aws_password_error']
+        aws_login_button_error = [By.ID, 'main_message', 'login_button_error']
+        aws_textfield_error_class = [By.CLASS_NAME, 'textinput.error', 'mandatory']
+        # error copy
+        aws_account_Id_errorstub = 'Account ID (12 digits) or account alias'
+        aws_email_errorstub = 'IAM user name'
+        aws_Password_errorstub = 'Password'
+        aws_badCredentials_errorstub = 'Your authentication information is incorrect. Please try again.'

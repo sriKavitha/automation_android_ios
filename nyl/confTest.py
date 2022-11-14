@@ -20,10 +20,11 @@ class globalVar:
     # testdata = 'real'
 
     # .env can be "dev", "qa", or "stage" to denote which environment and credentials to use
-    env = 'qa'
+    # env = 'qa'
+    env = 'dev'
 
-    testemail = 'qa+ssotest@rosedigital.co'
-
+    # testemail = 'qa+ssotest@rosedigital.co'
+    testemail = 'dev+ssotest@rosedigital.co'
     # tester's actual mobile number needed for govid registration flows
     testermobile = '0000000000'
 
@@ -159,8 +160,8 @@ class NYlottoBASE(unittest.TestCase):
         #            'args': ['--disable-infobars']
         #        }
         #   })
-        self.server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy", options={'port': 8090})
-        self.server.start()
+        # self.server = Server("/Users/browsermob-proxy-2.1.4/bin/browsermob-proxy", options={'port': 8090})
+        # self.server.start()
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--proxy-server={0}".format(self.reg_url))
@@ -170,6 +171,44 @@ class NYlottoBASE(unittest.TestCase):
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(20)
         # self.driver.maximize_window()
+        self.verificationErrors = []
+        self.accept_next_alert = True
+
+    def tearDown(self):
+        """The tearDown method will get called after every test method. This is a place to do all cleanup actions."""
+        # NOTE: this code for checking for exceptions does NOT work for Safari
+        # Python 3.8+ may have this built in. Need to revisit at future date.
+        # checking for exceptions or assertion errors, if there are take screenshot
+        # for method, error in self._outcome.errors:
+        #     if error:
+        #         funct.fullshot(self.driver)
+        #         funct.generateHAR(self.server, self.driver)
+        # self.driver.quit()
+        self.assertEqual([], self.verificationErrors)
+
+# ###==============================================================###
+# # NYL AWS
+# ###==============================================================###
+class NYawsBASE(unittest.TestCase):
+    # report = globalVar.report
+    # testdata = globalVar.testdata
+
+    def setUp(self):
+        """The setUp is part of initialization, this method will get called before every test function which you
+        are going to write in the test case class.
+
+        Here you are creating the instance of Chrome WebDriver with specific test configurations needed for
+        testing AWS web application.
+        """
+        self.aws_login_url = "https://nyl-sso.signin.aws.amazon.com/console"
+        warnings.simplefilter("ignore", ResourceWarning)
+        chrome_options = webdriver.ChromeOptions()
+        # chrome_options.add_argument("--proxy-server={0}".format(self.reg_url))
+        chrome_options.add_argument("--incognito")
+        # chrome_options.add_argument("--window-size=1366,768")
+        chrome_options.add_argument("--window-size=1440,900")
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.implicitly_wait(20)
         self.verificationErrors = []
         self.accept_next_alert = True
 
