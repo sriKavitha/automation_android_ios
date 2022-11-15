@@ -83,6 +83,39 @@ class NYlotto(confTest.NYawsBASE):
         print('----------')
         funct.closeWindow(driver, 'Sign in as IAM user')
 
+    def test_03_aws_loginIncompleteAccountIDError(self):
+        """Checks missing account ID for AWS login attempt error and text copy is correct
+        :return:
+        """
+        print("\nChecks missing account ID login attempt error and text copy is correct")
+        driver = self.driver
+        # url is pulled from confTest
+        driver.get(self.aws_login_url)
+        # triggering error
+        funct.clearTextField(driver, var.loginAWS.aws_acctId)
+        funct.waitAndSend(driver, var.loginAWS.aws_email, "testemail@rose.com")
+        funct.waitAndSend(driver, var.loginAWS.aws_password, "test1234")
+        funct.waitAndClick(driver, var.loginAWS.aws_signin_button)
+        if funct.checkError(driver, var.loginAWS.aws_login_button_error) == True:
+            # print('PASS - ' + var.loginAWS.aws_acctId[2] + ' is present')
+            print('PASS - ' + var.loginAWS.aws_email[2] + ' is present')
+            print('PASS - ' + var.loginAWS.aws_password[2] + ' is present')
+            print('PASS - ' + var.loginAWS.aws_signin_button[2] + ' is present')
+        elif funct.checkError(driver, var.loginAWS.aws_login_button_error) == False:
+            print('FAIL - ' + var.loginAWS.aws_login_button_error[2] + ' is missing')
+            funct.fullshot(driver)
+            raise Exception('Error warning element not found')
+
+        warning = driver.find_element(var.loginAWS.aws_account_Id_error[0], var.loginAWS.aws_account_Id_error[1])
+        if funct.checkErrorText(driver, var.loginAWS.aws_account_Id_error, var.loginAWS.aws_account_Id_errorstub) == True:
+            print('PASS - Warning copy text is correct')
+        elif funct.checkErrorText(driver, var.loginAWS.aws_account_Id_error, var.loginAWS.aws_account_Id_errorstub) == False:
+            print('FAIL - Warning should say " ' + var.loginAWS.aws_account_Id_errorstub + ' , but says "' + warning.get_attribute("innerText") + '"')
+            funct.fullshot(driver)
+            raise Exception('Error copy is incorrect')
+        print('----------')
+        funct.closeWindow(driver, 'Sign in as IAM user')
+
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
     if confTest.NYlottoBASE.report == "terminal":
