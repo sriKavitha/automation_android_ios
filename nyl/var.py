@@ -420,5 +420,5 @@ class loginAWS:
         # error copy
         aws_account_Id_errorstub = 'Account ID (12 digits) or account alias'
         aws_email_errorstub = 'IAM user name'
-        aws_Password_errorstub = 'Password'
+        aws_password_errorstub = 'Password'
         aws_badCredentials_errorstub = 'Your authentication information is incorrect. Please try again.'
