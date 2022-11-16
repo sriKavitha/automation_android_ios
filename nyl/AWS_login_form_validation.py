@@ -26,7 +26,7 @@ class NYlotto(confTest.NYawsBASE):
             funct.fullshot(driver)
             raise Exception('Error warning element not found')
         warning = driver.find_element(var.loginAWS.aws_login_button_error[0], var.loginAWS.aws_login_button_error[1])
-        if funct.checkErrorText(driver, var.loginAWS.aws_login_button_error, var.loginAWS.aws_account_Id_errorstub) == True:
+        if funct.checkErrorText(driver, var.loginAWS.aws_account_Id_error, var.loginAWS.aws_account_Id_errorstub) == True:
             print('PASS - Warning copy is correct')
         elif funct.checkErrorText(driver, var.loginAWS.aws_account_Id_error, var.loginAWS.aws_account_Id_errorstub) == False:
             print('FAIL - Warning should say "' + var.loginAWS.aws_account_Id_error + '" , but says "' + warning.get_attribute("innerText") + '"')
@@ -34,9 +34,9 @@ class NYlotto(confTest.NYawsBASE):
                 print('PASS - Warning copy is correct')
         elif funct.checkErrorText(driver, var.loginAWS.aws_email_error, var.loginAWS.aws_email_errorstub) == False:
                 print('FAIL - Warning should say "' + var.loginAWS.aws_email_error + '" , but says "' + warning.get_attribute("innerText") + '"')
-        if funct.checkErrorText(driver, var.loginAWS.aws_email_error, var.loginAWS.aws_email_errorstub) == True:
+        if funct.checkErrorText(driver, var.loginAWS.aws_password_error, var.loginAWS.aws_password_errorstub) == True:
                 print('PASS - Warning copy is correct')
-        elif funct.checkErrorText(driver, var.loginAWS.aws_password_error, var.loginAWS.aws_Password_errorstub) == False:
+        elif funct.checkErrorText(driver, var.loginAWS.aws_password_error, var.loginAWS.aws_password_errorstub) == False:
                 print('FAIL - Warning should say "' + var.loginAWS.aws_password_error + '" , but says "' + warning.get_attribute("innerText") + '"')
                 funct.fullshot(driver)
                 raise Exception('Error copy is incorrect')
@@ -168,7 +168,7 @@ class NYlotto(confTest.NYawsBASE):
             raise Exception('Error warning element not found')
 
         warning = driver.find_element(var.loginAWS.aws_password_error[0], var.loginAWS.aws_password_error[1])
-        if funct.checkErrorText(driver, var.loginAWS.aws_password_error, var.loginAWS.aws_password_error) == True:
+        if funct.checkErrorText(driver, var.loginAWS.aws_password_error, var.loginAWS.aws_password_errorstub) == True:
             print('PASS - Warning copy text is correct')
         elif funct.checkErrorText(driver, var.loginAWS.aws_password_error, var.loginAWS.aws_password_errorstub) == False:
             print('FAIL - Warning should say " ' + var.loginAWS.aws_password_errorstub + ' , but says "' + warning.get_attribute("innerText") + '"')
