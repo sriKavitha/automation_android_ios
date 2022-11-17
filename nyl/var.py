@@ -23,6 +23,15 @@ class CREDSadmin:
     superadmin_username = funct.getCredential(entry_info, 'admin-super-un')
     superadmin_psw = funct.getCredential(entry_info, 'admin-super-psw')
 
+class CREDSaws:
+    # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
+    # opens specific local creds file with user data according to confTest variable
+    notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
+    entry_info = notepadfile.read().splitlines()
+    aws_acctId = funct.getCredential(entry_info, 'aws-test-accountID')
+    aws_email = funct.getCredential(entry_info, 'aws-test-username')
+    aws_password = funct.getCredential(entry_info, 'aws-test-password')
+
 # [Documentation - Variables] Elements on Login page
 class adminLoginVar:
     email = [By.XPATH, '(//input[@id="signInFormUsername"])[2]', 'email_field']
@@ -179,6 +188,7 @@ class credsSSOWEB:
         notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYlottoBASE.testdata == 'real':
         notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
+
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'sso-first-name')
@@ -415,7 +425,7 @@ class loginAWS:
         aws_account_Id_error = [By.CSS_SELECTOR, '#input_account label[for=\'account\']', 'aws_accountId_error']
         aws_email_error = [By.CSS_SELECTOR, '.textinput.error label[for=\'username\']', 'aws_email_error']
         aws_password_error = [By.CSS_SELECTOR, '.textinput.error label[for=\'password\']', 'aws_password_error']
-        aws_login_button_error = [By.ID, 'main_message', 'login_button_error']
+        aws_login_button_error = [By.ID, 'main_message', 'aws_login_button_error']
         aws_textfield_error_class = [By.CLASS_NAME, 'textinput.error', 'mandatory']
         # error copy
         aws_account_Id_errorstub = 'Account ID (12 digits) or account alias'
