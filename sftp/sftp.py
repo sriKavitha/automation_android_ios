@@ -18,7 +18,7 @@ class NYLsftp(unittest.TestCase):
     def setUp(self):
         
         self.myHostname = getCred('devHost')
-        self.myUsername = getCred('nylUsername')
+        self.myUsernameNYL = getCred('nylUsername')
         self.myUsernameSSL = getCred('nylUSernameSSL')
         self.myUsernameMc = getCred('mccannUsername')
         self.myUsernameMcSLL = getCred('mccannUsernameSSL')
@@ -38,7 +38,7 @@ class NYLsftp(unittest.TestCase):
             # [Documentation - Detail] pysftp.connection takes multiple arguements such as host, username, and password
             # in order to create an sftp connection. For Advanced options such as Private Keys, you can use cnopts 
             # attribute, and define the advanced arguements within that (see test 08 below for example).
-            with pysftp.Connection(host=self.myHostname, username=self.myUsername, password='', cnopts=self.cnopts) as sftp:
+            with pysftp.Connection(host=self.myHostname, username=self.myUsernameNYL, password='', cnopts=self.cnopts) as sftp:
                 # [Documentation - Detail] raises exception, ignoring the Try/Except soft fail
                 raise Exception('E--- Able to log in with incorrect password!')    
         except:
@@ -55,7 +55,7 @@ class NYLsftp(unittest.TestCase):
         try:
             n = 0
             m = 0
-            with pysftp.Connection(host=self.myHostname, username=self.myUsername, password=self.myPassword, cnopts=self.cnopts) as sftp:
+            with pysftp.Connection(host=self.myHostname, username=self.myUsernameNYL, password=self.myPassword, cnopts=self.cnopts) as sftp:
                 print("nyl un/pw logs in correctly")
                 # [Documentation - Detail] sftp.cwd navigates user within an sftp connection into the folder path used 
                 # as the arguement
@@ -83,7 +83,7 @@ class NYLsftp(unittest.TestCase):
             raise Exception("E--- Error using correct UN/PW!")
     def test03_checkDownloadMcCannFileNYL(self):
         try:
-            with pysftp.Connection(host=self.myHostname, username=self.myUsername, password=self.myPassword, cnopts=self.cnopts) as sftp:
+            with pysftp.Connection(host=self.myHostname, username=self.myUsernameNYL, password=self.myPassword, cnopts=self.cnopts) as sftp:
                 # [Documentation - Detail] sftp.get attempts to allow you to download the file in the first arguement 
                 # and save it to the location in the second arguement
                 sftp.get(self.remoteFileMcCann, '')
@@ -94,7 +94,7 @@ class NYLsftp(unittest.TestCase):
     def test04_checkDownloadNylFileNYL(self):
 
         try:
-            with pysftp.Connection(host=self.myHostname, username=self.myUsername, password=self.myPassword, cnopts=self.cnopts) as sftp:
+            with pysftp.Connection(host=self.myHostname, username=self.myUsernameNYL, password=self.myPassword, cnopts=self.cnopts) as sftp:
                 sftp.get(self.remoteFileNYL, '')
                 print("NYL user DLing Mccann file test passed")
         except:
@@ -103,7 +103,7 @@ class NYLsftp(unittest.TestCase):
     def test05_checkUploadMcCannFileNYL(self):
         try:
 
-            with pysftp.Connection(host=self.myHostname, username=self.myUsername, password=self.myPassword, cnopts=self.cnopts) as sftp:
+            with pysftp.Connection(host=self.myHostname, username=self.myUsernameNYL, password=self.myPassword, cnopts=self.cnopts) as sftp:
                 sftp.cwd('/Prod/McCann/')
                 # [Documentation - Detail] sftp.put attempts to allow you to upload a file found in the path fo the 
                 # first arguement, and save it to the path in the second arguement
@@ -118,7 +118,7 @@ class NYLsftp(unittest.TestCase):
 
     def test06_checkUploadNylFileNYL(self):  
         try:
-            with pysftp.Connection(host=self.myHostname, username=self.myUsername, password=self.myPassword, cnopts=self.cnopts) as sftp:
+            with pysftp.Connection(host=self.myHostname, username=self.myUsernameNYL, password=self.myPassword, cnopts=self.cnopts) as sftp:
                 sftp.cwd('/Prod/NYSL/')
                 sftp.put(self.localFile, 'testFile.txt')
                 sftp.remove('testFile.txt')
@@ -129,7 +129,7 @@ class NYLsftp(unittest.TestCase):
 
     def test07_checkSshCanNotLoginNYL(self):
         try:
-            with pysftp.Connection(host=self.myHostname, username=self.myUsername, private_key=self.private_key, cnopts=self.cnopts) as sftp:
+            with pysftp.Connection(host=self.myHostname, username=self.myUsernameNYL, private_key=self.private_key, cnopts=self.cnopts) as sftp:
                 raise Exception('E--- Able to log in with SSH key with incorrect username!')    
         except:
             print("incorrect username for ssh test passed")
