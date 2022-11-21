@@ -251,7 +251,7 @@ class NYLsftp(unittest.TestCase):
                 sftp.get(self.remoteFileNYL, '')
                 print("NYL user DLing Mccann file test passed")
         except:
-            raise Exception('E--- Unable to DL NYL File as NYL user!')
+            raise Exception('E--- Unable to DL McCann File as NYL user!')
 
     def test17_checkUploadNylFileMc(self):
         try:
@@ -355,7 +355,13 @@ class NYLsftp(unittest.TestCase):
             print('W--W--- Check for non deleted file')
             raise Exception('E--- Unable to Upload McCann File as McCann SSH user!')
             
-        
+    # McCann cannot login with no or incorrect UN
+    def test25_checkLoginNoUnMc(self):
+        try:
+            with pysftp.Connection(host=self.myHostname, username='', password=self.myPasswordMc, cnopts=self.cnopts) as sftp:
+                raise Exception('E--- Able to log in with incorrect McCann username!')
+        except:
+            print("Incorrect McCann username test passed")
 # Boiler plate code to run the test suite
 
 if __name__ == "__main__":
