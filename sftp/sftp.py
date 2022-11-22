@@ -27,7 +27,7 @@ class NYLsftp(unittest.TestCase):
         self.localFile = 'testFile.txt'
         self.remoteFileNYL = '/Prod/NYSL/test100.txt'
         self.remoteFileMcCann = '/Prod/McCann/test100.txt'
-        self.private_key = "~/.ssh/dev-nyl-services-sftp-test"
+        self.private_key = "~/.ssh/id_rsa"
         self.cnopts = pysftp.CnOpts()
         self.cnopts.hostkeys = None
 
@@ -133,8 +133,7 @@ class NYLsftp(unittest.TestCase):
                 raise Exception('E--- Able to log in with SSH key with incorrect username!')    
         except:
             print("incorrect username for ssh test passed")
-    
-    @unittest.skip("ssh related")
+
     def test08_checkSshCanLoginSSHnyl(self):
         try:
             # [Documentation - Detail] as states above, using Private_Key and the advanced cnopts arguements, you are 
@@ -144,7 +143,6 @@ class NYLsftp(unittest.TestCase):
         except:
             raise Exception('E--- Unable to log in with SSH key with correct username!')
 
-    @unittest.skip("ssh related")
     def test09_checkFileStructureSSHnyl(self):
         try:
             n = 0
@@ -169,7 +167,6 @@ class NYLsftp(unittest.TestCase):
         except:
             raise Exception("E--- Error using correct UN/PW!")
 
-    @unittest.skip("ssh related")
     def test10_checkDownloadMcCannFileSSHnyl(self):
         try:
             with pysftp.Connection(host=self.myHostname, username=self.myUsernameSSH, private_key=self.private_key, cnopts=self.cnopts) as sftp:
@@ -178,7 +175,6 @@ class NYLsftp(unittest.TestCase):
         except:
             raise Exception("E--- Unable to DL McCann File as NYL user!")
 
-    @unittest.skip("ssh related")
     def test11_checkDownloadNylFileSSHnyl(self):
         try:
             with pysftp.Connection(host=self.myHostname, username=self.myUsernameSSH, private_key=self.private_key, cnopts=self.cnopts) as sftp:
@@ -201,7 +197,6 @@ class NYLsftp(unittest.TestCase):
         except:
             print("NYL user Uploading Mccann file test passed")
 
-    @unittest.skip("ssh related")
     def test13_checkuploadNylFileSSHnyl(self):
         try:
             with pysftp.Connection(host=self.myHostname, username=self.myUsernameSSH, private_key=self.private_key, cnopts=self.cnopts) as sftp:
@@ -286,7 +281,6 @@ class NYLsftp(unittest.TestCase):
         except:
             print("incorrect username for ssh test passed")
 
-    @unittest.skip("ssh related")
     def test20_checkFileStructureMcSSH(self):
         try:
             n = 0
@@ -312,7 +306,6 @@ class NYLsftp(unittest.TestCase):
             raise Exception("E--- Error using correct UN/PW!")
 
 
-    @unittest.skip("ssh related")
     def test21_checkDownloadMcCannFileMcSSH(self):
         try:
             with pysftp.Connection(host=self.myHostname, username=self.myUsernameMcSSH, private_key=self.private_key, cnopts=self.cnopts) as sftp:
@@ -320,8 +313,7 @@ class NYLsftp(unittest.TestCase):
                 print('Able to DL McCann File as NYL user')
         except:
             raise Exception("E--- Unable to DL McCann File as NYL user!")
-    
-    @unittest.skip("ssh related")
+
     def test22_checkDownloadNylFileMcSSH(self):
         try:
             with pysftp.Connection(host=self.myHostname, username=self.myUsernameMcSSH, private_key=self.private_key, cnopts=self.cnopts) as sftp:
@@ -342,8 +334,7 @@ class NYLsftp(unittest.TestCase):
                 raise Exception('Able to Upload NYL File as Mccann user!')
         except:
             print("McCann SSH user unable to Upload NYL file!")
-    
-    @unittest.skip("ssh related")
+
     def test24_checkFileStructureMcSSH(self):
         try:
             with pysftp.Connection(host=self.myHostname, username=self.myUsernameMcSSH, private_key=self.private_key, cnopts=self.cnopts) as sftp:
