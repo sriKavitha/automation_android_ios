@@ -449,3 +449,4 @@ class cloudWatchAWS:
         aws_logStatusCode_successCode = [By.XPATH,
                                           '//span[@class=\'logs__events__json-number\'][contains(text(),\'200\')]',
                                            'Status Code Success 200']
+        aws_logStatus_SUCCESS = [By.XPATH, '//span[@class=\'logs__events__json-string\'][contains(text(),\'SUCCESS\')][2]','Status Success is SUCCESS']
