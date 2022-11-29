@@ -7,29 +7,19 @@ class NYlotto(confTest.NYawsBASE):
     def test_01_AWSloginSuccess(self):
         """Checks that a AWS user can login in successfully
         """
-
-        print("\nChecks login into AWS with correct email & password successfully")
         driver = self.driver
-        print('----------')
-        # switch to login page
-        driver.get(self.aws_login_url)
-        # Login AWS attempt
-        funct.clearTextField(driver, var.loginAWS.aws_acctId)
-        funct.waitAndSend(driver, var.loginAWS.aws_acctId, var.CREDSaws.aws_acctId)
-        funct.waitAndSend(driver, var.loginAWS.aws_email, var.CREDSaws.aws_email)
-        funct.waitAndSend(driver, var.loginAWS.aws_password, var.CREDSaws.aws_password)
-        funct.waitAndClick(driver, var.loginAWS.aws_signin_button)
-        time.sleep(2)
-
-
+        funct.aws_login(self)
         # Successful login should redirect to AWS page
         # Checking AWS logo present on page
-        if driver.find_element_by_id("nav-home-link") != []:
-            print('PASS - AWS login successful and redirected to AWS homepage uri')
-        else:
-            funct.fullshot(driver)
-            print('FAIL - AWS Login attempt failed')
-            raise Exception('Unexpected behavior encountered')
+        try:
+            if driver.find_element_by_id("nav-home-link") != []:
+                print('PASS - AWS login successful and redirected to AWS homepage uri')
+            else:
+                raise Exception('Unexpected behavior encountered')
+        except Exception as e:
+             funct.fullshot(driver)
+             print('FAIL - AWS Login attempt failed', e)
+             raise Exception('Unexpected behavior encountered')
 
         funct.closeWindow(driver, 'Sign in as IAM user')
         print('----------')
