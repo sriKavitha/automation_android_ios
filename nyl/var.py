@@ -432,3 +432,20 @@ class loginAWS:
         aws_email_errorstub = 'IAM user name'
         aws_password_errorstub = 'Password'
         aws_badCredentials_errorstub = 'Your authentication information is incorrect. Please try again.'
+
+class cloudWatchAWS:
+        aws_services = [By.CSS_SELECTOR, 'button[data-testid=\'aws-services-list-button\']', 'Services']
+        aws_services_search = [By.CSS_SELECTOR, 'div[class*=\'globalNav-search\'] input[placeHolder=\'Search\']','Services search']
+        aws_cloudwatch_search = [By.XPATH, '//h3/a[@data-testid="services-search-result-link-cw"]', 'Cloud Watch']
+        aws_logs = [By.XPATH, '//div[@class=\'navigation-header\']//span[contains(text(),\'Logs\')]','Logs']
+        aws_logGroups = [By.XPATH, '//li[@id=\'nav-logsGroups-wrapper\']//a[text()=\'Log groups\']','Log Groups']
+        aws_logGroupsSearch = [By.XPATH, '//input[@placeholder="Filter log groups or try prefix search"]', 'Log Groups search']
+        aws_logGroupsSearchResults = [By.XPATH, '//table//strong/ancestor::a[contains(@href,\'qa-postSsoRegisterVerify\')]','Log Groups Search Results']
+        aws_logStream = [By.XPATH, '//table[@role=\'table\']//tr[1]/td[2]/a', 'Log Stream']
+        aws_logStream_eventTime = [By.XPATH, '//table[@role=\'table\']//tr[1]/td[3]', 'Log Stream Event Time']
+        aws_logEventsSearch = [By.XPATH,'//div[@class=\'awsui-input-container\']//input[@placeholder=\'Filter events\']', 'Log Events Search']
+        aws_openAll = [By.XPATH, '//table[@role=\'table\']//td[@scope=\'col\']//input[starts-with(@id,\'awsui-checkbox\')]', 'Open all Arrow']
+        aws_logStatusCode_successLabel = [By.XPATH,'//span[@class=\'logs__events__json-key\'][contains(text(),\'statusCode\')]', 'Status Code Success Label']
+        aws_logStatusCode_successCode = [By.XPATH,
+                                          '//span[@class=\'logs__events__json-number\'][contains(text(),\'200\')]',
+                                           'Status Code Success 200']
