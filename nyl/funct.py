@@ -893,3 +893,17 @@ def verifyRedirect(self, browser, email, elem):
         fullshot(browser)
         purgeSSOemail(self, email)
         raise Exception('Unexpected behavior. Check screenshot.')
+
+def aws_login(self):
+    print("\nLogin attempt into AWS")
+    driver = self.driver
+    print('----------')
+    # switch to AWS login page
+    driver.get(self.aws_login_url)
+    # Login AWS attempt
+    clearTextField(driver, var.loginAWS.aws_acctId)
+    waitAndSend(driver, var.loginAWS.aws_acctId, var.CREDSaws.aws_acctId)
+    waitAndSend(driver, var.loginAWS.aws_email, var.CREDSaws.aws_email)
+    waitAndSend(driver, var.loginAWS.aws_password, var.CREDSaws.aws_password)
+    waitAndClick(driver, var.loginAWS.aws_signin_button)
+    time.sleep(2)
