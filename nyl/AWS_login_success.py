@@ -1,7 +1,7 @@
-import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
-import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
+import unittest       #unittest is the testing framework, provides module for organizing test cases
+import var, funct, confTest, HtmlTestRunner   #Custom class for NYL
 
-class NYlotto(confTest.NYawsBASE):
+class NYlotto(confTest.NYlottoBASE):
 
 
     def test_01_AWSloginSuccess(self):
@@ -12,15 +12,12 @@ class NYlotto(confTest.NYawsBASE):
         # Successful login should redirect to AWS page
         # Checking AWS logo present on page
         try:
-            if driver.find_element_by_id("nav-home-link") != []:
-                print('PASS - AWS login successful and redirected to AWS homepage uri')
-            else:
-                raise Exception('Unexpected behavior encountered')
+            funct.waitUntil(driver, var.cloudWatchAWS.aws_Logo)
+            print('PASS - User is in AWS Home page')
         except Exception as e:
              funct.fullshot(driver)
              print('FAIL - AWS Login attempt failed', e)
              raise Exception('Unexpected behavior encountered')
-
         funct.closeWindow(driver, 'Sign in as IAM user')
         print('----------')
 

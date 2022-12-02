@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By         #By class provides method fo
 from selenium.webdriver.support.ui import Select    #Select class provides ability to select items in dropdown
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-class NYlotto(confTest.NYawsBASE):
+class NYlotto(confTest.NYlottoBASE):
 
     def test_01_AWS_loginIncorrectAccountIDError(self):
         """Tests error messages are present for incorrect Account ID when logging in.
