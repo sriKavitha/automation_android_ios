@@ -590,6 +590,13 @@ def waitUntilNot(browser, elem):
             time.sleep(1)
             x = x + 1
 
+def waitAndGetText(browser, elem):
+    """Function that is used to get text
+    :returns: string the text of the element
+    """
+    waitUntil(browser, elem)
+    return browser.find_element(elem[0], elem[1]).text
+
 def waitAndFind(browser, elem):
     """Webdriver uses actionchains to  wait for a specified page element without throwing an error message
     :param browser: Webdriver instance

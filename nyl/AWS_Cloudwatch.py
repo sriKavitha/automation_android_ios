@@ -9,7 +9,7 @@ class NYlotto(confTest.NYlottoBASE):
         """
         Verify the logs in AWS(cloudwatch) after a SSO user is successfully registered in
         Dev/QA/Stage/Prod env:
-        1. User has to be successfully registered (pre-requisite)
+        1. User has to be successfully registered
         2. Signin into AWS with QA user credentials
         3. Search and select CloudWatch from Services
         4. Click Logs > Log Groups
@@ -24,9 +24,11 @@ class NYlotto(confTest.NYlottoBASE):
         https://rosedigital.atlassian.net/browse/MRMNYL-370 (Manual testcase for MRMNYL-369)
 
         """
-        # 1. User has to be successfully registered (pre-requisite)
+        # 1. User has to be successfully registered
         driver = self.driver
-        email, testenv = funct.sso_register_customEmail(self)
+        # email, testenv = funct.sso_register_customEmail(self) # if QA is stable, uncomment this line and comment testenv, email
+        email = 'kavithatestdec5@rosedigital.co'
+        testenv = 'qa'
         print('\nUser is now successfully registered....')
         print('----------')
 
@@ -61,6 +63,7 @@ class NYlotto(confTest.NYlottoBASE):
             funct.waitUntilNot(driver, var.cloudWatchAWS.aws_logGroupsSearch)
             funct.waitAndSend(driver, var.cloudWatchAWS.aws_logGroupsSearch, testenv+'-postssoregisterverify')
             print('Click the ' + "'" + testenv + '-postssoregisterverify\' group name')
+            time.sleep(5)
             funct.waitAndClick(driver, var.cloudWatchAWS.aws_logGroupsSearchResults)
 
             #  6. Click the Search All Log Streams button and select 1hour button to view the logs for the past 1 hour
@@ -77,7 +80,7 @@ class NYlotto(confTest.NYlottoBASE):
             print("UserEmail keyed in...")
 
             # 8. Check if the userEmail has any event logs before verifying the success code/status/userEmail
-            if driver.find_element_by_xpath("//table[@role='table']/tbody/tr/td/span").text != 'No events found':
+            if funct.waitAndGetText(driver, var.cloudWatchAWS.aws_noEventsFound) != 'No events found':
                 # 9. Click the Open all button only if there are event logs
                 print("Click Open all log events button to verify the userEmail, status code and success...")
                 funct.waitAndClick(driver, var.cloudWatchAWS.aws_openAll)
@@ -96,15 +99,15 @@ class NYlotto(confTest.NYlottoBASE):
                 print('PASS - AWS CloudWatch logs are successfully verified for userEmail, "200" and "SUCCESS"...')
             else:
                 print('No events found for this email... ' + email)
-                print('User Email is incorrectly keyed in...')
+                print('User Email is incorrectly keyed in... or change the date/time')
         except Exception:
             print("AWS Login attempt is unsuccessful...")
             funct.fullshot(self)
             print('FAIL - AWS Login attempt')
             funct.closeWindow(driver, 'Sign in as IAM user')
-            print("Purging the SSO registered user in Admin Dashboard... by phone number and Email address")
-            funct.purgeSSOemail(self, email)
-            funct.purgeSSOphone(self, var.credsSSOWEB.phone)
+        # print("Purging the SSO registered user in Admin Dashboard... by phone number and Email address")
+        # funct.purgeSSOemail(self, email)
+        # funct.purgeSSOphone(self, var.credsSSOWEB.phone)
 
 # use "report" variable in conftest.py to change report style on runner
 if __name__ == "__main__":
