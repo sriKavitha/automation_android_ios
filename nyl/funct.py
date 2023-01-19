@@ -576,6 +576,27 @@ def waitUntil(browser, elem):
             print("E--" + elem[2] + " elem not found")
             return False
 
+def waitUntilNot(browser, elem):
+    """Webdriver uses actionchains to  wait for a specified page element
+    :param browser: Webdriver instance
+    :param elem: the element that is being searched,
+    a list with the following index elem[0] = search method, elem[1] = locator, elem[2] = name of element
+    """
+    a = ActionChains(browser)
+    x = 0
+    elem = browser.find_element(elem[0], elem[1])
+    while elem == True:
+        if x < 10:
+            time.sleep(1)
+            x = x + 1
+
+def waitAndGetText(browser, elem):
+    """Function that is used to get text
+    :returns: string the text of the element
+    """
+    waitUntil(browser, elem)
+    return browser.find_element(elem[0], elem[1]).text
+
 def waitAndFind(browser, elem):
     """Webdriver uses actionchains to  wait for a specified page element without throwing an error message
     :param browser: Webdriver instance
@@ -893,3 +914,37 @@ def verifyRedirect(self, browser, email, elem):
         fullshot(browser)
         purgeSSOemail(self, email)
         raise Exception('Unexpected behavior. Check screenshot.')
+
+def aws_login(self):
+    print("\nLogin attempt into AWS")
+    driver = self.driver
+    print('----------')
+    # switch to AWS login page
+    driver.get(self.aws_login_url)
+    # Login AWS attempt
+    clearTextField(driver, var.loginAWS.aws_acctId)
+    waitAndSend(driver, var.loginAWS.aws_acctId, var.CREDSaws.aws_acctId)
+    waitAndSend(driver, var.loginAWS.aws_email, var.CREDSaws.aws_email)
+    waitAndSend(driver, var.loginAWS.aws_password, var.CREDSaws.aws_password)
+    waitAndClick(driver, var.loginAWS.aws_signin_button)
+    time.sleep(2)
+
+def sso_register_customEmail(self):
+    """
+        Register the user with timestamp in the email address in %Y-%m-%d_%H%M_%S format
+        ex: qa+sso2022-12-01_140433@rosedigital.co
+    """
+
+    # Get the local time and convert into timestamp
+    driver = self.driver
+    testenv = self.env
+    ts = time.localtime()
+    timeUserCreated = time.strftime("%Y-%m-%d %H:%M:%S", ts)
+    temp_time = timeUserCreated.replace(":","")
+    temp_time = temp_time.replace(" ","_")
+    # Register the user with the email format: qa+sso+timeUserCreated+@rosedigital.co
+    email = 'qa+sso' + str(temp_time) + '@rosedigital.co'
+    # creates a verified user with valid SSN4
+    print('Registering a SSO user with the email...' + email)
+    createVerifiedUser(self, email)
+    return email, testenv

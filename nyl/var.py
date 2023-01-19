@@ -23,6 +23,15 @@ class CREDSadmin:
     superadmin_username = funct.getCredential(entry_info, 'admin-super-un')
     superadmin_psw = funct.getCredential(entry_info, 'admin-super-psw')
 
+class CREDSaws:
+    # obtain creds file from the 1Password QA vault (contact QA lead on project for access)
+    # opens specific local creds file with user data according to confTest variable
+    notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
+    entry_info = notepadfile.read().splitlines()
+    aws_acctId = funct.getCredential(entry_info, 'aws-test-accountID')
+    aws_email = funct.getCredential(entry_info, 'aws-test-username')
+    aws_password = funct.getCredential(entry_info, 'aws-test-password')
+
 # [Documentation - Variables] Elements on Login page
 class adminLoginVar:
     email = [By.XPATH, '(//input[@id="signInFormUsername"])[2]', 'email_field']
@@ -179,6 +188,7 @@ class credsSSOWEB:
         notepadfile = open('/Users/Shared/testing/andrewpii1212022.txt', 'r')
     elif confTest.NYlottoBASE.testdata == 'real':
         notepadfile = open('/Users/Shared/testing/nyl1212022.txt', 'r')
+
     # turns variable into a list of every line in above notepadfile
     entry_info = notepadfile.read().splitlines()
     fname = funct.getCredential(entry_info, 'sso-first-name')
@@ -415,10 +425,62 @@ class loginAWS:
         aws_account_Id_error = [By.CSS_SELECTOR, '#input_account label[for=\'account\']', 'aws_accountId_error']
         aws_email_error = [By.CSS_SELECTOR, '.textinput.error label[for=\'username\']', 'aws_email_error']
         aws_password_error = [By.CSS_SELECTOR, '.textinput.error label[for=\'password\']', 'aws_password_error']
-        aws_login_button_error = [By.ID, 'main_message', 'login_button_error']
+        aws_login_button_error = [By.ID, 'main_message', 'aws_login_button_error']
         aws_textfield_error_class = [By.CLASS_NAME, 'textinput.error', 'mandatory']
         # error copy
         aws_account_Id_errorstub = 'Account ID (12 digits) or account alias'
         aws_email_errorstub = 'IAM user name'
         aws_password_errorstub = 'Password'
         aws_badCredentials_errorstub = 'Your authentication information is incorrect. Please try again.'
+
+class cloudWatchAWS:
+        aws_Logo = [By.ID, 'nav-home-link', 'AWS Logo']
+        aws_services = [By.CSS_SELECTOR, 'button[data-testid=\'aws-services-list-button\']', 'Services']
+        aws_services_search = [By.CSS_SELECTOR, 'div[class*=\'globalNav-search\'] input[placeHolder=\'Search\']', 'Services search']
+        aws_cloudwatch_search = [By.XPATH, '//h3/a[@data-testid="services-search-result-link-cw"]', 'Cloud Watch']
+        aws_logs = [By.XPATH, '//div[@class=\'navigation-header\']//span[contains(text(),\'Logs\')]', 'Logs']
+        aws_logGroups = [By.XPATH, '//li[@id=\'nav-logsGroups-wrapper\']//a[text()=\'Log groups\']', 'Log Groups']
+        aws_searchAllLogStreams = [By.XPATH, '//span[contains(text(),"Search all log streams")]/ancestor::button', 'Search All Log Streams']
+        aws_1hLogs = [By.XPATH, '//span[text()="1h"]/ancestor::button', 'One Hour Logs']
+        aws_logGroupsSearch = [By.XPATH, '//input[@placeholder="Filter log groups or try prefix search"]', 'Log Groups search']
+        aws_logGroupsSearchResults = [By.XPATH, '//table//strong/ancestor::a[contains(@href,\'qa-postSsoRegisterVerify\')]', 'Log Groups Search Results']
+        aws_logEventsSearch = [By.XPATH, '//div[@class=\'awsui-input-container\']//input[@placeholder=\'Filter events\']', 'Log Events Search']
+        aws_openAll = [By.CSS_SELECTOR, 'thead[class=\'awsui-table-sticky-active\'] label input[id*=\'awsui-checkbox\']', 'Open all Arrow']
+        aws_logStatusCode_successCode = [By.XPATH, '//span[@class=\'logs__events__json-number\'][contains(text(),\'200\')]', 'Status Code Success 200']
+        aws_logStatus_SUCCESS = [By.XPATH, '//*[@class = \'logs__events__json\']//span[@class=\'logs__events__json-string\'][contains(text(),\'SUCCESS\')][.][2]', 'Status Success is SUCCESS']
+        aws_noEventsFound = [By.XPATH, '//table[@role=\'table\']/tbody/tr/td/span', 'No events found']
+class cognitoAWS:
+        aws_cognito_search = [By.XPATH, '//h3/a[@data-testid="services-search-result-link-c"]', 'Cognito']
+        aws_cognito_cognitoPageHeader = [By.XPATH, '//h1[text()=\'Amazon Cognito\']', 'Amazon Cognito']
+        aws_cognito_ManageUserPools = [By.XPATH, '//div[@class = \'cog-billboard\']//a[@id = \'btnStart\']', 'Manage User Pools']
+        aws_cognito_userPool = [By.XPATH, '//h2[@title=\'qa-nyl-sso-pool\']', 'User Pools']
+        aws_cognito_usersAndGroups = [By.XPATH, '//span[text()=\'Users and groups\']/ancestor::a', 'Users and Groups']
+        aws_cognito_userNameDropdown = [By.XPATH, '//span[text()=\'User name\']/preceding::div[@class=\'columbia-select__display columbia-select__display--type--primary\']', 'Email Dropdown']
+        aws_cognito_selectEmailOption = [By.XPATH, '//div[contains(@data-reactid, \'option_email\')]', 'Select the option Email from UserName dropdown']
+        aws_cognito_inputSearch = [By.XPATH, '//input[contains(@placeholder,\'Search for value... \')]', 'Search value']
+        aws_cognito_emailRow = [By.XPATH, '//table[@class=\'cog-user-table\']//a', 'Select eMail row']
+        aws_cognito_firstName = [By.XPATH, '//td[contains(@data-reactid,\'given_name\')]', 'First Name']
+        aws_cognito_lastName = [By.XPATH, '//td[contains(@data-reactid,\'family_name\')]', 'Last Name']
+        aws_cognito_address = [By.XPATH, '//td[contains(@data-reactid,\'address.1\')]', 'Address']
+        aws_cognito_lexId = [By.XPATH, '//td[contains(@data-reactid,\'lex_id\')]', 'LexId']
+        aws_cognito_birthdate = [By.XPATH, '//td[contains(@data-reactid,\'birthdate\')]', 'Birth Date']
+        aws_cognito_phoneNumber = [By.XPATH, '//td[contains(@data-reactid,\'phone_number.\')]', 'Phone Number']
+        aws_cognito_email = [By.XPATH, '//td[contains(@data-reactid,\'email.\')]', 'Email']
+
+class rdsAWS:
+        aws_rds_dashboardrds = [By.XPATH, '//div[contains(@class,\'dashboardWidgetBody\')]//img[@alt=\'RDS\']//parent::div/div/a', 'RDS']
+        aws_rds_pageHeader = [By.XPATH, '//a[text()=\'Amazon RDS\']', 'Amazon RDS']
+        aws_rds_queryEditorLink = [By.XPATH, '//a[text()=\'Query Editor\']', 'Query Editor']
+        aws_rds_connectToDatabasePage = [By.XPATH, '//div[text()=\'Connect to database\']', 'Connect to Database Page']
+        aws_rds_chooseDatabaseCluster = [By.XPATH, '//span[text()=\'Choose a database instance or cluster\']', 'Choose a database instance or cluster']
+        aws_rds_chooseDatabaseClusterValue = [By.XPATH, '//span[@class=\'awsui-select-option-label\']', 'Select Cluster value from dropdown']
+        aws_rds_userName = [By.XPATH, '//div//span[text() = \'Choose a username\']', 'RDS UserName']
+        aws_rds_userNameValue = [By.XPATH, '//div[@class="awsui-select-open"]//div[@title=\'postgres\']', 'RDS UserName value']
+        aws_rds_passWord = [By.XPATH, '//input[@type="password"]','RDS Password']
+        aws_rds_databaseName = [By.XPATH, '//input[@placeholder="Enter database name"]', 'RDS Database Name']
+        aws_rds_connectDatabaseBtn = [By.ID, 'qfc-connect-db-modal-connect-btn', 'Connect to RDS Database Button']
+        aws_rds_editorTab = [By.XPATH, '//span[text()=\'Editor\']', 'RDS Editor Tab for Queries']
+        aws_rds_clearButton = [By.XPATH, '//span[text()=\'Clear\']/parent::button', 'Clear button']
+        aws_rds_RunButton = [By.XPATH, '//span[text()=\'Run\']/parent::button', 'Run button']
+        aws_rds_statusSuccess = [By.XPATH, '//span[text()=\'Success\']', 'Status Success']
+        aws_rds_rowsReturned = [By.XPATH, '//a[text()=\'1 rows returned\']', '1 Row Returned']

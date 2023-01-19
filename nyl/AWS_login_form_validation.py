@@ -1,7 +1,7 @@
 import unittest, time, re       #unittest is the testing framework, provides module for organizing test cases
 import var, funct, util, confTest, HtmlTestRunner   #Custom class for NYL
 
-class NYlotto(confTest.NYawsBASE):
+class NYlotto(confTest.NYlottoBASE):
     """
     Checks that the AWS login page has expected error messages with invalid data submission
     """
