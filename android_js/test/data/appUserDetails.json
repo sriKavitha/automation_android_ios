@@ -1,0 +1,8 @@
+{
+    "e_mail": "adminAppUser@gmail.com",
+    "password": "test1234",
+    "firstName": "Jim",
+    "lastName": "Tommy",
+    "zipcode": "12345",
+    "phone": [146, 148, 152, 151, 151, 151, 153, 153, 153, 153 ]
+}
