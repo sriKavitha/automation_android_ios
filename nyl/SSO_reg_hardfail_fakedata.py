@@ -39,7 +39,12 @@ class NYlotto(confTest.NYlottoBASE):
         funct.waitAndSend(driver, var.regV.confirmPsw, "Test1234")
         funct.waitAndClick(driver, var.regV.tos_check)
         funct.waitAndClick(driver, var.regV.submit_button)
-
+        print("Clicked Submit button after the mandatory details are keyed in...")
+        # Hard fail error page is displayed only after user keys the pin
+        funct.waitAndClick(driver, var.otpV.text_button)
+        time.sleep(2)
+        funct.waitAndSend(driver, var.otpV.otp_input, "111111")
+        funct.waitAndClick(driver, var.otpV.otp_continue_button)
         # checking that we get to the "can not verify your identity" screen
         try:
             driver.find_elements_by_class_name("migration-failed-body")

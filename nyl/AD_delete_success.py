@@ -44,8 +44,8 @@ class NYLadmin(confTest.NYLadminBASE):
             funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
         else:
             funct.waitAndClick(driver, var.adminDashVar.search_input)
-            funct.waitAndClick(driver, var.adminDashVar.category_email)
-            funct.waitAndClick(driver, var.adminDashVar.operator_contains)
+            # funct.waitAndClick(driver, var.adminDashVar.category_email) #its in the old flow
+            # funct.waitAndClick(driver, var.adminDashVar.operator_contains) #its in the old flow
             funct.waitAndSend(driver, var.adminDashVar.search_input, testemail)
             driver.find_element_by_xpath(var.adminDashVar.search_input[1]).send_keys(Keys.ENTER)
         try:
@@ -72,7 +72,7 @@ class NYLadmin(confTest.NYLadminBASE):
                 funct.waitAndClick(driver, var.adminUsersVar.delete_button)
                 # Submits comment and mandatory text for completion
                 ts = funct.timeStamp
-                funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+                funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + str(ts))
                 # attempt to click the modal "OK" buttons to proceed to next step
                 # different locator for same button depending on new session or extended session
                 try:
@@ -142,7 +142,7 @@ class NYLadmin(confTest.NYLadminBASE):
                         funct.waitAndClick(driver, var.adminPendingDeletionVar.permanently_delete_button)
                         # Submits comment and mandatory text for completion
                         ts = funct.timeStamp()
-                        funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + ts)
+                        funct.waitAndSend(driver, var.adminDashVar.comment_textarea, "automated test change at " + str(ts))
                         try:
                             funct.waitAndClick(driver, var.adminDashVar.modal_ok_button)
                         except:

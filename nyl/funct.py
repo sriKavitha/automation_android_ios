@@ -597,6 +597,14 @@ def waitAndGetText(browser, elem):
     waitUntil(browser, elem)
     return browser.find_element(elem[0], elem[1]).text
 
+def waitAndGetAttributeValue(browser, elem):
+    """Function that is used to get text
+    :returns: string value for the text element
+    """
+    waitUntil(browser, elem)
+    ele1 = browser.find_element(elem[0], elem[1])
+    return ele1.get_attribute("value")
+
 def waitAndFind(browser, elem):
     """Webdriver uses actionchains to  wait for a specified page element without throwing an error message
     :param browser: Webdriver instance
