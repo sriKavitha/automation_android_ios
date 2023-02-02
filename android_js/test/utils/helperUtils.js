@@ -1,10 +1,11 @@
 const path = require("path");
 const fs = require("node:fs/promises");
+const GuestPage = require('../pages/android/guest-page');
 class Utils {
 
   // read jsonfile
   async readData() {
-    const data = await fs.readFile("./test/data/appUserDetails.json");
+    const data = await fs.readFile("./android_js/test/data/appUserDetails.json");
     var userData = [];
     try {
        userData = JSON.parse(data);

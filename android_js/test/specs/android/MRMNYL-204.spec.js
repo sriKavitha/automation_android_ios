@@ -1,7 +1,7 @@
 const RegisterAccount = require('../../pages/android/registerAccount-page');
 const GamesPage = require('../../pages/android/games-page');
 const HomePage = require('../../pages/android/home-page');
-const HelperPage = require('../../utils/helper');
+const HelperPage = require('../../utils/helperUtils');
 const AccountDetailsPage = require('../../pages/android/accountDetails-page');
 
 describe('Android app user - Register an user from NYL Home screen successfully', () => {
