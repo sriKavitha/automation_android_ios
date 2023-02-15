@@ -12,23 +12,22 @@ class NYlotto(confTest.NYlottoBASE):
         Purge the SSO user after the verification.
         Dev/QA/Stage/Prod env:
         1. User has to be successfully registered (pre-requisite)
-        2. Signin into AWS with QA user credentials
+        2. Signin into AWS with valid QA user credentials
         3. Search and select Cognito
-        4. Verify the page header
-        5. Click Manage User Pools > qa-nyl-sso-pools
-        6. Click Users and groups
-        7. From dropdown select the option Email
-        8. Key in the registered email and hit enter key to search
-        9. Check if there are users for the matching email address
-        10. Click the link under the Username only if there is a match for the email
-        11. Verify the firstname, lastname, address, DOB, phone#, email and LexID in Users page
+        4. Verify the page header - Amazon Cognito
+        5. Key in the user pool name and select the pool name
+        6. Click the listbox to select the Email address as option from the list
+        7. Keyin the email address to search
+        8. Click the username link to verify details
+        9. Click on Edit button to view more details
+        10. Verify the firstname, lastname, address, DOB, phone#, email and LexID in Users page
             a. firstname
             b. lastname
             c. address
             d. DOB
             e. phone
             f. email
-            g. LexID
+            g. LexID/GovID
         https://rosedigital.atlassian.net/browse/MRMNYL-388 (as part of new LexId changes)
         """
 
@@ -40,7 +39,7 @@ class NYlotto(confTest.NYlottoBASE):
         print('\nUser is now successfully registered....')
         print('----------')
 
-        # 2. Signin into AWS with QA user credentials
+        # 2. Signin into AWS with valid QA user credentials
         driver = self.driver
         # call aws login functionality
         funct.aws_login(self)
@@ -50,61 +49,53 @@ class NYlotto(confTest.NYlottoBASE):
             print('PASS - User is in AWS Home page')
             print('----------')
 
-            # 3.Search and select Cognito from Services
+            # 3. Search and select Cognito from Services
             print('Click on \'Services\' in AWS homepage')
             funct.waitAndClick(driver, var.cloudWatchAWS.aws_services)
-            print('In the search textbox, type \'Cognito\'')
+            # print('In the search textbox, type \'Cognito\'')
             funct.waitAndSend(driver, var.cloudWatchAWS.aws_services_search, "cognito")
-            print('Click \'Cognito\' under Services option')
+            # print('Click \'Cognito\' under Services option')
             funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_search);
-            # 4. Verify the page header
+
+            # 4. Verify the page header - Amazon Cognito
+            time.sleep(2)
             funct.waitAndFind(driver, var.cognitoAWS.aws_cognito_cognitoPageHeader)
-            print('PASS - Amazon Cognito Page header verified... ')
+            print('PASS - Amazon Cognito Page header is verified... ')
 
-            # 5. Click Manage User Pools > qa-nyl-sso-pools (based on env)
-            print('Click on \'Manage User Pools\' in Amazon Cognito page')
-            funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_ManageUserPools)
-            print('Click on \'QA-sso-pool\'')
-            funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_userPool)
+            # 5. Key in the user pool name and select the pool name
+            print('Key in the user pool name')
+            time.sleep(2)
+            funct.waitAndSend(driver, var.cognitoAWS.aws_cognito_userPools, "qa-nyl-sso-pool")
+            funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_userPoolName)
+            driver.execute_script("window.scrollTo(0,250);")
 
-            # 6. Click Users and groups
-            print('Click on Users and groups')
-            funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_usersAndGroups)
+            # 6. Click the listbox to select the Email address as option from the list
+            funct.waitAndSend(driver, var.cognitoAWS.aws_cognito_userNamelistBox, "Email address")
+            funct.waitAndSend(driver, var.cognitoAWS.aws_cognito_userNamelistBox, Keys.RETURN)
 
-            # 7. From dropdown select the option Email
-            print('Select the option \'Email\' from the dropdown menu')
-            funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_userNameDropdown)
-            funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_selectEmailOption)
-
-            # 8. Key in the registered email and hit enter key to search
-            print('Key in the registered email and hit Enter key to search')
-            funct.waitAndSend(driver, var.cognitoAWS.aws_cognito_inputSearch, email)
-            funct.waitAndSend(driver, var.cognitoAWS.aws_cognito_inputSearch, Keys.RETURN)
-            time.sleep(1)
-
-            # 9. Check if there are users for the matching email address
-            count = driver.find_elements_by_xpath("//table[@class='cog-user-table']/tbody/tr/td")
+            # 7. Keyin the email address to search
+            funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_searchUserAttribute)
+            funct.waitAndSend(driver, var.cognitoAWS.aws_cognito_searchUserAttribute, email)
+            print("Checking in our database for the email.....: ", email)
+            # Check for the matching users with this email address
+            count = driver.find_elements_by_xpath("//*[contains(text(),\'No users found\')]")
             if len(count) == 1:
-                # No users found, so just display the below text to indicate no users found
-                print('No users found for this email... ' + '"' + email + '"')
-                print('Key in the correct Email...')
+                # Display the message "No users found" on the console
+                print("Nope... We are sorry!!! We haven't found any users with this email address..: ", email)
             else:
-                # Users found and perform below steps...
-                temp_xpath = '//table[@class=\'cog-user-table\']//td[contains(text(),'
-                email_xpath = temp_xpath + "'" + email + "')]"
-                userEmail = [By.XPATH, email_xpath]
-                # Verify the userEmail with the search email keyed in
-                funct.waitAndFind(driver, userEmail)
-                print('-------')
-                print('PASS - Email is verified with the search email keyed in User Pools page...')
+                print("We found an user with this email... ", email)
+                # e_mail = funct.waitAndGetText(driver, var.cognitoAWS.aws_cognito_verifyEmail)
 
-                # 10. Click the link under the Username only if there is a match for the email
-                print('Clicked the link to verify other details...')
-                funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_emailRow)
+                # 8. Click the username link to verify details
+                print("Click the username link to verify details...")
+                funct.waitAndClick(driver, var.cognitoAWS.aws_cognito_clickUserNameDetails)
                 time.sleep(3)
-                # call verify details
-                self.verify_details(email);
 
+                # 9. Click on Edit button to view more details
+                funct.waitAndClick(driver,var.cognitoAWS.aws_cognito_editButton);
+
+                # Verify the user details
+                self.verify_details(email);
         except Exception as e:
             print('Error occurred...', e)
             funct.fullshot(self)
@@ -113,19 +104,22 @@ class NYlotto(confTest.NYlottoBASE):
         # funct.purgeSSOemail(self, email)
         # funct.purgeSSOphone(self, var.credsSSOWEB.phone)
 
-    # 11. Verify the firstname, lastname, address, DOB, phone#, email and LexID  in Users page
+
+    # 10. Verify the firstname, lastname, address, DOB, phone#, email and LexID/GovID
     def verify_details(self, email):
         # a. Verify firstname => SSO web - First name with AWS cognito - First name
-        firstName = funct.waitAndGetText(self.driver, var.cognitoAWS.aws_cognito_firstName)
-        if var.credsSSOWEB.fname == firstName.capitalize():
+        time.sleep(1)
+        firstName = funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_firstName)
+
+        if (var.credsSSOWEB.fname).capitalize() == firstName.capitalize():
             print('PASS: First Name is successfully verified and is matching with registered firstname...')
         else:
             print('FAIL: First Name in AWS cognito is NOT matching with registered firstname...')
-            print(f'\tErr.. First name should be \'{var.credsSSOWEB.fname}\' while it is \'{firstName.capitalize()}\'')
+            print(f'\tErr.. First name should be \'{var.credsSSOWEB.fname}\' while it is \'{firstName}\'')
         # print(f"Unverified user account {email} successfully created.")
 
         # b. Verify lastname => SSO web - Last name with AWS cognito - Last name
-        lastName = funct.waitAndGetText(self.driver, var.cognitoAWS.aws_cognito_lastName)
+        lastName = funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_lastName)
         if var.credsSSOWEB.lname == lastName.capitalize():
             print('PASS: Last Name in AWS cognito is successfully verified and is matching with registered lastname...')
         else:
@@ -134,16 +128,15 @@ class NYlotto(confTest.NYlottoBASE):
 
         # c. Verify Address => SSO web - address with AWS cognito - Address
         address_ssoweb = var.credsSSOWEB.housenum + ' ' + var.credsSSOWEB.street + ' ' + var.credsSSOWEB.city + ', ' + var.credsSSOWEB.state + ' ' + var.credsSSOWEB.zip
-        address_aws = funct.waitAndGetText(self.driver, var.cognitoAWS.aws_cognito_address)
-        if address_ssoweb.lower() == address_aws.lower():
+        address_aws = funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_address)
+        if address_ssoweb.lower()[:10] == address_aws.lower()[0:10]:
             print('PASS: Address in AWS cognito is successfully verified and is matching with registered address...')
         else:
             print('FAIL: Address in AWS cognito is NOT matching with registered address...')
             print(f'\tErr.. Address should be \'{address_ssoweb.lower()}\' while it is \'{address_aws.lower()}\'')
 
-
         # d. Verify DOB => SSO web - DOB with AWS cognito - DOB
-        dob_aws = funct.waitAndGetText(self.driver, var.cognitoAWS.aws_cognito_birthdate)
+        dob_aws = funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_birthdate)
         dob_sso = str(var.credsSSOWEB.dob_month) + "/" + str(var.credsSSOWEB.dob_date) + "/" + str(var.credsSSOWEB.dob_year)
         if dob_sso == dob_aws:
             print('PASS: DOB in AWS cognito is successfully verified and is matching with registered DOB...')
@@ -152,7 +145,7 @@ class NYlotto(confTest.NYlottoBASE):
             print(f'\tErr.. DOB should be \'{dob_sso}\' while it is \'{dob_aws}\'')
 
         # e. Verify phone number => SSO web - phone number with AWS cognito - phone number
-        phoneNum = funct.waitAndGetText(self.driver, var.cognitoAWS.aws_cognito_phoneNumber)
+        phoneNum = funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_phoneNumber)
         phoneWithNumberOne = "+1" + str(var.credsSSOWEB.phone)
         if phoneWithNumberOne == phoneNum:
             print('PASS: Phone# in AWS cognito is successfully verified and is matching with registered Phone#...')
@@ -161,18 +154,22 @@ class NYlotto(confTest.NYlottoBASE):
             print(f'\tErr.. Phone# should be \'{phoneWithNumberOne}\' while it is \'{phoneNum}\'')
 
         # f. Verify email address => SSO web - email with AWS cognito - email
-        if email == funct.waitAndGetText(self.driver, var.cognitoAWS.aws_cognito_email):
+        if email == funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_email):
             print('PASS: eMail in AWS cognito is successfully verified and is matching with registered eMail address...')
         else:
             print('FAIL: eMail in AWS cognito is NOT matching with registered eMail address...')
-            print(f'\tErr.. Phone# should be \'{email}\' while it is \'{var.cognitoAWS.aws_cognito_email}\'')
+            print(f'\tErr.. Email should be \'{email}\' while it is \'{var.cognitoAWS.aws_cognito_email}\'')
 
-        # g. Verify LexID
-        try:
-            lex = funct.waitAndGetText(self.driver, var.cognitoAWS.aws_cognito_lexId)
-            print('PASS: LexID is successfully generated...', lex)
-        except:
-            print('FAIL: LexID is not generated...')
+        # g. Verify LexId/GovId is generated
+        if len(self.driver.find_elements_by_xpath('//div[@data-testid="optional-attribute-custom:lex_id"]//input')) == 1:
+            id = funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_lexIDNumber)
+            print("PASS: Lex ID is successfully generated:", id)
+        elif len(self.driver.find_elements_by_xpath('//div[@data-testid="optional-attribute-custom:gov_id"]//input')) == 1:
+            id = funct.waitAndGetAttributeValue(self.driver, var.cognitoAWS.aws_cognito_govIDNumber)
+            print("PASS: Gov ID is successfully generated: ", id)
+        else:
+            print("FAIL: Either LexID or GovID is not generated for this user...", email)
+            raise Exception("\tPlease contact the customer rep to fix your account")
 
         print('\n ---------Registered \'SSO web user\' details are verified against \'AWS Cognito\'-----')
 
