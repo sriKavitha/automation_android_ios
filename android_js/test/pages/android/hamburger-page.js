@@ -1,6 +1,6 @@
 const Utils = require('../../utils/helperUtils');
 
-class GamesPage {
+class HamburgerPage {
 
     get hamburgerIcon()
     {
@@ -16,20 +16,10 @@ class GamesPage {
         return $('//*[@text = "SETTINGS"]');
     }
 
-    get gamesTxt()
+    get homeScreen()
     {
         return $('//*[@text = "GAMES"]');
     }
-
-    get accountDetails()
-    {
-        return $('//*[@text = "ACCOUNT DETAILS"]');
-    }
-
-    // get homeScreen()
-    // {
-    //     return $('//*[@text = "GAMES"]')
-    // }
 
     get settings_Email()
     {
@@ -50,6 +40,16 @@ class GamesPage {
     {
         return $('//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginButton"]');
     } 
+
+    get promotionsBtn()
+    {
+        return $('//*[@text="PROMOTIONS"]');
+    }
+
+    get findRetailersBtn()
+    {
+        return $('//*[@text="FIND RETAILERS"]');
+    }
     
     async settings_Login()
     {
@@ -58,13 +58,6 @@ class GamesPage {
         await this.settings_Password.setValue(data.password);
         await this.settings_Loginbtn.click();
     }
-
-    async settings_Page()
-    {
-        await this.hamburgerIcon.click();
-        await this.settingsBtn.click();
-        await this.accountDetails.click();
-    }
     
    }
-module.exports = new GamesPage();
+module.exports = new HamburgerPage();

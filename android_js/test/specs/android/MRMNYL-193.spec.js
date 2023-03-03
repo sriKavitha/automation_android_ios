@@ -14,41 +14,41 @@ describe('Android app user - Login from NYL Home screen with valid credentials',
         console.log("Retry attempt # ", count);
         count++;
 
-        // allure report configuration
+        // Allure report configuration
         allureReporter.addFeature('Login')
         allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-193')
         allureReporter.addDescription('Description: Verify NYL user can login with valid credentials from NYL app')
         allureReporter.addSeverity('critical')
 
-        // 1. wait for the app till it is fully launched 
+        // 1. Wait for the app till it is fully launched 
         allureReporter.addStep('App is launched')
         await (await HomePage.threeButtons).waitForDisplayed();
         
-        // 2. assert for the NYL LOGO and 3 buttons on the Home screen
+        // 2. Assert for the NYL LOGO and 3 buttons on the Home screen
         // CONTINUE AS A GUEST, LOG IN, CREATE ACCOUNT 3 buttons 
         const containerBtn = await HomePage.threeButtons;
         await expect(containerBtn).toBeDisplayed({message: "Home page should have NYL Logo and all the three buttons..."});
         
-        // 3. click on LOG IN button
+        // 3. Tap on LOG IN button
         allureReporter.addStep('Click on LOGIN button');
         await HomePage.loginBtnHomePage.click()
         
-        // 4. verify the title LOG IN text in Login page
+        // 4. Verify the title LOG IN text in Login page
         const loginTitleTxt = LoginPage.loginPage_TitleText;
         await expect(loginTitleTxt).toExist({message: "The title is missing in the Login Page "});
         await driver.pause(1000);
         allureReporter.addStep('Verified the title LOG IN in Login page');
         
-        // 5. login with valid email, password
+        // 5. Login with valid email, password
         allureReporter.addStep('Key in valid credentials')
         await LoginPage.login();
 
-        // 6. assert banner image is dispalyed after NYL user sign in
+        // 6. Assert banner image is dispalyed after NYL user sign in
         const flag = await (LoginPage.loginPage_FullSectionImage).waitForDisplayed({timeout: 20000});
         await expect(flag).toEqual(true, {message: "Banner image is not displayed after NYL user signed in...\n"});
-        allureReporter.addStep('NYL user is successfully signed into NYL app');
+        allureReporter.addStep('NYL user is successfully signed into NYL app using valid credentials');
 
-        // 7. display user is successfully signed in message on the console
+        // 7. Display user is successfully signed in message on the console
         await console.log("\nNYL user is successfully signed in...\n\n");
     });
 });

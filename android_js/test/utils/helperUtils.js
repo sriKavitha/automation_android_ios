@@ -20,7 +20,8 @@ class Utils {
     const yr = new Date().getFullYear();
     const min = new Date().getMinutes();
     const hr = new Date().getHours();
-    const currenttime = yr + "_" + hr + min;
+    const ss = new Date().getSeconds();
+    const currenttime = yr + "_" + hr + min + ss;
     return currenttime; 
   }
 
@@ -32,7 +33,8 @@ class Utils {
          await $('android=new UiScrollable(new UiSelector().scrollable(true)).setAsHorizontalList().scrollForward()');
          await driver.pause(1000);
       }
-      await GuestPage.getStartedBtn.waitForDisplayed({timeout:5000});
+      // await driver.pause(3000);
+      await GuestPage.getStartedBtn.waitForDisplayed();
       await GuestPage.getStartedBtn.click();
   }
 }

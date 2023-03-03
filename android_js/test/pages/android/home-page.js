@@ -7,7 +7,7 @@ class HomePage {
 
     get createAccountHome()
     {
-        return $('//*[@resource-id="air.com.eprize.nylottery.app.NYLotteryApp:id/loginRegister"]')
+        return $('//*[@resource-id = "air.com.eprize.nylottery.app.NYLotteryApp:id/loginRegister"]');
     }
 
     get loginBtnHomePage()
@@ -21,4 +21,3 @@ class HomePage {
     }
    }
 module.exports = new HomePage();
-// export default new RegisterAccount();
