@@ -1,3 +1,4 @@
+const Utils = require('../../utils/helperUtils');
 class LoginPage {
 
     get loginPage_TitleText()
@@ -38,6 +39,15 @@ class LoginPage {
     get errorIcon_password()
     {
         return $('//android.widget.RelativeLayout[2]/android.view.View');
+    }
+    
+    // Login with valid creds - User data is from file
+    async login()
+    {
+        var data = await Utils.readData();
+        await this.loginPage_Email.setValue(data.e_mail);
+        await this.loginPage_Password.setValue(data.password);
+        await this.loginPage_LoginBtn.click();
     }
 
     // Login with invalid creds
