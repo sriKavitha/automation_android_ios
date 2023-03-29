@@ -5,6 +5,7 @@ const HelperPage = require('../../utils/helperUtils');
 const HamburgerPage = require('../../pages/android/hamburger-page');
 const RegisterAccount = require('../../pages/android/registerAccount-page')
 const allureReporter = require('@wdio/allure-reporter');
+const Utils = require('../../utils/helperUtils')
 
 describe('Android app user - Continue as a Guest to login from Settings', function () {
 
@@ -14,6 +15,9 @@ describe('Android app user - Continue as a Guest to login from Settings', functi
 
     it('Verify Android app user is able to login from SETTINGS screen', async function() {
         
+        // Read the datafile to get the environment name ex: dev/QA/stage
+        data=await Utils.readData();
+
         // This test will retry up to 1 times, in case of failure and take a screenshot
         console.log('Retry attempt # ',count);
         count++;
@@ -23,7 +27,8 @@ describe('Android app user - Continue as a Guest to login from Settings', functi
         allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-192');
         allureReporter.addSeverity('critical');
         allureReporter.addDescription('Description: User is able to login from SETTINGS screen');
-
+        allureReporter.addEnvironment("Environment:", data.env);
+        
          // 1. Wait for the app till it is fully launched
          allureReporter.addStep('App is launched');
          await (await HomePage.threeButtons).waitForDisplayed();

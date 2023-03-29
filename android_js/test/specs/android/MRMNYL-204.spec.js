@@ -3,7 +3,8 @@ const GamesPage = require('../../pages/android/games-page');
 const HomePage = require('../../pages/android/home-page');
 const HelperPage = require('../../utils/helperUtils');
 const AccountDetailsPage = require('../../pages/android/accountDetails-page');
-const allureReporter = require('@wdio/allure-reporter')
+const allureReporter = require('@wdio/allure-reporter');
+const Utils = require('../../utils/helperUtils');
 
 describe('Android app user - Register an user from NYL Home screen successfully', function() {
 
@@ -13,6 +14,9 @@ describe('Android app user - Register an user from NYL Home screen successfully'
 
     it('Verify NYL Android app user can register an account', async function() {
         
+        // Read the datafile to get the environment name ex: dev/QA/stage
+        data=await Utils.readData();
+
         // This test will retry up to 1 times, in case of failure and take a screenshot
         console.log("Retry attempt # ", count);
         count++;
@@ -22,7 +26,7 @@ describe('Android app user - Register an user from NYL Home screen successfully'
         allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-204');
         allureReporter.addDescription('Description: User uses NYL app to register');
         allureReporter.addSeverity('blocker');
-        
+        allureReporter.addEnvironment("Environment:", data.env);
 
         // 1. wait for the app till it is fully launched 
         allureReporter.addStep('App is launched');
