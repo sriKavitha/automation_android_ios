@@ -1,14 +1,17 @@
 const allureReporter = require('@wdio/allure-reporter');
 const HomePage = require('../../pages/android/home-page');
 const LoginPage = require('../../pages/android/login-page')
-
+const Utils = require('../../utils/helperUtils')
 describe('Android app user - Cannot login with invalid credentials', function () {
     
     // Retry 1 time if test fails
     let count =0;
     this.retries(1);
-
+    
     it('Verify Error Icon and error message are displayed', async function() {
+        
+        // Read the datafile to get the environment name ex: dev/QA/stage
+        data=await Utils.readData();
         
         // This test will retry up to 1 times, in case of failure and take a screenshot
         console.log('Retry attempt # ',count);
@@ -19,6 +22,7 @@ describe('Android app user - Cannot login with invalid credentials', function ()
         allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-191');
         allureReporter.addDescription('Description: Verify error icon and error message is displayed when invalid credentials are keyed in to login');
         allureReporter.addSeverity('normal');
+        allureReporter.addEnvironment("Environment:", data.env);
 
          // 1. Wait for the app till it is fully launched 
         allureReporter.addStep('App is launched');

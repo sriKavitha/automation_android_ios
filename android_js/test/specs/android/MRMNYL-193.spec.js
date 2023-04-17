@@ -1,6 +1,7 @@
 const HomePage = require('../../pages/android/home-page');
 const LoginPage = require('../../pages/android/login-page');
 const allureReporter = require('@wdio/allure-reporter')
+const Utils = require('../../utils/helperUtils')
 
 describe('Android app user - Login from NYL Home screen with valid credentials', function() {
     
@@ -10,6 +11,9 @@ describe('Android app user - Login from NYL Home screen with valid credentials',
 
     it('Verify NYL Android app user can login into the account successfully', async function() {
     
+        // Read the datafile to get the environment name ex: dev/QA/stage
+        data=await Utils.readData();
+
         // This test will retry up to 1 times, in case of failure and take a screenshot
         console.log("Retry attempt # ", count);
         count++;
@@ -19,7 +23,8 @@ describe('Android app user - Login from NYL Home screen with valid credentials',
         allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-193')
         allureReporter.addDescription('Description: Verify NYL user can login with valid credentials from NYL app')
         allureReporter.addSeverity('critical')
-
+        allureReporter.addEnvironment("Environment:", data.env);
+        
         // 1. Wait for the app till it is fully launched 
         allureReporter.addStep('App is launched')
         await (await HomePage.threeButtons).waitForDisplayed();

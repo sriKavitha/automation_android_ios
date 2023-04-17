@@ -5,7 +5,7 @@ const QuickDrawGamePage = require('../../pages/android/quickDrawGame-page');
 const LoginPage = require('../../pages/android/login-page')
 const HelperPage = require('../../utils/helperUtils');
 const quickDrawGamePage = require('../../pages/android/quickDrawGame-page');
-
+const Utils = require('../../utils/helperUtils')
 
 describe('Android app user - Continue as a Guest for Quickdraw Login', function () {
 
@@ -14,6 +14,9 @@ describe('Android app user - Continue as a Guest for Quickdraw Login', function 
      this.retries(1);
      
     it('Verify Android app user is able to login from QUICK DRAW CUSTOM THEMES screen', async function() {
+
+        // Read the datafile to get the environment name ex: dev/QA/stage
+        data=await Utils.readData();
 
         // This test will retry up to 1 times, in case of failure and take a screenshot
         console.log('Retry attempt # ',count);
@@ -24,7 +27,7 @@ describe('Android app user - Continue as a Guest for Quickdraw Login', function 
         allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-194');
         allureReporter.addSeverity('critical');
         allureReporter.addDescription('Description: User is able to login from QUICK DRAW CUSTOM THEMES screen');
-
+        allureReporter.addEnvironment("Environment:", data.env);
         
          // 1. Wait for the app till it is fully launched 
          allureReporter.addStep('App is launched');

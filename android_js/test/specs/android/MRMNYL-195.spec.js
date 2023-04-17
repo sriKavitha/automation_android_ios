@@ -5,6 +5,7 @@ const HelperPage = require('../../utils/helperUtils');
 const HamburgerPage = require('../../pages/android/hamburger-page');
 const MegaMillionsPage = require('../../pages/android/megaMillionsGame-page');
 const allureReporter = require('@wdio/allure-reporter');
+const Utils = require('../../utils/helperUtils')
 
 describe('Android app user - Continue as a Guest to login from Mega Millions Notifications', function () {
 
@@ -13,6 +14,9 @@ describe('Android app user - Continue as a Guest to login from Mega Millions Not
     this.retries(1);
     
     it('Verify android user is able to log in from Mega Millions NOTIFICATION SETTINGS screen', async function() {
+
+        // Read the datafile to get the environment name ex: dev/QA/stage
+        data=await Utils.readData();
 
          // This test will retry up to 1 times, in case of failure and take a screenshot
          console.log('Retry attempt # ',count);
@@ -23,7 +27,8 @@ describe('Android app user - Continue as a Guest to login from Mega Millions Not
         allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-195');
         allureReporter.addDescription('Description: User is able to login from Mega Millions NOTIFICATION SETTINGS screen');
         allureReporter.addSeverity('normal');
-
+        allureReporter.addEnvironment("Environment:", data.env);
+        
          // 1. wait for the app till it is fully launched 
          allureReporter.addStep('App is launched');
          await (await HomePage.threeButtons).waitForDisplayed();
