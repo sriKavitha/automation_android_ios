@@ -11,6 +11,8 @@ describe('Android app user - Continue as a Guest to verify that a user can acces
     // Retry 1 time if test fails
     let count = 0;
     this.retries(1);
+    
+    const testID = 'https://rosedigital.atlassian.net/browse/MRMNYL-181';
 
     it('Verify that a user can access the Promotions screen through the nav menu', async function() {
     
@@ -23,8 +25,7 @@ describe('Android app user - Continue as a Guest to verify that a user can acces
 
         // Allure report configuration
         allureReporter.addFeature('Guest User');
-        allureReporter.addTestId('https://rosedigital.atlassian.net/browse/MRMNYL-181');
-        allureReporter.addDescription('Description: User is able to access the Promotions screen through the nav menu');
+        allureReporter.addDescription(`Description: User is able to access the Promotions screen through the nav menu \n\n TestID: ${testID}`);
         allureReporter.addSeverity('Normal');
         allureReporter.addEnvironment("Environment:", data.env);
         
@@ -61,7 +62,10 @@ describe('Android app user - Continue as a Guest to verify that a user can acces
         await expect(await PromotionsPage.promotionsHeading).toHaveTextContaining('PROMOTIONS');
         await expect(await PromotionsPage.promotionsTitle).toHaveTextContaining('New York Lottery Resumes');
         await expect(await PromotionsPage.promotionsIcon).toExist();
+
+        // 9. Display console message
         allureReporter.addStep('User is able to access the Promotions screen through the nav menu.');
+        console.log("\nVerified successfully... User is able to access the Promotions screen through the nav menu.");        
 
     });
 });
