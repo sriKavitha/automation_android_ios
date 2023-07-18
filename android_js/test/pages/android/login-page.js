@@ -40,6 +40,11 @@ class LoginPage {
     {
         return $('//android.widget.RelativeLayout[2]/android.view.View');
     }
+
+    get resetPwd()
+    {
+        return $('//*[contains(@text,"FORGOT PASSWORD?")]')
+    }
     
     // Login with valid creds - User data is from file
     async login()
@@ -49,6 +54,7 @@ class LoginPage {
         await this.loginPage_Password.setValue(data.password);
         await this.loginPage_LoginBtn.click();
     }
+
 
     // Login with invalid creds
     async login_invalidCreds(email,password)
