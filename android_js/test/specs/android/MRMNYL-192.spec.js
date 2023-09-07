@@ -56,18 +56,19 @@ describe('Android app user - Continue as a Guest to login from Settings', functi
 
         // 7. Scroll down till SETTINGS and tap
         allureReporter.addStep('Swipe down till you see SETTINGS button and tap on it');
-        await HamburgerPage.settingsBtn;
+        (await HamburgerPage.settingsBtn).waitForDisplayed({timeout:10000});
         await HamburgerPage.settingsBtn.click();
 
         // 8. Assert for SETTINGS text
+        await HamburgerPage.settingsTxt.waitForDisplayed({timeout:15000});
         await expect(HamburgerPage.settingsTxt).toHaveText('SETTINGS',{message:'User should be in SETTINGS page.'});
 
-        allureReporter.addStep('Tap on Log In buuton');
+        allureReporter.addStep('Tap on Log In button');
         await HamburgerPage.settings_LogInBtn.click();
 
         allureReporter.addStep('Signin using valid credentials');
         await HamburgerPage.settings_Login();
-        await expect(RegisterAccount.hourSymbol).not.toBeDisplayed({timeout: 15000});
+        await (RegisterAccount.hourSymbol).waitForExist({reverse:true});
         allureReporter.addStep('User successfully signed in using valid credentials');
 
         // 9. Assert for home screen
@@ -75,6 +76,6 @@ describe('Android app user - Continue as a Guest to login from Settings', functi
 
         // 10. Display console message
         console.log('NYL Android user continued as a Guest and is able to login from SETTINGS screen');
-        
+
     });
 });

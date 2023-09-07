@@ -59,7 +59,8 @@ describe('Android app user - Send password recovery link', function() {
 
         // 7. Tap on OK button in the popup window
         allureReporter.addStep('Tap on OK button in the popup window');
-        (await ResetPasswordPage.resetPasswordPage_confirmResetPwdPopUpOkBtn).waitForDisplayed();
+        await driver.pause(3000);
+        (await ResetPasswordPage.resetPasswordPage_confirmResetPwdPopUpOkBtn).waitForDisplayed({timeout:15000});
         await ResetPasswordPage.resetPasswordPage_confirmResetPwdPopUpOkBtn.click();
         await driver.pause(3000);
         

@@ -8,7 +8,7 @@ const specs = [
   },
   {
     spec: './android_js/test/specs/android/MRMNYL-186_changePassword.spec.js',
-    configFile: './android_js/config/wdio.changepwd.conf.js'
+    configFile: './android_js/config/wdio.android.changepwd.conf.js'
   },
   {
     spec: './android_js/test/specs/android/MRMNYL-193.spec.js',
