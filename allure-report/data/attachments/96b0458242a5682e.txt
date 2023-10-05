@@ -1,0 +1,11 @@
+{
+  "script": "mobile: swipe",
+  "args": [
+    [
+      {
+        "element": "15000000-0000-0000-360D-000000000000",
+        "direction": "right"
+      }
+    ]
+  ]
+}

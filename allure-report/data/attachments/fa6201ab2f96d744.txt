@@ -1,0 +1,4 @@
+{
+  "using": "css selector",
+  "value": "-iso class chain:**/XCUIElementTypeNavigationBar[`name == \"GAMES\"`]/XCUIElementTypeButton[2]"
+}

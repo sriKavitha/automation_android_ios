@@ -1,0 +1,4 @@
+{
+  "using": "-ios class chain",
+  "value": "**/XCUIElementTypeWindow[3]/XCUIElementTypeOther"
+}

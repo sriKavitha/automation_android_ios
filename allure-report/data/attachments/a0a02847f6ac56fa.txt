@@ -1,0 +1,13 @@
+{
+  "actions": [
+    {
+      "action": "tap",
+      "options": {
+        "element": "1",
+        "x": 10,
+        "y": 20,
+        "count": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "(//XCUIElementTypeStaticText[@name=\"LOG IN\"])[2]"
+}

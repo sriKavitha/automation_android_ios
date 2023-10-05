@@ -1,0 +1,4 @@
+{
+  "using": "-ios class chain",
+  "value": "**/XCUIElementTypeNavigationBar[`name == \"MEGA MILLIONS\"`]"
+}

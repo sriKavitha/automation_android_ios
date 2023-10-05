@@ -1,0 +1,4 @@
+{
+  "using": "css selector",
+  "value": "**/XCUIElementTypeTextField[`value == \"Email\"`][1]"
+}

@@ -1,0 +1,4 @@
+{
+  "using": "-ios predicate string",
+  "value": "value == \"(       )       -    \""
+}

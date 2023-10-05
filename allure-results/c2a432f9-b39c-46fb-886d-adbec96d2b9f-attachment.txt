@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//XCUIElementTypeButton[@name=\"CREATE ACCOUNT\"]"
+}

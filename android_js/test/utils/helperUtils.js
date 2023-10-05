@@ -1,6 +1,8 @@
 const path = require("path");
 const fs = require("node:fs/promises");
 const GuestPage = require('../pages/android/guest-page');
+const GuestPage_iOS = require('../pages/ios/guest-page-ios')
+
 class Utils {
 
   // read jsonfile
@@ -38,6 +40,23 @@ class Utils {
       await GuestPage.getStartedBtn.click();
   }
 
+  async swipe_ios()
+  {
+      for(var i=1;i<=5;i++)
+      {
+        await driver.touchPerform([
+            { action: 'longPress', options: { x: 320, y: 350 }},
+            { action: 'wait', ms: 3000},
+            { action: 'moveTo', options: { x: 80, y: 350 }},
+            { action: 'release' }
+          ])
+          
+      }
+      await GuestPage_iOS.getStartedBtn.waitForDisplayed();
+      await GuestPage_iOS.getStartedBtn.click();
+      await driver.pause(1000);
+  }
+
   // Swipe forward
   async swipeForward()
   {
@@ -50,6 +69,11 @@ class Utils {
   {
       await driver.pause(2000)
       await $('android=new UiScrollable(new UiSelector().scrollable(true)).scrollBackward()');
+  }
+
+  async scrollForward()
+  {
+    await driver.execute('mobil: scroll', {direction: "forward"})
   }
 
     // swipe till game

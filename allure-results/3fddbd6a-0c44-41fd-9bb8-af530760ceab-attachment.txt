@@ -1,0 +1,14 @@
+{
+  "actions": [
+    {
+      "type": "key",
+      "id": "keyboard",
+      "actions": [
+        {
+          "type": "keyDown",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

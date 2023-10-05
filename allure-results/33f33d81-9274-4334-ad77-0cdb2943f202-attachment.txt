@@ -1,0 +1,9 @@
+{
+  "script": "mobile: scroll",
+  "args": [
+    {
+      "element": "15000000-0000-0000-4C0D-000000000000",
+      "direction": "right"
+    }
+  ]
+}

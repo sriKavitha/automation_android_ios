@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//XCUIElementTypeImage[@name=\"NYL_MobileApp_01LogIn_bg.png\"]"
+}

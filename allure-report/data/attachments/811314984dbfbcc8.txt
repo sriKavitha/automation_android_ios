@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//XCUIElementTypeImage[@name=\"/private/var/containers/Bundle/Application/08E8EE5B-C5A7-4C6A-A1C7-ED7CE6B268B6/com.eprize.nylottery.app.NYLotteryApp.app/Onboarding_landing.png\"]"
+}

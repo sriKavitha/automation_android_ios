@@ -1,0 +1,20 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Wed Sep 06 16:45:28 EDT 2023","Wed Sep 06 16:45:39 EDT 2023","11444","","Android app user - Change Password in mobile browser","","","","Get the latest reset password email from the eMail server and change the password","Description: Verify that forgot password link works
+
+Test ID: https://rosedigital.atlassian.net/browse/MRMNYL-186"
+"passed","Fri Sep 29 21:21:03 EDT 2023","Fri Sep 29 21:21:22 EDT 2023","19671","","iOS app user - Guest user can access Settings screen through navigation menu","","","","Verify NYL iOS app user can access Settings screen through the nav menu","Description: Guest user can access Settings screen through navigation menu"
+"passed","Fri Sep 29 20:48:05 EDT 2023","Fri Sep 29 20:48:16 EDT 2023","11253","","iOS app user - Login from NYL Home screen with valid credentials","","","","Verify NYL iOS app user can login into the account successfully","Description: Description: Verify NYL user can login with valid credentials from NYL app"
+"passed","Wed Sep 06 16:44:46 EDT 2023","Wed Sep 06 16:45:05 EDT 2023","19154","","Android app user - Send password recovery link","","","","Send a password recovery link to QA eMail server","Description: Verify that forgot password link works
+
+Test ID: https://rosedigital.atlassian.net/browse/MRMNYL-186"
+"passed","Sun Sep 24 10:32:51 EDT 2023","Sun Sep 24 10:32:54 EDT 2023","3097","","Android app user - Continue as a Guest to login from Mega Millions Notifications","","","","Verify android user is able to log in from Mega Millions NOTIFICATION SETTINGS screen","Description: User is able to login from Mega Millions NOTIFICATION SETTINGS screen"
+"passed","Fri Sep 29 22:35:40 EDT 2023","Fri Sep 29 22:35:54 EDT 2023","13963","","iOS app user - Continue as a Guest to verify that a user can access the Promotions screen through the nav menu","","","","Verify that a user can access the Promotions screen through the nav menu","Description: User is able to access the Promotions screen through the nav menu 
+
+ TestID: https://rosedigital.atlassian.net/browse/MRMNYL-181"
+"unknown","Tue Sep 26 23:21:32 EDT 2023","Tue Sep 26 23:22:02 EDT 2023","29887","","Android app user - Register an user from NYL Home screen successfully","","","","Verify NYL Android app user can register an account","Description: User uses NYL app to register"
+"passed","Wed Sep 06 16:46:02 EDT 2023","Wed Sep 06 16:46:26 EDT 2023","24333","","Android app user - Login from NYL Home screen with valid credentials","","","","Verify NYL Android app user can login into the account successfully","Description: Verify NYL user can login with valid credentials from NYL app"
+"passed","Fri Sep 29 19:49:10 EDT 2023","Fri Sep 29 19:49:22 EDT 2023","11463","","iOS app user - Cannot login with invalid credentials","","","","Verify Error Icon and error message are displayed","Description: Verify error icon and error message is displayed when invalid credentials are keyed in to login"
+"passed","Fri Sep 29 20:55:48 EDT 2023","Fri Sep 29 20:56:21 EDT 2023","33529","","iOS app user - Continue as a Guest to login from Mega Millions Notifications","","","","Verify iOS user is able to log in from Mega Millions NOTIFICATION SETTINGS screen","Description: kaUser is able to login from Mega Millions NOTIFICATION SETTINGS screen"
+"passed","Fri Sep 29 23:06:09 EDT 2023","Fri Sep 29 23:06:19 EDT 2023","10031","","iOS app user - Continue as a Guest to verify that a user can access the Find Retailers screen through the nav menu","","","","Verify that a user can access the Find Retailers screen through the nav menu","Description: User is able to access the Find Retailers screen through the nav menu 
+
+ TestID: https://rosedigital.atlassian.net/browse/MRMNYL-184"

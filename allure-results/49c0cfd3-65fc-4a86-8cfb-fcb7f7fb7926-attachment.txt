@@ -1,0 +1,37 @@
+{
+  "script": "mobile:scroll",
+  "args": [
+    {
+      "element": {
+        "sessionId": "cb28b27d-a943-4e13-918d-8939ce2b3160",
+        "elementId": "15000000-0000-0000-F93F-000000000000",
+        "element-6066-11e4-a52e-4f735466cecf": "15000000-0000-0000-F93F-000000000000",
+        "selector": "//XCUIElementTypeApplication[@name=\"Official NY Lottery (qa)\"]/XCUIElementTypeWindow/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]",
+        "parent": {
+          "sessionId": "cb28b27d-a943-4e13-918d-8939ce2b3160",
+          "capabilities": {
+            "webStorageEnabled": false,
+            "locationContextEnabled": false,
+            "browserName": "",
+            "platform": "MAC",
+            "javascriptEnabled": true,
+            "databaseEnabled": false,
+            "takesScreenshot": true,
+            "networkConnectionEnabled": false,
+            "platformName": "iOS",
+            "platformVersion": "16.6.1",
+            "udid": "00008110-0002395E3CB9401E",
+            "automationName": "XCUITest",
+            "deviceName": "Kavitha's iPhone",
+            "app": "/Users/kavitha/Documents/QA/android_js/app/ios/QA.ipa",
+            "xcodeSigningId": "iPhone Developer",
+            "xcodeOrgId": "W7E68DX979"
+          }
+        },
+        "isReactElement": false,
+        "isShadowElement": false
+      },
+      "direction": "right"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//XCUIElementTypeSecureTextField[@value=\"Password\"]"
+}

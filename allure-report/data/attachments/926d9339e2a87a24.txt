@@ -1,0 +1,4 @@
+{
+  "using": "-ios class chain",
+  "value": "**/XCUIElementTypeButton[`label == \"CREATE ACCOUNT\"`]"
+}

@@ -1,0 +1,10 @@
+{
+  "script": "mobile: swipe",
+  "args": [
+    [
+      {
+        "direction": "right"
+      }
+    ]
+  ]
+}

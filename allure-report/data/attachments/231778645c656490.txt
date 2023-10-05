@@ -1,0 +1,40 @@
+{
+  "script": "mobile: swipe",
+  "args": [
+    {
+      "element": {
+        "sessionId": "523b182c-6847-4648-a4b2-5f5388193c34",
+        "error": {
+          "error": "no such element",
+          "message": "An element could not be located on the page using the given search parameters.",
+          "stacktrace": "NoSuchElementError: An element could not be located on the page using the given search parameters.\n    at XCUITestDriver.doNativeFind (/Users/kavitha/Documents/QA/node_modules/appium-xcuitest-driver/lib/commands/find.js:143:13)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at XCUITestDriver.findNativeElementOrElements (/Users/kavitha/Documents/QA/node_modules/appium-xcuitest-driver/lib/commands/find.js:97:12)\n    at XCUITestDriver.findElOrEls (/Users/kavitha/Documents/QA/node_modules/appium-xcuitest-driver/lib/commands/find.js:24:14)\n    at XCUITestDriver.findElOrElsWithProcessing (/Users/kavitha/Documents/QA/node_modules/@appium/base-driver/lib/basedriver/commands/find.ts:60:12)\n    at XCUITestDriver.findElement (/Users/kavitha/Documents/QA/node_modules/@appium/base-driver/lib/basedriver/commands/find.ts:75:12)"
+        },
+        "selector": "//XCUIElementTypeImage[@name=\"/private/var/containers/Bundle/Application/1DB7EA14-D984-4AE1-AED8-AF70AC824931/com.eprize.nylottery.app.NYLotteryApp.app/Onboarding_landing.png\"]",
+        "parent": {
+          "sessionId": "523b182c-6847-4648-a4b2-5f5388193c34",
+          "capabilities": {
+            "webStorageEnabled": false,
+            "locationContextEnabled": false,
+            "browserName": "",
+            "platform": "MAC",
+            "javascriptEnabled": true,
+            "databaseEnabled": false,
+            "takesScreenshot": true,
+            "networkConnectionEnabled": false,
+            "platformName": "iOS",
+            "platformVersion": "16.6.1",
+            "udid": "00008110-0002395E3CB9401E",
+            "automationName": "XCUITest",
+            "deviceName": "Kavitha's iPhone",
+            "app": "/Users/kavitha/Documents/QA/android_js/app/ios/QA.ipa",
+            "xcodeSigningId": "iPhone Developer",
+            "xcodeOrgId": "W7E68DX979"
+          }
+        },
+        "isReactElement": false,
+        "isShadowElement": false
+      },
+      "direction": "right"
+    }
+  ]
+}

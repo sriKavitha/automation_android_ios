@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//XCUIElementTypeApplication[contains(@name,\"Official NY Lottery\")]/XCUIElementTypeWindow[3]/XCUIElementTypeOther"
+}

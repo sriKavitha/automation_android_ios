@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//XCUIElementTypeStaticText[@name=\"CONTINUE AS GUEST\"]"
+}

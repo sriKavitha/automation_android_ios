@@ -1,0 +1,4 @@
+{
+  "using": "css selector",
+  "value": "-ios class chain **/XCUIElementTypeTextField[`value == \"First Name\"`]"
+}
